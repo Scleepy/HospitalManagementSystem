@@ -1,16 +1,36 @@
 public class Appointment {
+	private String appointmentID;
 	private String date;
     private String time;
     private Boolean emergency;
+	private Boolean isConsulted;
+	private Boolean givenMedicine;
+	private Boolean isDone;
+	private Patient patient;
+	private Doctor doctor;
 
-	public Appointment(String date, String time, Boolean emergency) {
+	public Appointment(String appointmentID, String date, String time, Boolean emergency, Boolean isConsulted, Boolean givenMedicine, Boolean isDone, Patient patient, Doctor doctor) {
+		this.appointmentID = appointmentID;
 		this.date = date;
 		this.time = time;
 		this.emergency = emergency;
+		this.isConsulted = isConsulted;
+		this.givenMedicine = givenMedicine;
+		this.isDone = isDone;
+		this.patient = patient;
+		this.doctor = doctor;
+	}
+
+	public String getAppointmentID() {
+		return this.appointmentID;
+	}
+
+	public void setAppointmentID(String appointmentID) {
+		this.appointmentID = appointmentID;
 	}
 
 	public String getDate() {
-		return date;
+		return this.date;
 	}
 
 	public void setDate(String date) {
@@ -18,7 +38,7 @@ public class Appointment {
 	}
 
 	public String getTime() {
-		return time;
+		return this.time;
 	}
 
 	public void setTime(String time) {
@@ -26,11 +46,52 @@ public class Appointment {
 	}
 
 	public Boolean getEmergency() {
-		return emergency;
+		return this.emergency;
 	}
 
 	public void setEmergency(Boolean emergency) {
 		this.emergency = emergency;
 	}
+
+	public Boolean getIsConsulted() {
+		return this.isConsulted;
+	}
+
+	public void setIsConsulted(Boolean isConsulted) {
+		this.isConsulted = isConsulted;
+	}
+
+	public Boolean getGivenMedicine() {
+		return this.givenMedicine;
+	}
+
+	public void setGivenMedicine(Boolean givenMedicine) {
+		this.givenMedicine = givenMedicine;
+	}
+
+	public Boolean getIsDone(){
+		return this.isDone;
+	}
+
+	public void setIsDone(Boolean isDone){
+		this.isDone = isDone;
+	}
+
+	public Patient getPatient() {
+		return this.patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public Doctor getDoctor() {
+		return this.doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
     
 }

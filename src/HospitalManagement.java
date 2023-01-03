@@ -40,11 +40,13 @@ public class HospitalManagement {
         ArrayList<Patient> patientList = new ArrayList<>();
         loadPatient(patientList);
 
+        ArrayList<Appointment> appointmentList = new ArrayList<>();
+
         //LOAD OTHER DATA HERE
 
         //RECEPTIONIST MENU -> should be controlled in the login menu
         Receptionist receptionist = new Receptionist("Daniel", "Puri Mansion", "Male", "085280076262", "danielyohanes03@gmail.com", "RC001");
-        receptionist.receptionMenu(patientList);
+        receptionist.receptionMenu(patientList, appointmentList);
 
     }
 

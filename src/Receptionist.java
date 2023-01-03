@@ -1,7 +1,5 @@
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -26,7 +24,7 @@ public class Receptionist extends Person{
         this.recID = recID;
     }
 
-    public static void receptionMenu(ArrayList<Patient> patientList){
+    public static void receptionMenu(ArrayList<Patient> patientList, ArrayList<Appointment> appointmentList){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -53,28 +51,29 @@ public class Receptionist extends Person{
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (Exception e) {
-            receptionMenu(patientList);
+            receptionMenu(patientList, appointmentList);
         }
 
         switch(choice){
             case 1:
-            managePatients(patientList);
+                managePatients(patientList, appointmentList);
                 break;
             case 2:
+                manageAppointment(appointmentList);
                 break;
             case 3:
                 break;
             case 4:
                 break;
             default:
-            receptionMenu(patientList);
+                receptionMenu(patientList, appointmentList);
                 break;
         }
 
         scanner.close();
     }
 
-    public static void managePatients(ArrayList<Patient> patientList){
+    public static void managePatients(ArrayList<Patient> patientList, ArrayList<Appointment> appointmentList){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -94,58 +93,52 @@ public class Receptionist extends Person{
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (Exception e) {
-            receptionMenu(patientList);
+            receptionMenu(patientList, appointmentList);
         }
 
         switch(choice){
             case 1:
+                if(patientList.size() == 0){
+                    System.out.println("NO PATIENT DATA");
+                    scanner.nextLine();
+                    managePatients(patientList, appointmentList);
+                } else {
+                    showPatients(patientList);
+                }
 
-            if(patientList.size() == 0){
-                System.out.println("NO PATIENT DATA");
+                System.out.println("Press any key to continue...");
                 scanner.nextLine();
-                managePatients(patientList);
-            } else {
-                showPatients(patientList);
-            }
+                managePatients(patientList, appointmentList);
 
-            System.out.println("Press any key to continue...");
-            scanner.nextLine();
-            managePatients(patientList);
                 break;
-
             case 2:
-            registerPatient(patientList);
+                registerPatient(patientList, appointmentList);
                 break;
-            
             case 3:
+                if(patientList.size() == 0){
+                    System.out.println("NO PATIENT DATA");
+                    scanner.nextLine();
+                    managePatients(patientList, appointmentList);
+                } else {
+                    deleteUpdatePatientMenu(patientList, appointmentList, 0);
+                }
 
-            if(patientList.size() == 0){
-                System.out.println("NO PATIENT DATA");
-                scanner.nextLine();
-                managePatients(patientList);
-            } else {
-                deleteUpdatePatientMenu(patientList, 0);
-            }
-
-            
                 break;
             case 4:
-
-            if(patientList.size() == 0){
-                System.out.println("NO PATIENT DATA");
-                scanner.nextLine();
-                managePatients(patientList);
-            } else {
-                deleteUpdatePatientMenu(patientList, 1);
-            }
+                if(patientList.size() == 0){
+                    System.out.println("NO PATIENT DATA");
+                    scanner.nextLine();
+                    managePatients(patientList, appointmentList);
+                } else {
+                    deleteUpdatePatientMenu(patientList, appointmentList, 1);
+                }
 
                 break;
             case 5:
-            receptionMenu(patientList);
+                receptionMenu(patientList, appointmentList);
                 break;
-
             default:
-            managePatients(patientList);
+                managePatients(patientList, appointmentList);
                 break;
         }
 
@@ -173,7 +166,7 @@ public class Receptionist extends Person{
         }
 
 
-    public static void registerPatient(ArrayList<Patient> patientList){
+    public static void registerPatient(ArrayList<Patient> patientList, ArrayList<Appointment> appointmentList){
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
@@ -322,7 +315,7 @@ public class Receptionist extends Person{
         }
 
         if(input.toLowerCase().equals("y")){
-            registerPatient(patientList);
+            registerPatient(patientList, appointmentList);
         } else {
 
             patientList.add(new Patient(name, address, gender, phoneNumber, email, patientID, bloodType));
@@ -350,7 +343,7 @@ public class Receptionist extends Person{
             System.out.println("Added patient to database!");
             System.out.println("Press any key to continue...");
             scanner.nextLine();
-            managePatients(patientList);
+            managePatients(patientList, appointmentList);
         }
 
         scanner.close();
@@ -399,7 +392,7 @@ public class Receptionist extends Person{
         return letterExist;
     }
 
-    public static void deleteUpdatePatientMenu(ArrayList<Patient> patientList, int operation){
+    public static void deleteUpdatePatientMenu(ArrayList<Patient> patientList, ArrayList<Appointment> appointmentList, int operation){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -425,33 +418,33 @@ public class Receptionist extends Person{
             System.out.println("Invalid input!");
             scanner.nextLine(); scanner.nextLine();
             if(operation == 1){
-                deleteUpdatePatientMenu(patientList, 1);
+                deleteUpdatePatientMenu(patientList, appointmentList, 1);
             } else {
-                deleteUpdatePatientMenu(patientList, 0);
+                deleteUpdatePatientMenu(patientList, appointmentList, 0);
             }
         }
         
         switch(choice){
             case 1:
+                if(operation == 1){
+                    deletePatient(patientList, appointmentList);
+                } else {
+                    updatePatient(patientList, appointmentList);
+                }
 
-            if(operation == 1){
-                deletePatient(patientList);
-            } else {
-                updatePatient(patientList);
-            }
                 break;
             case 2:
-            managePatients(patientList);
+                managePatients(patientList, appointmentList);
                 break;
             default:
+                if(operation == 1){
+                    deleteUpdatePatientMenu(patientList, appointmentList, 1);
+                } else {
+                    deleteUpdatePatientMenu(patientList, appointmentList, 0);
+                }
 
-           if(operation == 1){
-                deleteUpdatePatientMenu(patientList, 1);
-            } else {
-                deleteUpdatePatientMenu(patientList, 0);
-            }
                 break;
-        }
+            }
 
         scanner.close();
     }
@@ -470,7 +463,7 @@ public class Receptionist extends Person{
         return index;
     }
 
-    public static void deletePatient(ArrayList<Patient> patientList){
+    public static void deletePatient(ArrayList<Patient> patientList, ArrayList<Appointment> appointmentList){
 
         Scanner scanner = new Scanner(System.in);
 
@@ -510,15 +503,15 @@ public class Receptionist extends Person{
 
                 System.out.println("Press any key to continue...");
                 scanner.nextLine();
-                deleteUpdatePatientMenu(patientList, 1);            
+                deleteUpdatePatientMenu(patientList, appointmentList, 1);            
             } else {
-                deleteUpdatePatientMenu(patientList, 1);
+                deleteUpdatePatientMenu(patientList, appointmentList, 1);
             }
 
         } else {
             System.out.println("Patient not found!");
             scanner.nextLine();
-            deleteUpdatePatientMenu(patientList, 1);
+            deleteUpdatePatientMenu(patientList, appointmentList, 1);
         }
 
         scanner.close();
@@ -573,7 +566,7 @@ public class Receptionist extends Person{
         
     }
 
-    public static void updatePatient(ArrayList<Patient> patientList){
+    public static void updatePatient(ArrayList<Patient> patientList, ArrayList<Appointment> appointmentList){
 
         Scanner scanner = new Scanner(System.in);
 
@@ -607,8 +600,6 @@ public class Receptionist extends Person{
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
 
-                System.out.println("");
-
                 System.out.println("|============================================PATIENT DETAIL==============================================================|");
                 System.out.println("|PatientID|BloodType|Name                  |Address                  |Gender|Phone Number |Email                         |");                    
                 System.out.printf("|%-9s|", patientList.get(index).getPatientID());
@@ -635,7 +626,7 @@ public class Receptionist extends Person{
                     choice = scanner.nextInt();
                     scanner.nextLine();
                 } catch (Exception e) {
-                    updatePatient(patientList);
+                    updatePatient(patientList, appointmentList);
                 }
 
                 String name = "", bloodType = "", address = "", gender = "", phoneNumber = "", email = "";
@@ -643,161 +634,258 @@ public class Receptionist extends Person{
 
                 switch(choice){
                     case 1:
-                    do{
-                        valid = true;
-            
-                        System.out.print("Enter patient blood type: ");
-                        bloodType = scanner.nextLine();
-            
-                        if(!bloodType.equals("A") && !bloodType.equals("B") && !bloodType.equals("AB") && !bloodType.equals("O")){
-                            System.out.println("Invalid blood type! Try again!");
-                            valid = false;
-                        } 
-                    } while(!valid);
+                        do{
+                            valid = true;
+                
+                            System.out.print("Enter patient blood type: ");
+                            bloodType = scanner.nextLine();
+                
+                            if(!bloodType.equals("A") && !bloodType.equals("B") && !bloodType.equals("AB") && !bloodType.equals("O")){
+                                System.out.println("Invalid blood type! Try again!");
+                                valid = false;
+                            } 
+                        } while(!valid);
 
-                    patientList.get(index).setBloodType(bloodType);
-                    updatePatientDatabase(patientList);
-                    deleteUpdatePatientMenu(patientList, 0);
+                        patientList.get(index).setBloodType(bloodType);
+                        updatePatientDatabase(patientList);
+                        deleteUpdatePatientMenu(patientList, appointmentList, 0);
 
                         break;
-
                     case 2:
+                        do{
+                            valid = true;
+                
+                            System.out.print("Enter patient name: ");
+                            name = scanner.nextLine();
+                            
+                            if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+                                System.out.println("Invalid name! Try again!");
+                                valid = false;
+                            } 
+                
+                        } while(!valid);
 
-                    do{
-                        valid = true;
-            
-                        System.out.print("Enter patient name: ");
-                        name = scanner.nextLine();
-                        
-                        if((name.length() < 5) || hasNumber(name) || validSpace(name)){
-                            System.out.println("Invalid name! Try again!");
-                            valid = false;
-                        } 
-            
-                    } while(!valid);
-
-                    patientList.get(index).setName(name);
-                    updatePatientDatabase(patientList);
-                    deleteUpdatePatientMenu(patientList, 0);
+                        patientList.get(index).setName(name);
+                        updatePatientDatabase(patientList);
+                        deleteUpdatePatientMenu(patientList, appointmentList, 0);
 
                         break;
                     case 3:
 
-                    do{
-                        valid = true;
-            
-                        System.out.print("Enter patient address: ");
-                        address = scanner.nextLine();
-                        
-                        if((address.length() < 10)){
-                            System.out.println("Invalid address! Try again!");
-                            valid = false;
-                        } 
-            
-                    } while(!valid);
+                        do{
+                            valid = true;
+                
+                            System.out.print("Enter patient address: ");
+                            address = scanner.nextLine();
+                            
+                            if((address.length() < 10)){
+                                System.out.println("Invalid address! Try again!");
+                                valid = false;
+                            } 
+                
+                        } while(!valid);
 
-                    patientList.get(index).setAddress(address);
-                    updatePatientDatabase(patientList);
-                    deleteUpdatePatientMenu(patientList, 0);
+                        patientList.get(index).setAddress(address);
+                        updatePatientDatabase(patientList);
+                        deleteUpdatePatientMenu(patientList, appointmentList, 0);
 
                         break;
                     case 4:
+                        do{
+                            valid = true;
+                
+                            System.out.print("Input gender [Male || Female]: ");
+                            gender = scanner.nextLine();
+                
+                            if(!gender.equals("Male") && !gender.equals("Female")){
+                                System.out.println("Invalid gender! Try again!");
+                                valid = false;
+                            } 
+                
+                        }while(!valid);
 
-                    do{
-
-                        valid = true;
-            
-                        System.out.print("Input gender [Male || Female]: ");
-                        gender = scanner.nextLine();
-            
-                        if(!gender.equals("Male") && !gender.equals("Female")){
-                            System.out.println("Invalid gender! Try again!");
-                            valid = false;
-                        } 
-            
-                    }while(!valid);
-
-                    patientList.get(index).setGender(gender);
-                    updatePatientDatabase(patientList);
-                    deleteUpdatePatientMenu(patientList, 0);
+                        patientList.get(index).setGender(gender);
+                        updatePatientDatabase(patientList);
+                        deleteUpdatePatientMenu(patientList, appointmentList, 0);
 
                         break;
 
                     case 5:
 
-                    do{
-
-                        valid = true;
-            
-                        System.out.print("Input Phone Number: ");
-                        phoneNumber = scanner.nextLine();
-            
-                        for(int i = 0; i < patientList.size(); i++){
-                            if(patientList.get(i).getPhoneNumber().equals(phoneNumber)){
-                                System.out.println("Duplicate phone number prohibited!");
-                                valid = false;
-                                break;
-                            }
-                        }
-            
-                        if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
-                            System.out.println("Invalid number! Try again!");
-                            valid = false;
-                        } 
-            
-                    }while(!valid);
-
-                    patientList.get(index).setPhoneNumber(phoneNumber);
-                    updatePatientDatabase(patientList);
-                    deleteUpdatePatientMenu(patientList, 0);
-
-                        break;
-                    case 6:
-
-                    do{ 
-
-                        valid = true;
-            
-                        System.out.print("Input Email: ");
-                        email = scanner.nextLine();
-            
-                        String regex = "^([\\w\\.-]+)@([\\w-]+)\\.([\\w-]{2,6})(\\.[\\w]{2,6})?$";
-            
-                        if(!Pattern.matches(regex, email)){
-                            System.out.println("Invalid email! Try again!");
-                            valid = false;
-                        }else {
+                        do{
+                            valid = true;
+                
+                            System.out.print("Input Phone Number: ");
+                            phoneNumber = scanner.nextLine();
+                
                             for(int i = 0; i < patientList.size(); i++){
-                                if(patientList.get(i).getEmail().equals(email)){
-                                    System.out.println("Duplicate email prohibited!");
+                                if(patientList.get(i).getPhoneNumber().equals(phoneNumber)){
+                                    System.out.println("Duplicate phone number prohibited!");
                                     valid = false;
                                     break;
                                 }
                             }
-                        }
-                    }while(!valid);
+                
+                            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+                                System.out.println("Invalid number! Try again!");
+                                valid = false;
+                            } 
+                
+                        }while(!valid);
 
-                    patientList.get(index).setEmail(email);
-                    updatePatientDatabase(patientList);
-                    deleteUpdatePatientMenu(patientList, 0);
+                        patientList.get(index).setPhoneNumber(phoneNumber);
+                        updatePatientDatabase(patientList);
+                        deleteUpdatePatientMenu(patientList, appointmentList, 0);
+
                         break;
+                    case 6:
 
+                        do{ 
+
+                            valid = true;
+                
+                            System.out.print("Input Email: ");
+                            email = scanner.nextLine();
+                
+                            String regex = "^([\\w\\.-]+)@([\\w-]+)\\.([\\w-]{2,6})(\\.[\\w]{2,6})?$";
+                
+                            if(!Pattern.matches(regex, email)){
+                                System.out.println("Invalid email! Try again!");
+                                valid = false;
+                            }else {
+                                for(int i = 0; i < patientList.size(); i++){
+                                    if(patientList.get(i).getEmail().equals(email)){
+                                        System.out.println("Duplicate email prohibited!");
+                                        valid = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }while(!valid);
+
+                        patientList.get(index).setEmail(email);
+                        updatePatientDatabase(patientList);
+                        deleteUpdatePatientMenu(patientList, appointmentList, 0);
+
+                        break;
                     default:
-                    deleteUpdatePatientMenu(patientList, 0);
+                        deleteUpdatePatientMenu(patientList, appointmentList, 0);
+
                         break;
                 }
 
             } else {
-                deleteUpdatePatientMenu(patientList, 0);
+                deleteUpdatePatientMenu(patientList, appointmentList, 0);
             }
 
         } else {
             System.out.println("Patient not found!");
-            deleteUpdatePatientMenu(patientList, 0);
+            deleteUpdatePatientMenu(patientList, appointmentList, 0);
         }
 
         scanner.close();
     }
-   
 
+    public static void manageAppointment(ArrayList<Appointment> appointmentList){
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        Scanner scanner = new Scanner(System.in);
+
+        //CREATE APPOINTMENT
+        //SHOW APPOINTMENTS -> ACTIVE/PAST
+
+        System.out.println("1. Show Appointments");
+        System.out.println("2. Create Appointment");
+        System.out.print(">> ");
+
+        int choice = 0;
+
+        try {
+            choice = scanner.nextInt();
+            scanner.nextLine();
+        } catch (Exception e) {
+            manageAppointment(appointmentList);
+        }
+
+        switch(choice){
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+            manageAppointment(appointmentList);
+                break;
+        }
+
+        scanner.close();
+
+    }
+
+    public static void showAppointmentsMenu(ArrayList<Appointment> appointmentList){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("1. Show Active Appointments");
+        System.out.println("2. Show Past Appointments");
+
+        int choice = 0;
+
+        try {
+            choice = scanner.nextInt();
+            scanner.nextLine();
+        } catch (Exception e) {
+            showAppointmentsMenu(appointmentList);
+        }
+
+        switch(choice){
+            case 1:
+                if(appointmentList.size() == 0){
+                    System.out.println("NO ACTIVE APPOINTMENTS");
+                    scanner.nextLine();
+                } else {
+                    showAppointments(appointmentList, false);
+                }
+
+                break;
+            case 2:
+                if(appointmentList.size() == 0){
+                    System.out.println("NO PAST APPOINTMENTS");
+                    scanner.nextLine();
+                } else {
+                    showAppointments(appointmentList, true);
+                }
+
+                break;
+            default:
+                showAppointmentsMenu(appointmentList);
+                break;
+        }
+
+        scanner.close();
+    }
+
+    public static void showAppointments(ArrayList<Appointment> appointmentList, boolean operation){
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        for(int i = 0; i < appointmentList.size(); i++){
+            if(appointmentList.get(i).getIsDone() == operation){
+                System.out.println("|AppointmentID|Patient Name             | Date & Time | Doctor Name | Emergency | Consulted | Given Medicine | Done |");                    
+                System.out.printf("|%-9s|", appointmentList.get(i).getAppointmentID());
+                System.out.printf("%-9s|", appointmentList.get(i).getPatient().getName());
+                System.out.printf("%-9s", appointmentList.get(i).getDate() + appointmentList.get(i).getTime());
+                System.out.printf("%-9s", appointmentList.get(i).getDoctor().getName());
+                System.out.printf("%-9s", appointmentList.get(i).getEmergency());
+                System.out.printf("%-9s", appointmentList.get(i).getIsConsulted());
+                System.out.printf("%-9s", appointmentList.get(i).getGivenMedicine());
+                System.out.printf("%-9s", appointmentList.get(i).getIsDone());
+            } 
+            
+        }
+    }
 }
