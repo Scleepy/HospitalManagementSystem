@@ -5,6 +5,8 @@ class Doctor extends Person{
     String specialization;
     ArrayList<Patient> patientList = new ArrayList<>();
 
+    public Doctor(){};
+
     public Doctor(String name, String address, String gender, String phoneNumber, String email, String doctorID, String specialization, ArrayList<Patient> patient){
         super(name, address, gender, phoneNumber, email);
         this.doctorID = doctorID;
@@ -35,5 +37,20 @@ class Doctor extends Person{
     public void setPatientList(ArrayList<Patient> patientList) {
         this.patientList = patientList;
     }
+
+    public static Doctor getDoctor(ArrayList<Doctor> doctorList, String doctorID){
+
+        int index = -1;
+
+        for(int i = 0; i < doctorList.size(); i++){
+            if(doctorList.get(i).getDoctorID().equals(doctorID)){
+                index = i;
+                break;
+            }
+        }
+
+        return doctorList.get(index);
+    }
+
 
 }
