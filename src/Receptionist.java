@@ -873,12 +873,18 @@ public class Receptionist extends Person{
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
+
+        DateTimeFormatter stringFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+
         for(int i = 0; i < appointmentList.size(); i++){
             if(appointmentList.get(i).getIsDone() == operation){
                 System.out.println("|AppointmentID|Patient Name             | Date & Time | Doctor Name | Emergency | Consulted | Given Medicine | Done |");                    
                 System.out.printf("|%-9s|", appointmentList.get(i).getAppointmentID());
                 System.out.printf("%-9s|", appointmentList.get(i).getPatient().getName());
-                System.out.printf("%-9s", appointmentList.get(i).getDate() + appointmentList.get(i).getTime());
+
+                String dateTime = appointmentList.get(i).getDateTime().format(stringFormat);
+
+                System.out.printf("%-9s", dateTime);
                 System.out.printf("%-9s", appointmentList.get(i).getDoctor().getName());
                 System.out.printf("%-9s", appointmentList.get(i).getEmergency());
                 System.out.printf("%-9s", appointmentList.get(i).getIsConsulted());
@@ -888,4 +894,7 @@ public class Receptionist extends Person{
             
         }
     }
+
+    
+
 }

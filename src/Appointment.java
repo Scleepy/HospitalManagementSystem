@@ -1,7 +1,8 @@
+import java.time.LocalDateTime;
+
 public class Appointment {
 	private String appointmentID;
-	private String date;
-    private String time;
+	private LocalDateTime dateTime;
     private Boolean emergency;
 	private Boolean isConsulted;
 	private Boolean givenMedicine;
@@ -9,10 +10,9 @@ public class Appointment {
 	private Patient patient;
 	private Doctor doctor;
 
-	public Appointment(String appointmentID, String date, String time, Boolean emergency, Boolean isConsulted, Boolean givenMedicine, Boolean isDone, Patient patient, Doctor doctor) {
+	public Appointment(String appointmentID, LocalDateTime dateTime, Boolean emergency, Boolean isConsulted, Boolean givenMedicine, Boolean isDone, Patient patient, Doctor doctor) {
 		this.appointmentID = appointmentID;
-		this.date = date;
-		this.time = time;
+		this.dateTime = dateTime;
 		this.emergency = emergency;
 		this.isConsulted = isConsulted;
 		this.givenMedicine = givenMedicine;
@@ -29,20 +29,12 @@ public class Appointment {
 		this.appointmentID = appointmentID;
 	}
 
-	public String getDate() {
-		return this.date;
+	public LocalDateTime getDateTime(){
+		return this.dateTime;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getTime() {
-		return this.time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	public Boolean getEmergency() {
