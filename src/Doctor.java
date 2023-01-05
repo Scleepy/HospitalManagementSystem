@@ -4,16 +4,16 @@ class Doctor extends Person{
     String doctorID;
     String specialization;
     ArrayList<Patient> patientList = new ArrayList<>();
-    Integer hargaJasa;
+    Integer doctorFee;
 
     public Doctor(){};
 
-    public Doctor(String name, String address, String gender, String phoneNumber, String email, String password, String doctorID, String specialization, ArrayList<Patient> patient, Integer hargaJasa){
+    public Doctor(String name, String address, String gender, String phoneNumber, String email, String password, String doctorID, String specialization, ArrayList<Patient> patient, Integer doctorFee){
         super(name, address, gender, phoneNumber, email, password);
         this.doctorID = doctorID;
         this.specialization = specialization;
         this.patientList = patient;
-        this.hargaJasa = hargaJasa;
+        this.doctorFee = doctorFee;
     }
 
     public String getDoctorID() {
@@ -40,12 +40,12 @@ class Doctor extends Person{
         this.patientList = patientList;
     }
 
-    public Integer getHargaJasa() {
-        return hargaJasa;
+    public Integer getDoctorFee() {
+        return doctorFee;
     }
 
-    public void setHargaJasa(Integer hargaJasa) {
-        this.hargaJasa = hargaJasa;
+    public void setDoctorFee(Integer doctorFee) {
+        this.doctorFee = doctorFee;
     }
     
     public static Doctor getDoctor(ArrayList<Doctor> doctorList, String doctorID){

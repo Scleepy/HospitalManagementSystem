@@ -20,10 +20,6 @@ public class HospitalManagement {
         ArrayList<Doctor> doctorList = new ArrayList<>();
         loadDoctors(patientList, doctorList);
 
-        //LOAD APPOINTMENT DATA
-        ArrayList<Appointment> appointmentList = new ArrayList<>();
-        loadAppointments(patientList, doctorList, appointmentList);
-
         //LOAD PHARMACIST DATA
         ArrayList<Pharmacist> pharmacistList = new ArrayList<>();
         loadPharmacist(pharmacistList);
@@ -36,14 +32,18 @@ public class HospitalManagement {
         ArrayList<Prescription> prescriptionList = new ArrayList<>();
         loadPrescription(prescriptionList, doctorList, medicineList);
 
+        //LOAD APPOINTMENT DATA
+        ArrayList<Appointment> appointmentList = new ArrayList<>();
+        loadAppointments(patientList, doctorList, appointmentList, prescriptionList);
+
         //LOAD BILLING DATA
         ArrayList<Billing> billingList = new ArrayList<>();
-        loadBilling(billingList, appointmentList, pharmacistList, prescriptionList);
+        loadBilling(billingList, appointmentList);
         
         //LOAD OTHER DATA HERE
 
         //RECEPTIONIST MENU -> should be controlled in the login menu
-        Receptionist.receptionMenu(patientList, doctorList, appointmentList);
+        Receptionist.receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
     }
 
     public static void loadPatient(ArrayList<Patient> patientList){
@@ -117,7 +117,7 @@ public class HospitalManagement {
         }
     }
 
-    public static void loadAppointments(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void loadAppointments(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Prescription> prescriptionList){
         try{
 
             BufferedReader br;
@@ -132,15 +132,15 @@ public class HospitalManagement {
 
             while((line = br.readLine()) != null){
                 String[] detail = line.split(",");
-
-                Doctor doctor = Doctor.getDoctor(doctorList, detail[7]);
-    
+                
                 Patient patient = Patient.getPatient(patientList, detail[6]);
+                Doctor doctor = Doctor.getDoctor(doctorList, detail[7]);
+                Prescription prescription = Prescription.getPrescription(prescriptionList, detail[8]);
 
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
                 LocalDateTime dateTime = LocalDateTime.parse(detail[1], format);
                 
-                appointmentList.add(new Appointment(detail[0], dateTime, Boolean.parseBoolean(detail[2]), Boolean.parseBoolean(detail[3]), Boolean.parseBoolean(detail[4]), Boolean.parseBoolean(detail[5]), patient, doctor));
+                appointmentList.add(new Appointment(detail[0], dateTime, Boolean.parseBoolean(detail[2]), Boolean.parseBoolean(detail[3]), Boolean.parseBoolean(detail[4]), Boolean.parseBoolean(detail[5]), patient, doctor, prescription));
             }
 
             br.close();
@@ -260,7 +260,7 @@ public class HospitalManagement {
         }
     }
 
-    public static void loadBilling(ArrayList<Billing> billingList, ArrayList<Appointment> appointmentList, ArrayList<Pharmacist> pharmacistList, ArrayList<Prescription> prescriptionList){
+    public static void loadBilling(ArrayList<Billing> billingList, ArrayList<Appointment> appointmentList){
         try{
 
             BufferedReader br;
@@ -279,7 +279,7 @@ public class HospitalManagement {
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
                 LocalDateTime dateTime = LocalDateTime.parse(detail[1], format);
                 
-                billingList.add(new Billing(detail[0], dateTime, Appointment.getAppointment(appointmentList, detail[2]), Pharmacist.getPharmacist(pharmacistList, detail[3])  , Prescription.getPrescription(prescriptionList, detail[4]), Integer.parseInt(detail[5])));
+                billingList.add(new Billing(detail[0], dateTime, Appointment.getAppointment(appointmentList, detail[2]), Integer.parseInt(detail[3])));
             }
 
             br.close();

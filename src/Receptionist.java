@@ -24,7 +24,7 @@ public class Receptionist extends Person{
         this.recID = recID;
     }
 
-    public static void receptionMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void receptionMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -51,30 +51,30 @@ public class Receptionist extends Person{
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (Exception e) {
-            receptionMenu(patientList, doctorList, appointmentList);
+            receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
         }
 
         switch(choice){
             case 1:
-                managePatients(patientList, doctorList, appointmentList);
+                managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 2:
-                manageAppointment(patientList, doctorList, appointmentList);
+                manageAppointment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 3:
-                createPayment(patientList, doctorList, appointmentList);
+                createPayment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 4:
                 break;
             default:
-                receptionMenu(patientList, doctorList, appointmentList);
+                receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
         }
 
         scanner.close();
     }
 
-    public static void managePatients(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void managePatients(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -94,7 +94,7 @@ public class Receptionist extends Person{
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (Exception e) {
-            receptionMenu(patientList, doctorList, appointmentList);
+            receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
         }
 
         switch(choice){
@@ -102,26 +102,26 @@ public class Receptionist extends Person{
                 if(patientList.size() == 0){
                     System.out.println("NO PATIENT DATA");
                     scanner.nextLine();
-                    managePatients(patientList, doctorList, appointmentList);
+                    managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 } else {
                     showPatients(patientList);
                 }
 
                 System.out.println("Press any key to continue...");
                 scanner.nextLine();
-                managePatients(patientList, doctorList, appointmentList);
+                managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
 
                 break;
             case 2:
-                registerPatient(patientList, doctorList, appointmentList);
+                registerPatient(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 3:
                 if(patientList.size() == 0){
                     System.out.println("NO PATIENT DATA");
                     scanner.nextLine();
-                    managePatients(patientList, doctorList, appointmentList);
+                    managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 } else {
-                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
                 }
 
                 break;
@@ -129,17 +129,17 @@ public class Receptionist extends Person{
                 if(patientList.size() == 0){
                     System.out.println("NO PATIENT DATA");
                     scanner.nextLine();
-                    managePatients(patientList, doctorList, appointmentList);
+                    managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 } else {
-                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1);
+                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1, billingList, prescriptionList);
                 }
 
                 break;
             case 5:
-                receptionMenu(patientList, doctorList, appointmentList);
+                receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             default:
-                managePatients(patientList, doctorList, appointmentList);
+                managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
         }
 
@@ -169,7 +169,7 @@ public class Receptionist extends Person{
     }
 
 
-    public static void registerPatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void registerPatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
@@ -307,8 +307,6 @@ public class Receptionist extends Person{
         String currentID = patientList.get(patientList.size() - 1).getPatientID().substring(2, 5);
         int currentIDNumber = Integer.parseInt(currentID);
 
-        System.out.println(currentID);
-
         if(patientList.size() < 10){
             patientID = String.format("PA00%d", currentIDNumber + 1);
         } else if (patientList.size() < 100){
@@ -318,7 +316,7 @@ public class Receptionist extends Person{
         }
 
         if(input.toLowerCase().equals("y")){
-            registerPatient(patientList, doctorList, appointmentList);
+            registerPatient(patientList, doctorList, appointmentList, billingList, prescriptionList);
         } else {
 
             patientList.add(new Patient(name, address, gender, phoneNumber, email, patientID, bloodType));
@@ -353,7 +351,7 @@ public class Receptionist extends Person{
             System.out.println("Added patient to database!");
             System.out.println("Press any key to continue...");
             scanner.nextLine();
-            managePatients(patientList, doctorList, appointmentList);
+            managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
         }
 
         scanner.close();
@@ -402,7 +400,7 @@ public class Receptionist extends Person{
         return letterExist;
     }
 
-    public static void deleteUpdatePatientMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, int operation){
+    public static void deleteUpdatePatientMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, int operation, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -428,29 +426,29 @@ public class Receptionist extends Person{
             System.out.println("Invalid input!");
             scanner.nextLine(); scanner.nextLine();
             if(operation == 1){
-                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1);
+                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1, billingList, prescriptionList);
             } else {
-                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
             }
         }
         
         switch(choice){
             case 1:
                 if(operation == 1){
-                    deletePatient(patientList, doctorList, appointmentList);
+                    deletePatient(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 } else {
-                    updatePatient(patientList, doctorList, appointmentList);
+                    updatePatient(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 }
 
                 break;
             case 2:
-                managePatients(patientList, doctorList, appointmentList);
+                managePatients(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             default:
                 if(operation == 1){
-                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1);
+                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1, billingList, prescriptionList);
                 } else {
-                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                    deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
                 }
 
                 break;
@@ -501,7 +499,7 @@ public class Receptionist extends Person{
         return index;
     }
 
-    public static void deletePatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void deletePatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         Scanner scanner = new Scanner(System.in);
 
@@ -541,15 +539,15 @@ public class Receptionist extends Person{
 
                 System.out.println("Press any key to continue...");
                 scanner.nextLine();
-                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1);            
+                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1, billingList, prescriptionList);            
             } else {
-                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1);
+                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1, billingList, prescriptionList);
             }
 
         } else {
             System.out.println("Patient not found!");
             scanner.nextLine();
-            deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1);
+            deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 1, billingList, prescriptionList);
         }
 
         scanner.close();
@@ -617,7 +615,7 @@ public class Receptionist extends Person{
         
     }
 
-    public static void updatePatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void updatePatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         Scanner scanner = new Scanner(System.in);
 
@@ -677,7 +675,7 @@ public class Receptionist extends Person{
                     choice = scanner.nextInt();
                     scanner.nextLine();
                 } catch (Exception e) {
-                    updatePatient(patientList, doctorList, appointmentList);
+                    updatePatient(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 }
 
                 String name = "", bloodType = "", address = "", gender = "", phoneNumber = "", email = "";
@@ -699,7 +697,7 @@ public class Receptionist extends Person{
 
                         patientList.get(index).setBloodType(bloodType);
                         updatePatientDatabase(patientList);
-                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
                     case 2:
@@ -718,7 +716,7 @@ public class Receptionist extends Person{
 
                         patientList.get(index).setName(name);
                         updatePatientDatabase(patientList);
-                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
                     case 3:
@@ -738,7 +736,7 @@ public class Receptionist extends Person{
 
                         patientList.get(index).setAddress(address);
                         updatePatientDatabase(patientList);
-                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
                     case 4:
@@ -757,7 +755,7 @@ public class Receptionist extends Person{
 
                         patientList.get(index).setGender(gender);
                         updatePatientDatabase(patientList);
-                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
 
@@ -786,7 +784,7 @@ public class Receptionist extends Person{
 
                         patientList.get(index).setPhoneNumber(phoneNumber);
                         updatePatientDatabase(patientList);
-                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
                     case 6:
@@ -816,28 +814,28 @@ public class Receptionist extends Person{
 
                         patientList.get(index).setEmail(email);
                         updatePatientDatabase(patientList);
-                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
                     default:
-                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                        deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
                 }
 
             } else {
-                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+                deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
             }
 
         } else {
             System.out.println("Patient not found!");
-            deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0);
+            deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
         }
 
         scanner.close();
     }
 
-    public static void manageAppointment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void manageAppointment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -858,21 +856,21 @@ public class Receptionist extends Person{
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (Exception e) {
-            manageAppointment(patientList, doctorList, appointmentList);
+            manageAppointment(patientList, doctorList, appointmentList, billingList, prescriptionList);
         }
 
         switch(choice){
             case 1:
-                showAppointmentsMenu(patientList, doctorList, appointmentList);
+                showAppointmentsMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 2:
-                createAppointment(patientList, doctorList, appointmentList);
+                createAppointment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 3:
-                receptionMenu(patientList, doctorList, appointmentList);
+                receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             default:
-                manageAppointment(patientList, doctorList, appointmentList);
+                manageAppointment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
         }
 
@@ -880,7 +878,7 @@ public class Receptionist extends Person{
 
     }
 
-    public static void showAppointmentsMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void showAppointmentsMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
@@ -897,7 +895,7 @@ public class Receptionist extends Person{
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (Exception e) {
-            showAppointmentsMenu(patientList, doctorList, appointmentList);
+            showAppointmentsMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
         }
 
         switch(choice){
@@ -910,7 +908,7 @@ public class Receptionist extends Person{
 
                     System.out.println("Press any key to continue...");
                     scanner.nextLine();
-                    showAppointmentsMenu(patientList, doctorList, appointmentList);
+                    showAppointmentsMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 }
 
                 break;
@@ -923,15 +921,15 @@ public class Receptionist extends Person{
 
                     System.out.println("Press any key to continue...");
                     scanner.nextLine();
-                    showAppointmentsMenu(patientList, doctorList, appointmentList);
+                    showAppointmentsMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 }
 
                 break;
             case 3:
-                manageAppointment(patientList, doctorList, appointmentList);
+                manageAppointment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             default:
-                showAppointmentsMenu(patientList, doctorList, appointmentList);
+                showAppointmentsMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
         }
 
@@ -946,9 +944,9 @@ public class Receptionist extends Person{
 
         DateTimeFormatter stringFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
-        System.out.println("============================================================APPOINTMENT LIST============================================================");
-        System.out.println("|AppointmentID|Patient Name             |Date & Time              |Doctor Name              |Emergency|Consulted|Given Medicine|Done   |");
-        System.out.println("========================================================================================================================================");
+        System.out.println("============================================================APPOINTMENT LIST===========================================================================");
+        System.out.println("|AppointmentID|Patient Name             |Date & Time              |Doctor Name              |Emergency|Consulted|PrescriptionID|Given Medicine|Done   |");
+        System.out.println("=======================================================================================================================================================");
             
         for(int i = 0; i < appointmentList.size(); i++){
     
@@ -962,6 +960,7 @@ public class Receptionist extends Person{
                 System.out.printf("%-25s|", appointmentList.get(i).getDoctor().getName());
                 System.out.printf("%-9s|", appointmentList.get(i).getEmergency());
                 System.out.printf("%-9s|", appointmentList.get(i).getIsConsulted());
+                System.out.printf("%-14s|", appointmentList.get(i).getPrescription().getPrescriptionID());
                 System.out.printf("%-14s|", appointmentList.get(i).getGivenMedicine());
                 System.out.printf("%-7s|", appointmentList.get(i).getIsDone());
                 System.out.println();
@@ -986,7 +985,7 @@ public class Receptionist extends Person{
         }
     }
 
-    public static void createAppointment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void createAppointment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         Scanner scanner = new Scanner(System.in);
         
@@ -1089,7 +1088,8 @@ public class Receptionist extends Person{
                     appointmentID = String.format("AP%d", currentIDNumber + 1);
                 }
 
-                appointmentList.add(new Appointment(appointmentID, LocalDateTime.parse(dateTimeInput, format), emergency, false, false, false, patientList.get(indexPatient), doctorList.get(indexDoctor)));
+                
+                appointmentList.add(new Appointment(appointmentID, LocalDateTime.parse(dateTimeInput, format), emergency, false, false, false, patientList.get(indexPatient), doctorList.get(indexDoctor), Prescription.getPrescription(prescriptionList, "PR00X")));
 
                 //UPDATE APPOINTMENT DATABASE
                 updateAppointmentDatabase(appointmentList);
@@ -1103,7 +1103,7 @@ public class Receptionist extends Person{
 
         System.out.println("Press any key to continue...");
         scanner.nextLine();
-        manageAppointment(patientList, doctorList, appointmentList);
+        manageAppointment(patientList, doctorList, appointmentList, billingList, prescriptionList);
 
         scanner.close();
     }
@@ -1241,7 +1241,7 @@ public class Receptionist extends Person{
         }
     }
 
-    public static void createPayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void createPayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
@@ -1259,24 +1259,24 @@ public class Receptionist extends Person{
             choice = scanner.nextInt();
             scanner.nextLine();
         } catch (Exception e) {
-            createPayment(patientList, doctorList, appointmentList);
+            createPayment(patientList, doctorList, appointmentList, billingList, prescriptionList);
         }
 
         switch(choice){
             case 1:
-                generatePayment(patientList, doctorList, appointmentList);
+                generatePayment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 2:
-                receptionMenu(patientList, doctorList, appointmentList);
+                receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             default:
-                createPayment(patientList, doctorList, appointmentList);
+                createPayment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
         }
         scanner.close();
     }
 
-    public static void generatePayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+    public static void generatePayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         Scanner scanner = new Scanner(System.in);
         String inputAppointmentID = "";
@@ -1289,16 +1289,51 @@ public class Receptionist extends Person{
         if(indexAppointment != -1){
 
             //UPDATE APPOINTMENT
-            appointmentList.get(indexAppointment).setIsDone(true);
-            updateAppointmentDatabase(appointmentList);
+            // appointmentList.get(indexAppointment).setIsDone(true);
+            // updateAppointmentDatabase(appointmentList);
 
             //GENERATE BILL
+            String billingID = "";
+
+            String currentID = billingList.get(billingList.size() - 1).getBillingID().substring(2, 5);
+            int currentIDNumber = Integer.parseInt(currentID);
+
+            if(billingList.size() < 10){
+                billingID = String.format("BL00%d", currentIDNumber + 1);
+            } else if (patientList.size() < 100){
+                billingID = String.format("BL0%d", currentIDNumber + 1);
+            } else {
+                billingID = String.format("BL%d", currentIDNumber + 1);
+            }
+
+            LocalDateTime dateTime = LocalDateTime.now();
+            
+            Appointment appointment = appointmentList.get(indexAppointment);
+
+            int doctorFee = appointment.getDoctor().getDoctorFee();
+            
+            ArrayList<Medicine> medicineList = appointment.getPrescription().getMedicineList();
+
+            int medicineFee = 0;
+
+            for(int i = 0; i < medicineList.size(); i++){
+                medicineFee += medicineList.get(i).getMedicinePrice();
+            }
+
+            int totalBill = doctorFee + medicineFee;
+
+            Billing billing = new Billing(billingID, dateTime, appointment, totalBill);
+
+            billingList.add(billing);
+
+            //UPDATE BILLING DATABASE
+            //PRINT BILL
             
 
         } else {
             System.out.println("PATIENT NOT FOUND");
             scanner.nextLine();
-            createPayment(patientList, doctorList, appointmentList);
+            createPayment(patientList, doctorList, appointmentList, billingList, prescriptionList);
         }
 
         scanner.close();

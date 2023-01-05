@@ -10,8 +10,9 @@ public class Appointment {
 	private Boolean isDone;
 	private Patient patient;
 	private Doctor doctor;
+	private Prescription prescription;
 
-	public Appointment(String appointmentID, LocalDateTime dateTime, Boolean emergency, Boolean isConsulted, Boolean givenMedicine, Boolean isDone, Patient patient, Doctor doctor) {
+	public Appointment(String appointmentID, LocalDateTime dateTime, Boolean emergency, Boolean isConsulted, Boolean givenMedicine, Boolean isDone, Patient patient, Doctor doctor, Prescription prescription) {
 		this.appointmentID = appointmentID;
 		this.dateTime = dateTime;
 		this.emergency = emergency;
@@ -20,6 +21,7 @@ public class Appointment {
 		this.isDone = isDone;
 		this.patient = patient;
 		this.doctor = doctor;
+		this.prescription = prescription;
 	}
 
 	public String getAppointmentID() {
@@ -84,6 +86,14 @@ public class Appointment {
 
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}
+
+	public Prescription getPrescription() {
+        return this.prescription;
+	}
+
+	public void setPrescription(Prescription prescription) {
+		this.prescription = prescription;
 	}
 
 	public static Appointment getAppointment(ArrayList<Appointment> appointmentList, String appointmentID){
