@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 public class HospitalManagement {
 
     public HospitalManagement(){};
@@ -70,8 +69,7 @@ public class HospitalManagement {
 
                 String[] patientArr = detail[8].split("#");
 
-                for(String patientID : patientArr){
-                    
+                for(String patientID : patientArr){   
                     doctorPatientList.add(Patient.getPatient(patientList, patientID));
                 }
 
@@ -101,7 +99,6 @@ public class HospitalManagement {
             while((line = br.readLine()) != null){
                 String[] detail = line.split(",");
 
-
                 Doctor doctor = Doctor.getDoctor(doctorList, detail[7]);
     
                 Patient patient = Patient.getPatient(patientList, detail[6]);
@@ -124,4 +121,11 @@ public class HospitalManagement {
             System.exit(0);
         }
     }
+
+    //LOAD BILLING
+    //LOAD PHARMACIST
+    //LOAD PRECRIPTION
+
+
+
 }

@@ -8,9 +8,7 @@ public class Billing {
     private Prescription prescription;
     private int totalBill;
 
-
-    public Billing() {
-    }
+    public Billing(){}
 
     public Billing(String billingID, LocalDateTime billingDate, Patient patient, Doctor doctor, Pharmacist pharmacist, Prescription prescription, int totalBill) {
         this.billingID = billingID;
