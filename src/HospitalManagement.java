@@ -73,7 +73,7 @@ public class HospitalManagement {
                     doctorPatientList.add(Patient.getPatient(patientList, patientID));
                 }
 
-                doctorList.add(new Doctor(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6], detail[7], doctorPatientList));
+                doctorList.add(new Doctor(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6], detail[7], doctorPatientList, Integer.parseInt(detail[9])));
             }
 
             br.close();

@@ -1,6 +1,2 @@
-AP001,12 December 2020 14:25,false,false,false,false,PA001,DC001
-AP002,03 October 2020 11:00,false,false,false,false,PA003,DC002
-AP003,16 February 2019 16:00,false,false,false,false,PA002,DC002
-AP004,30 March 2022 14:00,false,true,true,true,PA002,DC002
-AP005,23 June 2022 12:00,true,true,true,true,PA001,DC001
-AP006,12 May 2023 11:10,false,true,true,true,PA003,DC001
+MD001,Paracetamol,10,Obat udah meredakan demam,Dewasa: 1-2 kaplet 3-4 kali per hari,25000
+MD002,Rhinos SR,10,Obat udah meredakan alergi pilek dan bersin,Dewasa dan anak 1 kapsul setiap 12 jam,95000

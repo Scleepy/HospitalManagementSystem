@@ -2,19 +2,17 @@ import java.time.LocalDateTime;
 public class Billing {
     private String billingID;
     private LocalDateTime billingDate;
-    private Patient patient;
-    private Doctor doctor;
+    private Appointment appointment;
     private Pharmacist pharmacist;
     private Prescription prescription;
     private int totalBill;
 
     public Billing(){}
 
-    public Billing(String billingID, LocalDateTime billingDate, Patient patient, Doctor doctor, Pharmacist pharmacist, Prescription prescription, int totalBill) {
+    public Billing(String billingID, LocalDateTime billingDate, Appointment appointment, Pharmacist pharmacist, Prescription prescription, int totalBill) {
         this.billingID = billingID;
         this.billingDate = billingDate;
-        this.patient = patient;
-        this.doctor = doctor;
+        this.appointment = appointment;
         this.pharmacist = pharmacist;
         this.prescription = prescription;
         this.totalBill = totalBill;
@@ -36,20 +34,12 @@ public class Billing {
         this.billingDate = billingDate;
     }
 
-    public Patient getPatient() {
-        return this.patient;
+    public Appointment getAppointment(){
+        return this.appointment;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return this.doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
+    public void setAppointment(Appointment appointment){
+        this.appointment = appointment;
     }
 
     public Pharmacist getPharmacist() {
