@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 public class Receptionist extends Person{
     String recID;
 
-    public Receptionist(String name, String address, String gender, String phoneNumber, String email, String recID){
-        super(name, address, gender, phoneNumber, email);
+    public Receptionist(String name, String address, String gender, String phoneNumber, String email, String password, String recID){
+        super(name, address, gender, phoneNumber, email, password);
         this.recID = recID;
     }
 
@@ -62,6 +62,7 @@ public class Receptionist extends Person{
                 manageAppointment(patientList, doctorList, appointmentList);
                 break;
             case 3:
+                createPayment(patientList, doctorList, appointmentList);
                 break;
             case 4:
                 break;
@@ -479,6 +480,20 @@ public class Receptionist extends Person{
         return index;
     }
 
+    public static int searchAppointment(ArrayList<Appointment> appointmentList, String inputAppointmentID){
+
+        int index = -1;
+
+        for(int i = 0; i < appointmentList.size(); i++){
+            if(appointmentList.get(i).getAppointmentID().equals(inputAppointmentID)){
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
     public static void deletePatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
 
         Scanner scanner = new Scanner(System.in);
@@ -871,7 +886,7 @@ public class Receptionist extends Person{
                     System.out.println("NO ACTIVE APPOINTMENTS");
                     scanner.nextLine();
                 } else {
-                    showAppointments(appointmentList, false);
+                    showAppointments(appointmentList, false, false);
 
                     System.out.println("Press any key to continue...");
                     scanner.nextLine();
@@ -884,7 +899,7 @@ public class Receptionist extends Person{
                     System.out.println("NO PAST APPOINTMENTS");
                     scanner.nextLine();
                 } else {
-                    showAppointments(appointmentList, true);
+                    showAppointments(appointmentList, true, false);
 
                     System.out.println("Press any key to continue...");
                     scanner.nextLine();
@@ -903,7 +918,7 @@ public class Receptionist extends Person{
         scanner.close();
     }
 
-    public static void showAppointments(ArrayList<Appointment> appointmentList, boolean operation){
+    public static void showAppointments(ArrayList<Appointment> appointmentList, boolean isDone, boolean checkPayment){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -917,7 +932,7 @@ public class Receptionist extends Person{
             
         for(int i = 0; i < appointmentList.size(); i++){
     
-            if(appointmentList.get(i).getIsDone() == operation){                    
+            if((appointmentList.get(i).getIsDone() == isDone && checkPayment == false) || (checkPayment == true && appointmentList.get(i).getIsConsulted() == true && appointmentList.get(i).getGivenMedicine() == true && appointmentList.get(i).getIsDone() == false)){                    
                 System.out.printf("|%-13s|", appointmentList.get(i).getAppointmentID());
                 System.out.printf("%-25s|", appointmentList.get(i).getPatient().getName());
 
@@ -930,7 +945,7 @@ public class Receptionist extends Person{
                 System.out.printf("%-14s|", appointmentList.get(i).getGivenMedicine());
                 System.out.printf("%-7s|", appointmentList.get(i).getIsDone());
                 System.out.println();
-            } 
+            }
             
         }
     }
@@ -1183,6 +1198,68 @@ public class Receptionist extends Person{
         }
     }
 
-    
+    public static void createPayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        Scanner scanner = new Scanner(System.in);
+
+        showAppointments(appointmentList, false, true);
+
+        System.out.println("1. Generate Payment");
+        System.out.println("2. Back");
+        System.out.print(">> ");
+
+        int choice = 0;
+
+        try {
+            choice = scanner.nextInt();
+            scanner.nextLine();
+        } catch (Exception e) {
+            createPayment(patientList, doctorList, appointmentList);
+        }
+
+        switch(choice){
+            case 1:
+                generatePayment(patientList, doctorList, appointmentList);
+                break;
+            case 2:
+                receptionMenu(patientList, doctorList, appointmentList);
+                break;
+            default:
+                createPayment(patientList, doctorList, appointmentList);
+                break;
+        }
+        scanner.close();
+    }
+
+    public static void generatePayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
+
+        Scanner scanner = new Scanner(System.in);
+        String inputAppointmentID = "";
+
+        System.out.print("Enter appointmentID: ");
+        inputAppointmentID = scanner.nextLine();
+
+        int indexAppointment = searchAppointment(appointmentList, inputAppointmentID);
+
+        if(indexAppointment != -1){
+
+            //UPDATE APPOINTMENT
+            appointmentList.get(indexAppointment).setIsDone(true);
+            updateAppointmentDatabase(appointmentList);
+
+            //GENERATE BILL
+            
+
+        } else {
+            System.out.println("PATIENT NOT FOUND");
+            scanner.nextLine();
+            createPayment(patientList, doctorList, appointmentList);
+        }
+
+        scanner.close();
+    }
+
 
 }

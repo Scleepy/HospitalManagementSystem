@@ -1,18 +1,20 @@
 class Person {
-    String name;
-    String address;
-    String gender;
-    String phoneNumber;
-    String email;
+    private String name;
+    private String address;
+    private String gender;
+    private String phoneNumber;
+    private String email;
+    private String password;
 
     public Person(){};
 
-    public Person(String name, String address, String gender, String phoneNumber, String email) {
+    public Person(String name, String address, String gender, String phoneNumber, String email, String password) {
         this.name = name;
         this.address = address;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.password = password;
     }
 
     public String getName() {
@@ -55,5 +57,11 @@ class Person {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -7,8 +7,8 @@ class Doctor extends Person{
 
     public Doctor(){};
 
-    public Doctor(String name, String address, String gender, String phoneNumber, String email, String doctorID, String specialization, ArrayList<Patient> patient){
-        super(name, address, gender, phoneNumber, email);
+    public Doctor(String name, String address, String gender, String phoneNumber, String email, String password, String doctorID, String specialization, ArrayList<Patient> patient){
+        super(name, address, gender, phoneNumber, email, password);
         this.doctorID = doctorID;
         this.specialization = specialization;
         this.patientList = patient;

@@ -96,14 +96,14 @@ public class HospitalManagement {
 
                 ArrayList<Patient> doctorPatientList = new ArrayList<Patient>();
 
-                String[] patientArr = detail[7].split("#");
+                String[] patientArr = detail[8].split("#");
 
                 for(String patientID : patientArr){
                     
                     doctorPatientList.add(Patient.getPatient(patientList, patientID));
                 }
 
-                doctorList.add(new Doctor(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6], doctorPatientList));
+                doctorList.add(new Doctor(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6], detail[7], doctorPatientList));
             }
 
             br.close();
