@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Appointment {
 	private String appointmentID;
@@ -85,5 +86,18 @@ public class Appointment {
 		this.doctor = doctor;
 	}
 
+	public static Appointment getAppointment(ArrayList<Appointment> appointmentList, String appointmentID){
+
+        int index = -1;
+
+        for(int i = 0; i < appointmentList.size(); i++){
+            if(appointmentList.get(i).getAppointmentID().equals(appointmentID)){
+                index = i;
+                break;
+            }
+        }
+
+        return appointmentList.get(index);
+    }
     
 }

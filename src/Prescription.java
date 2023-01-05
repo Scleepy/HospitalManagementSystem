@@ -35,5 +35,19 @@ public class Prescription {
 		this.medicineList = medicineList;
 	}
 
+	public static Prescription getPrescription(ArrayList<Prescription> prescriptionList, String prescriptionID){
+
+        int index = -1;
+
+        for(int i = 0; i < prescriptionList.size(); i++){
+            if(prescriptionList.get(i).getPrescriptionID().equals(prescriptionID)){
+                index = i;
+                break;
+            }
+        }
+
+        return prescriptionList.get(index);
+    }
+
 	
 }

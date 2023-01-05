@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class Medicine {
     public String medicineID, medicineName, medicineDescription, medicineInstruction;
 	public int medicineQuantity, medicinePrice;
@@ -11,27 +12,41 @@ public class Medicine {
 		this.medicinePrice = medicinePrice;
 	}
 	
-	public String getmedicineID() {
+	public String getMedicineID() {
 		return medicineID;
 	}
 	
-	public String getmedicineName() {
+	public String getMedicineName() {
 		return medicineName;
 	}
 	
-	public int getmedicineQuantity() {
+	public int getMedicineQuantity() {
 		return medicineQuantity;
 	}
 	
-	public String getmedicineDescription() {
+	public String getMedicineDescription() {
 		return medicineDescription;
 	}
 	
-	public String getmedicineInstruction() {
+	public String getMedicineInstruction() {
 		return medicineInstruction;
 	}
 	
-	public int getmedicinePrice() {
+	public int getMedicinePrice() {
 		return medicinePrice;
 	}
+
+	public static Medicine getMedicine(ArrayList<Medicine> medicineList, String medicineID){
+
+        int index = -1;
+
+        for(int i = 0; i < medicineList.size(); i++){
+            if(medicineList.get(i).getMedicineID().equals(medicineID)){
+                index = i;
+                break;
+            }
+        }
+
+        return medicineList.get(index);
+    }
 }

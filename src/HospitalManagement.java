@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 public class HospitalManagement {
 
     public HospitalManagement(){};
@@ -22,11 +23,26 @@ public class HospitalManagement {
         //LOAD APPOINTMENT DATA
         ArrayList<Appointment> appointmentList = new ArrayList<>();
         loadAppointments(patientList, doctorList, appointmentList);
+
+        //LOAD PHARMACIST DATA
+        ArrayList<Pharmacist> pharmacistList = new ArrayList<>();
+        loadPharmacist(pharmacistList);
+
+        //LOAD MEDICINE DATA
+        ArrayList<Medicine> medicineList = new ArrayList<>();
+        loadMedicine(medicineList);
+
+        //LOAD PRESCRIPTION DATA
+        ArrayList<Prescription> prescriptionList = new ArrayList<>();
+        loadPrescription(prescriptionList, doctorList, medicineList);
+
+        //LOAD BILLING DATA
+        ArrayList<Billing> billingList = new ArrayList<>();
+        loadBilling(billingList, appointmentList, pharmacistList, prescriptionList);
         
         //LOAD OTHER DATA HERE
 
         //RECEPTIONIST MENU -> should be controlled in the login menu
-
         Receptionist.receptionMenu(patientList, doctorList, appointmentList);
     }
 
@@ -122,9 +138,120 @@ public class HospitalManagement {
         }
     }
 
-    //LOAD BILLING
-    //LOAD PHARMACIST
-    //LOAD PRECRIPTION
+    public static void loadPharmacist(ArrayList<Pharmacist> pharmacistList){
+        try{
+
+            BufferedReader br = new BufferedReader(new FileReader("./Database/PharmacistRecords.csv"));
+            
+            String line;
+
+            while((line = br.readLine()) != null){
+                String[] detail = line.split(",");
+
+                pharmacistList.add(new Pharmacist(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6]));
+            }
+
+            br.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("PharmacistRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
+    }
+
+    public static void loadMedicine(ArrayList<Medicine> medicineList){
+        try{
+
+            BufferedReader br = new BufferedReader(new FileReader("./Database/MedicineRecords.csv"));
+            
+            String line;
+
+            while((line = br.readLine()) != null){
+                String[] detail = line.split(",");
+
+                medicineList.add(new Medicine(detail[0], detail[1], Integer.parseInt(detail[2]), detail[3], detail[4], Integer.parseInt(detail[5])));
+
+            }
+
+            br.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("MedicineRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
+    }
+
+    public static void loadPrescription(ArrayList<Prescription> prescriptionList, ArrayList<Doctor> doctorList, ArrayList<Medicine> medicineList){
+        try{
+
+            BufferedReader br = new BufferedReader(new FileReader("./Database/PrescriptionRecords.csv"));
+            
+            String line;
+
+            while((line = br.readLine()) != null){
+                String[] detail = line.split(",");
+
+                ArrayList<Medicine> prescriptionMedicineList = new ArrayList<Medicine>();
+                String[] medicineArr = detail[2].split("#");
+
+                for(String medicineID : medicineArr){   
+                    prescriptionMedicineList.add(Medicine.getMedicine(medicineList, medicineID));
+                }
+
+                prescriptionList.add(new Prescription(detail[0], Doctor.getDoctor(doctorList, detail[1]), prescriptionMedicineList));
+            }
+
+            br.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("PrescriptionRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
+    }
+
+    public static void loadBilling(ArrayList<Billing> billingList, ArrayList<Appointment> appointmentList, ArrayList<Pharmacist> pharmacistList, ArrayList<Prescription> prescriptionList){
+        try{
+
+            BufferedReader br = new BufferedReader(new FileReader("./Database/BillingRecords.csv"));
+            
+            String line;
+
+            while((line = br.readLine()) != null){
+                String[] detail = line.split(",");
+
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse(detail[1], format);
+                
+                billingList.add(new Billing(detail[0], dateTime, Appointment.getAppointment(appointmentList, detail[2]), Pharmacist.getPharmacist(pharmacistList, detail[3])  , Prescription.getPrescription(prescriptionList, detail[4]), Integer.parseInt(detail[5])));
+            }
+
+            br.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("BillingRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
+    }
 
 
 
