@@ -49,7 +49,13 @@ public class HospitalManagement {
     public static void loadPatient(ArrayList<Patient> patientList){
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("./Database/PatientRecords.csv"));
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/PatientRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/PatientRecords.csv"));
+            }
             
             String line;
 
@@ -74,7 +80,13 @@ public class HospitalManagement {
     public static void loadDoctors(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList){
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("./Database/DoctorRecords.csv"));
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/DoctorRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/DoctorRecords.csv"));
+            }
             
             String line;
 
@@ -96,7 +108,7 @@ public class HospitalManagement {
 
         }catch (FileNotFoundException e){
             e.printStackTrace();
-            System.out.println("PatientRecords.csv not found, closing application...");
+            System.out.println("DoctorRecords.csv not found, closing application...");
             System.exit(0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,7 +120,13 @@ public class HospitalManagement {
     public static void loadAppointments(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("./Database/AppointmentRecords.csv"));
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/AppointmentRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/AppointmentRecords.csv"));
+            }
             
             String line;
 
@@ -129,7 +147,7 @@ public class HospitalManagement {
 
         }catch (FileNotFoundException e){
             e.printStackTrace();
-            System.out.println("PatientRecords.csv not found, closing application...");
+            System.out.println("AppointmentRecords.csv not found, closing application...");
             System.exit(0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,7 +159,13 @@ public class HospitalManagement {
     public static void loadPharmacist(ArrayList<Pharmacist> pharmacistList){
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("./Database/PharmacistRecords.csv"));
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/PharmacistRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/PharmacistRecords.csv"));
+            }
             
             String line;
 
@@ -167,7 +191,13 @@ public class HospitalManagement {
     public static void loadMedicine(ArrayList<Medicine> medicineList){
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("./Database/MedicineRecords.csv"));
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/MedicineRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/MedicineRecords.csv"));
+            }
             
             String line;
 
@@ -194,7 +224,13 @@ public class HospitalManagement {
     public static void loadPrescription(ArrayList<Prescription> prescriptionList, ArrayList<Doctor> doctorList, ArrayList<Medicine> medicineList){
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("./Database/PrescriptionRecords.csv"));
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/PrescriptionRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/PrescriptionRecords.csv"));
+            }
             
             String line;
 
@@ -227,7 +263,13 @@ public class HospitalManagement {
     public static void loadBilling(ArrayList<Billing> billingList, ArrayList<Appointment> appointmentList, ArrayList<Pharmacist> pharmacistList, ArrayList<Prescription> prescriptionList){
         try{
 
-            BufferedReader br = new BufferedReader(new FileReader("./Database/BillingRecords.csv"));
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/BillingRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/BillingRecords.csv"));
+            }
             
             String line;
 
@@ -252,7 +294,4 @@ public class HospitalManagement {
             System.exit(0);
         }
     }
-
-
-
 }

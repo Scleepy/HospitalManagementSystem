@@ -326,7 +326,14 @@ public class Receptionist extends Person{
             String writeString = String.format("%s,%s,%s,%s,%s,%s,%s", patientID, bloodType, name, address, gender, phoneNumber, email);
 
             try {
-                BufferedWriter bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",true));
+                BufferedWriter bw;
+
+                try {
+                    bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",true));
+                } catch (Exception e) {
+                    bw = new BufferedWriter(new FileWriter("src/Database/PatientRecords.csv",true));
+                }
+                
                 bw.write(writeString);
                 bw.newLine();
                 bw.close();
@@ -552,7 +559,14 @@ public class Receptionist extends Person{
     public static void updatePatientDatabase(ArrayList<Patient> patientList){
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv", false));
+            BufferedWriter bw;
+        
+            try {
+                bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",false));
+            } catch (Exception e) {
+                bw = new BufferedWriter(new FileWriter("src/Database/PatientRecords.csv",false));
+            }
+
             bw.write("");
 
             for(int i = 0; i < patientList.size(); i++){
@@ -568,7 +582,13 @@ public class Receptionist extends Person{
                 String writeString = String.format("%s,%s,%s,%s,%s,%s,%s", patientID, bloodType, name, address, gender, phoneNumber, email);
                 
                 try {
-                    bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",true));
+        
+                    try {
+                        bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",true));
+                    } catch (Exception e) {
+                        bw = new BufferedWriter(new FileWriter("src/Database/PatientRecords.csv",true));
+                    }
+
                     bw.write(writeString);
                     bw.newLine();
                     bw.close();
@@ -1061,8 +1081,6 @@ public class Receptionist extends Person{
                 String currentID = appointmentList.get(appointmentList.size() - 1).getAppointmentID().substring(2, 5);
                 int currentIDNumber = Integer.parseInt(currentID);
 
-                System.out.println(currentID);
-
                 if(appointmentList.size() < 10){
                     appointmentID = String.format("AP00%d", currentIDNumber + 1);
                 } else if (patientList.size() < 100){
@@ -1093,7 +1111,14 @@ public class Receptionist extends Person{
     public static void updateDoctorDatabase(ArrayList<Doctor> doctorList){
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv", false));
+            BufferedWriter bw;
+        
+            try {
+                bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",false));
+            } catch (Exception e) {
+                bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",false));
+            }
+
             bw.write("");
 
             for(int i = 0; i < doctorList.size(); i++){
@@ -1121,7 +1146,12 @@ public class Receptionist extends Person{
                 String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s", name, address, gender, phoneNumber, email, doctorID, specialization, doctorPatientListString);
                 
                 try {
-                    bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",true));
+                    try {
+                        bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",true));
+                    } catch (Exception e) {
+                        bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",true));
+                    }
+
                     bw.write(writeString);
                     bw.newLine();
                     bw.close();
@@ -1151,7 +1181,15 @@ public class Receptionist extends Person{
     public static void updateAppointmentDatabase(ArrayList<Appointment> appointmentList){
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("./Database/AppointmentRecords.csv", false));
+
+            BufferedWriter bw;
+        
+            try {
+                bw = new BufferedWriter(new FileWriter("./Database/AppointmentRecords.csv",false));
+            } catch (Exception e) {
+                bw = new BufferedWriter(new FileWriter("src/Database/AppointmentRecords.csv",false));
+            }
+
             bw.write("");
 
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
@@ -1171,7 +1209,12 @@ public class Receptionist extends Person{
                 String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s", appointmentID, formattedDate, emergency, isConsulted, givenMedicine, isDone, patientID, doctorID);
                 
                 try {
-                    bw = new BufferedWriter(new FileWriter("./Database/AppointmentRecords.csv",true));
+                    try {
+                        bw = new BufferedWriter(new FileWriter("./Database/AppointmentRecords.csv",true));
+                    } catch (Exception e) {
+                        bw = new BufferedWriter(new FileWriter("src/Database/AppointmentRecords.csv",true));
+                    }
+
                     bw.write(writeString);
                     bw.newLine();
                     bw.close();
