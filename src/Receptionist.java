@@ -65,6 +65,8 @@ public class Receptionist extends Person{
                 createPayment(patientList, doctorList, appointmentList, billingList, prescriptionList);
                 break;
             case 4:
+                System.out.println("Closing...");
+                System.exit(0);
                 break;
             default:
                 receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
@@ -457,48 +459,6 @@ public class Receptionist extends Person{
         scanner.close();
     }
 
-    public static int searchPatient(ArrayList<Patient> patientList, String inputPatientID){
-
-        int index = -1;
-
-        for(int i = 0; i < patientList.size(); i++){
-            if(patientList.get(i).getPatientID().equals(inputPatientID)){
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
-
-    public static int searchDoctor(ArrayList<Doctor> doctorList, String inputDoctorID){
-
-        int index = -1;
-
-        for(int i = 0; i < doctorList.size(); i++){
-            if(doctorList.get(i).getDoctorID().equals(inputDoctorID)){
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
-
-    public static int searchAppointment(ArrayList<Appointment> appointmentList, String inputAppointmentID){
-
-        int index = -1;
-
-        for(int i = 0; i < appointmentList.size(); i++){
-            if(appointmentList.get(i).getAppointmentID().equals(inputAppointmentID)){
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
-
     public static void deletePatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
         Scanner scanner = new Scanner(System.in);
@@ -509,7 +469,7 @@ public class Receptionist extends Person{
         System.out.print("Enter patientID: ");
         inputPatientID = scanner.nextLine();
 
-        int index = searchPatient(patientList, inputPatientID);
+        int index = Patient.searchPatient(patientList, inputPatientID);
 
         if(index != -1){
 
@@ -533,7 +493,7 @@ public class Receptionist extends Person{
 
                 patientList.remove(index);
 
-                updatePatientDatabase(patientList);
+                Patient.updatePatientDatabase(patientList);
 
                 System.out.println("Patient data deleted successfully!");
 
@@ -554,66 +514,7 @@ public class Receptionist extends Person{
 
     }
 
-    public static void updatePatientDatabase(ArrayList<Patient> patientList){
-
-        try {
-            BufferedWriter bw;
-        
-            try {
-                bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",false));
-            } catch (Exception e) {
-                bw = new BufferedWriter(new FileWriter("src/Database/PatientRecords.csv",false));
-            }
-
-            bw.write("");
-
-            for(int i = 0; i < patientList.size(); i++){
-
-                String patientID = patientList.get(i).getPatientID();
-                String bloodType = patientList.get(i).getBloodType();
-                String name = patientList.get(i).getName();
-                String address = patientList.get(i).getAddress();
-                String gender = patientList.get(i).getGender();
-                String phoneNumber = patientList.get(i).getPhoneNumber();
-                String email = patientList.get(i).getEmail();
-
-                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s", patientID, bloodType, name, address, gender, phoneNumber, email);
-                
-                try {
-        
-                    try {
-                        bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",true));
-                    } catch (Exception e) {
-                        bw = new BufferedWriter(new FileWriter("src/Database/PatientRecords.csv",true));
-                    }
-
-                    bw.write(writeString);
-                    bw.newLine();
-                    bw.close();
     
-                } catch (FileNotFoundException e){
-                    e.printStackTrace();
-                    System.out.println("PatientRecords.csv not found, closing application...");
-                    System.exit(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("IOException occurred, closing application...");
-                    System.exit(0);
-                }            
-            }
-
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.println("PatientRecords.csv not found, closing application...");
-            System.exit(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("IOException occurred, closing application...");
-            System.exit(0);
-        }
-
-        
-    }
 
     public static void updatePatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
 
@@ -625,7 +526,7 @@ public class Receptionist extends Person{
         System.out.print("Enter patientID: ");
         inputPatientID = scanner.nextLine();
 
-        int index = searchPatient(patientList, inputPatientID);
+        int index = Patient.searchPatient(patientList, inputPatientID);
 
         if(index != -1){
 
@@ -696,7 +597,7 @@ public class Receptionist extends Person{
                         } while(!valid);
 
                         patientList.get(index).setBloodType(bloodType);
-                        updatePatientDatabase(patientList);
+                        Patient.updatePatientDatabase(patientList);
                         deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
@@ -715,7 +616,7 @@ public class Receptionist extends Person{
                         } while(!valid);
 
                         patientList.get(index).setName(name);
-                        updatePatientDatabase(patientList);
+                        Patient.updatePatientDatabase(patientList);
                         deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
@@ -735,7 +636,7 @@ public class Receptionist extends Person{
                         } while(!valid);
 
                         patientList.get(index).setAddress(address);
-                        updatePatientDatabase(patientList);
+                        Patient.updatePatientDatabase(patientList);
                         deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
@@ -754,7 +655,7 @@ public class Receptionist extends Person{
                         }while(!valid);
 
                         patientList.get(index).setGender(gender);
-                        updatePatientDatabase(patientList);
+                        Patient.updatePatientDatabase(patientList);
                         deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
@@ -783,7 +684,7 @@ public class Receptionist extends Person{
                         }while(!valid);
 
                         patientList.get(index).setPhoneNumber(phoneNumber);
-                        updatePatientDatabase(patientList);
+                        Patient.updatePatientDatabase(patientList);
                         deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
@@ -813,7 +714,7 @@ public class Receptionist extends Person{
                         }while(!valid);
 
                         patientList.get(index).setEmail(email);
-                        updatePatientDatabase(patientList);
+                        Patient.updatePatientDatabase(patientList);
                         deleteUpdatePatientMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList);
 
                         break;
@@ -941,7 +842,6 @@ public class Receptionist extends Person{
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
-
         DateTimeFormatter stringFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
         System.out.println("============================================================APPOINTMENT LIST===========================================================================");
@@ -998,7 +898,7 @@ public class Receptionist extends Person{
         System.out.print("Enter patientID: ");
         inputPatientID = scanner.nextLine();
 
-        int indexPatient = searchPatient(patientList, inputPatientID);
+        int indexPatient = Patient.searchPatient(patientList, inputPatientID);
 
         if(indexPatient != -1){
 
@@ -1062,7 +962,7 @@ public class Receptionist extends Person{
                 System.out.print("Enter DoctorID: ");
                 inputDoctorID = scanner.nextLine();
 
-                int indexDoctor = searchDoctor(doctorList, inputDoctorID);
+                int indexDoctor = Doctor.searchDoctor(doctorList, inputDoctorID);
 
                 if(indexDoctor == -1 || doctorList.get(indexDoctor).patientList.size() == 5){
                     valid = false;
@@ -1071,7 +971,7 @@ public class Receptionist extends Person{
                 }
 
                 //UPDATE DOCTOR DATABASE
-                updateDoctorDatabase(doctorList);
+                Doctor.updateDoctorDatabase(doctorList);
 
                 //UPDATE APPOINTMENT ARRAYLIST
 
@@ -1092,7 +992,7 @@ public class Receptionist extends Person{
                 appointmentList.add(new Appointment(appointmentID, LocalDateTime.parse(dateTimeInput, format), emergency, false, false, false, patientList.get(indexPatient), doctorList.get(indexDoctor), Prescription.getPrescription(prescriptionList, "PR00X")));
 
                 //UPDATE APPOINTMENT DATABASE
-                updateAppointmentDatabase(appointmentList);
+                Appointment.updateAppointmentDatabase(appointmentList);
                 
 
             }while(!valid);
@@ -1106,139 +1006,6 @@ public class Receptionist extends Person{
         manageAppointment(patientList, doctorList, appointmentList, billingList, prescriptionList);
 
         scanner.close();
-    }
-
-    public static void updateDoctorDatabase(ArrayList<Doctor> doctorList){
-
-        try {
-            BufferedWriter bw;
-        
-            try {
-                bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",false));
-            } catch (Exception e) {
-                bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",false));
-            }
-
-            bw.write("");
-
-            for(int i = 0; i < doctorList.size(); i++){
-
-                String name = doctorList.get(i).getName();
-                String address = doctorList.get(i).getAddress();
-                String gender = doctorList.get(i).getGender();
-                String phoneNumber = doctorList.get(i).getPhoneNumber();
-                String email = doctorList.get(i).getEmail();
-
-                String doctorID = doctorList.get(i).getDoctorID();
-                String specialization = doctorList.get(i).getSpecialization();
-
-                ArrayList<Patient> doctorPatientList = doctorList.get(i).getPatientList();
-                String doctorPatientListString = "";
-                
-                for(int j = 0; j < doctorPatientList.size(); j++){
-                    doctorPatientListString = doctorPatientListString + doctorPatientList.get(j).getPatientID();
-
-                    if(j < doctorPatientList.size() - 1){
-                        doctorPatientListString = doctorPatientListString + "#";
-                    }
-                }                
-
-                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s", name, address, gender, phoneNumber, email, doctorID, specialization, doctorPatientListString);
-                
-                try {
-                    try {
-                        bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",true));
-                    } catch (Exception e) {
-                        bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",true));
-                    }
-
-                    bw.write(writeString);
-                    bw.newLine();
-                    bw.close();
-    
-                } catch (FileNotFoundException e){
-                    e.printStackTrace();
-                    System.out.println("DoctorRecords.csv not found, closing application...");
-                    System.exit(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("IOException occurred, closing application...");
-                    System.exit(0);
-                }            
-            }
-
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.println("DoctorRecords.csv not found, closing application...");
-            System.exit(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("IOException occurred, closing application...");
-            System.exit(0);
-        }
-    }
-
-    public static void updateAppointmentDatabase(ArrayList<Appointment> appointmentList){
-
-        try {
-
-            BufferedWriter bw;
-        
-            try {
-                bw = new BufferedWriter(new FileWriter("./Database/AppointmentRecords.csv",false));
-            } catch (Exception e) {
-                bw = new BufferedWriter(new FileWriter("src/Database/AppointmentRecords.csv",false));
-            }
-
-            bw.write("");
-
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
-
-            for(int i = 0; i < appointmentList.size(); i++){
-
-                String appointmentID = appointmentList.get(i).getAppointmentID();
-                String formattedDate = appointmentList.get(i).getDateTime().format(format);
-                String emergency = String.valueOf(appointmentList.get(i).getEmergency());
-                String isConsulted = String.valueOf(appointmentList.get(i).getIsConsulted());
-                String givenMedicine = String.valueOf(appointmentList.get(i).getGivenMedicine());
-                String isDone = String.valueOf(appointmentList.get(i).getIsDone());
-                String patientID = appointmentList.get(i).getPatient().getPatientID();
-                String doctorID = appointmentList.get(i).getDoctor().getDoctorID();
-                
-
-                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s", appointmentID, formattedDate, emergency, isConsulted, givenMedicine, isDone, patientID, doctorID);
-                
-                try {
-                    try {
-                        bw = new BufferedWriter(new FileWriter("./Database/AppointmentRecords.csv",true));
-                    } catch (Exception e) {
-                        bw = new BufferedWriter(new FileWriter("src/Database/AppointmentRecords.csv",true));
-                    }
-
-                    bw.write(writeString);
-                    bw.newLine();
-                    bw.close();
-    
-                } catch (FileNotFoundException e){
-                    e.printStackTrace();
-                    System.out.println("AppointmentRecords.csv not found, closing application...");
-                    System.exit(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("IOException occurred, closing application...");
-                    System.exit(0);
-                }            
-            }
-
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.println("AppointmentRecords.csv not found, closing application...");
-            System.exit(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("IOException occurred, closing application...");
-            System.exit(0);
-        }
     }
 
     public static void createPayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
@@ -1284,13 +1051,13 @@ public class Receptionist extends Person{
         System.out.print("Enter appointmentID: ");
         inputAppointmentID = scanner.nextLine();
 
-        int indexAppointment = searchAppointment(appointmentList, inputAppointmentID);
+        int indexAppointment = Appointment.searchAppointment(appointmentList, inputAppointmentID);
 
         if(indexAppointment != -1){
 
             //UPDATE APPOINTMENT
-            // appointmentList.get(indexAppointment).setIsDone(true);
-            // updateAppointmentDatabase(appointmentList);
+            appointmentList.get(indexAppointment).setIsDone(true);
+            Appointment.updateAppointmentDatabase(appointmentList);
 
             //GENERATE BILL
             String billingID = "";
@@ -1306,7 +1073,9 @@ public class Receptionist extends Person{
                 billingID = String.format("BL%d", currentIDNumber + 1);
             }
 
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
             LocalDateTime dateTime = LocalDateTime.now();
+            String formattedDate = dateTime.format(format);
             
             Appointment appointment = appointmentList.get(indexAppointment);
 
@@ -1327,8 +1096,39 @@ public class Receptionist extends Person{
             billingList.add(billing);
 
             //UPDATE BILLING DATABASE
-            //PRINT BILL
+            Billing.updateBillingDatabase(billingList);
             
+            //PRINT BILL
+            System.out.println("================================================Billing Info===========================================");
+            System.out.println("|BillingID|Patient Name             |Date & Time Generated    |Doctor Name              |AppointmentID|");
+            System.out.println("=======================================================================================================");
+            System.out.printf("|%-9s|", billingID);
+            System.out.printf("%-25s|", appointment.getPatient().getName());
+            System.out.printf("%-25s|", formattedDate);
+            System.out.printf("%-25s|", appointment.getDoctor().getName());
+            System.out.printf("%-13s|\n", appointment.getAppointmentID());
+            System.out.println("=======================================================================================================\n");
+
+            System.out.println("==========================Prescription Info=====================");
+            System.out.println("|MedicineID|Medicine Name          |Quantity    |Medicine Price|");
+            System.out.println("================================================================");
+            
+            for(int i = 0; i < medicineList.size(); i++){
+                System.out.printf("|%-10s|", medicineList.get(i).getMedicineID());
+                System.out.printf("%-23s|", medicineList.get(i).getMedicineName());
+                System.out.printf("%-12d|", medicineList.get(i).getMedicineQuantity());
+                System.out.printf("%-14d|", medicineList.get(i).getMedicinePrice());
+            }
+
+            System.out.println("\n================================================================\n");
+            System.out.printf("Doctor Fee: Rp.%d\n", doctorFee);
+            System.out.printf("Medicine Fee: Rp.%d\n", medicineFee);
+            System.out.printf("Total Bill: Rp.%d\n", totalBill);
+
+
+            System.out.println("\nPress any key to continue...");
+            scanner.nextLine();
+            receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
 
         } else {
             System.out.println("PATIENT NOT FOUND");

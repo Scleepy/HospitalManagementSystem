@@ -3,5 +3,6 @@ AP002,03 October 2020 11:00,false,false,false,false,PA003,DC002,PR00X
 AP003,16 February 2019 16:00,false,false,false,false,PA002,DC002,PR00X
 AP004,30 March 2022 14:00,false,true,true,true,PA002,DC002,PR001
 AP005,23 June 2022 12:00,true,true,true,true,PA001,DC001,PR002
-AP006,12 May 2023 11:10,false,true,true,false,PA003,DC001,PR003
+AP006,12 May 2023 11:10,false,true,true,true,PA003,DC001,PR003
 AP007,12 May 2023 11:33,false,false,false,false,PA001,DC001,PR00X
+AP008,06 January 2023 14:00,false,false,false,false,PA004,DC001,PR00X

@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 public class Medicine {
     public String medicineID, medicineName, medicineDescription, medicineInstruction;
@@ -48,5 +52,38 @@ public class Medicine {
         }
 
         return medicineList.get(index);
+    }
+
+	public static void loadMedicine(ArrayList<Medicine> medicineList){
+        try{
+
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/MedicineRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/MedicineRecords.csv"));
+            }
+            
+            String line;
+
+            while((line = br.readLine()) != null){
+                String[] detail = line.split(",");
+
+                medicineList.add(new Medicine(detail[0], detail[1], Integer.parseInt(detail[2]), detail[3], detail[4], Integer.parseInt(detail[5])));
+
+            }
+
+            br.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("MedicineRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
     }
 }
