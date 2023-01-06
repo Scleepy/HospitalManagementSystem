@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -22,6 +24,38 @@ public class Receptionist extends Person{
 
     public void setRecID(String recID) {
         this.recID = recID;
+    }
+
+    public static void loadReceptionist(ArrayList<Receptionist> receptionistList){
+        try{
+
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/ReceptionistRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/ReceptionistRecords.csv"));
+            }
+            
+            String line;
+
+            while((line = br.readLine()) != null){
+                String[] detail = line.split(",");
+
+                receptionistList.add(new Receptionist(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6]));
+            }
+
+            br.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("ReceptionistRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
     }
 
     public static void receptionMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
