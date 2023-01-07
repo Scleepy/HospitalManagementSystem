@@ -126,11 +126,12 @@ public class Admin extends Person{
                 break;
 
             }
+
     }
     
     public static void addDoctor(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
-        String name ="", address = "", gender = "", phoneNumber = "", email = "", specialization = "";
+        String name ="", address = "", gender = "", phoneNumber = "", email = "", specialization = "", password = "";
         int DocFee = 0;
         // name, address, gender, phonenumber, email, specialization, doctorfee
         Boolean valid = true;
@@ -225,6 +226,23 @@ public class Admin extends Person{
         }while(!valid);
 
         
+        // doctor password
+        do{
+            valid = true;
+
+            System.out.print("Input password: ");
+            password = s.nextLine();
+
+            if(password.length() < 8){
+                System.out.println("Password length must be more than 7 characters");
+                valid = false;
+            }
+
+
+        } while(!valid);
+
+
+
         // doctor email
         do{ 
 
@@ -272,6 +290,7 @@ public class Admin extends Person{
         System.out.println("Address: " + address);
         System.out.println("Gender: " + gender);
         System.out.println("Phone Number: " + phoneNumber);
+        System.out.println("Password: " + password);
         System.out.println("Email: " + email);
         System.out.println("Fee per Month: " + DocFee);
 
@@ -308,7 +327,7 @@ public class Admin extends Person{
             addDoctor(patientList, doctorList, appointmentList, billingList, prescriptionList);
         } else {
 
-            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, patientID, specialization, patientList, DocFee));
+            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, password, doctorID, specialization, patientList, DocFee));
 
             String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%d", doctorID, specialization, name, address, gender, phoneNumber, email, DocFee);
 
