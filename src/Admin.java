@@ -96,21 +96,34 @@ public class Admin extends Person{
         switch(option){
             // Option 1 Manage Doctor
             case 1:
-                printManageDoctor();
-                int optionDoc = 0;
-                optionDoc = s.nextInt();
-
-                while (optionDoc < 1 || optionDoc > 3){
-                    printManageDoctor();
-                    optionDoc = s.nextInt();
-                }
-
-                switch(optionDoc){
-                    // Option 1 Add Doctor
-                    case 1:
-
-                }
-
+                manageDoctor(patientList, doctorList, appointmentList, billingList, prescriptionList);
+                break;
         }
+    }
+    
+    public static void manageDoctor(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
+    ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
+        printManageDoctor();
+        int optionDoc = 0;
+        optionDoc = s.nextInt();
+
+        while (optionDoc < 1 || optionDoc > 3){
+              printManageDoctor();
+              optionDoc = s.nextInt();
+            }
+
+        switch(optionDoc){
+          // Option 1 Add Doctor
+            case 1:
+                addDoctor(patientList, doctorList, appointmentList, billingList, prescriptionList);
+                break;
+
+            }
+    }
+    
+    public static void addDoctor(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
+    ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
+        String name ="", address = "", gender = "", phoneNumber = "", email = "";
+        
     }
 }
