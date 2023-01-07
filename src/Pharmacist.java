@@ -65,5 +65,57 @@ public class Pharmacist extends Person{
             System.exit(0);
         }
     }
+    
+    public static void pharmacistMenu(ArrayList<Appointment> appoinmentList, boolean operation) {
+		
+		//SHOW PATIENT
+		System.out.println("Pharmacist Menu");
+		System.out.println("===============");
+		System.out.println("Patient List");
+		
+		if(isConsulted == true && givenMedicine == false && isDone == false) {
+	        System.out.println("|PatientID|PatientName|DoctorID|AppointmentID");
+	        for(int i=0; i<patientList.size(); i++){    
+	        	System.out.printf("|%s|", appoinmentList.get(i).getPatient().getpatientID());
+	            System.out.printf("%s|", appoinmentList.get(i).getPatient().getName());
+	            System.out.printf("%s|", appoinmentList.get(i).getDoctorID());
+	            System.out.printf("%s|", appoinmentList.get(i).getAppoinmentID());
+	            System.out.printf("%s|", appoinmentList.get(i).getPrescription().getprescriptionID());
+	        } 
+		}
+		
+		else {
+			System.out.println("No Data");
+		}
+		
+		//SELECT PATIENT
+		System.out.print("Enter the PatientID: ");
+		
+		int selection;
+		selection = scanner.nextLine();
+		scanner.nextLine();
+		
+		if (selection.length() < 5) {
+			System.out.println("Invalid selection");
+		}
+		
+		else {
+			for(int i=0; i<appointmentList.size(); i++) {
+				if(appointmentList.get(i).getID() == selection) {
+					System.out.println("Medicine List");
+					System.out.printf("Medicine ID: %s\n", appoinmentList.get(i).getMedicine().getmedicineID());
+					System.out.printf("Medicine Name: %s\n", appoinmentList.get(i).getMedicine().getmedicineName());
+					System.out.printf("Medicine Quantity: %d\n", appoinmentList.get(i).getMedicine().getmedicineQuantity());
+					System.out.printf("Medicine Description: %s\n", appoinmentList.get(i).getMedicine().getmedicineDescription());
+					System.out.printf("Medicine Intruction: %s\n", appoinmentList.get(i).getMedicine().getmedicineIntruction());
+					System.out.printf("Medicine Price: %d\n", appoinmentList.get(i).getMedicine().getmedicinePrice());
+				}
 
+			}
+		
+		}
+	    
+		givenMedicine = True;      
+	}
+   
 }
