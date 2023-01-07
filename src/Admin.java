@@ -26,9 +26,9 @@ public class Admin extends Person{
             BufferedReader br;
 
             try {
-                br = new BufferedReader(new FileReader("./Database/ReceptionistRecords.csv"));
+                br = new BufferedReader(new FileReader("./Database/AdminRecords.csv"));
             } catch (Exception e) {
-                br = new BufferedReader(new FileReader("src/Database/ReceptionistRecords.csv"));
+                br = new BufferedReader(new FileReader("src/Database/AdminRecords.csv"));
             }
             
             String line;
@@ -43,7 +43,7 @@ public class Admin extends Person{
 
         }catch (FileNotFoundException e){
             e.printStackTrace();
-            System.out.println("ReceptionistRecords.csv not found, closing application...");
+            System.out.println("AdminRecords.csv not found, closing application...");
             System.exit(0);
         } catch (IOException e) {
             e.printStackTrace();
