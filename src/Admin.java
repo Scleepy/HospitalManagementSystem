@@ -268,7 +268,7 @@ public class Admin extends Person{
         } while (!valid);
         
         System.out.println("Name: "  + name);
-        System.out.println("Specialization " + specialization);
+        System.out.println("Specialization: " + specialization);
         System.out.println("Address: " + address);
         System.out.println("Gender: " + gender);
         System.out.println("Phone Number: " + phoneNumber);
@@ -308,7 +308,7 @@ public class Admin extends Person{
             addDoctor(patientList, doctorList, appointmentList, billingList, prescriptionList);
         } else {
 
-            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, patientID, specialization));
+            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, patientID, specialization, patientList, DocFee));
 
             String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%d", doctorID, specialization, name, address, gender, phoneNumber, email, DocFee);
 
