@@ -101,7 +101,7 @@ public class Pharmacist extends Person{
 		
 		else {
 			for(int i=0; i<appointmentList.size(); i++) {
-				if(appointmentList.get(i).getID() == selection) {
+				if(appointmentList.get(i).getPatient().getpatientID() == selection) {
 					System.out.println("Medicine List");
 					System.out.printf("Medicine ID: %s\n", appoinmentList.get(i).getMedicine().getmedicineID());
 					System.out.printf("Medicine Name: %s\n", appoinmentList.get(i).getMedicine().getmedicineName());
