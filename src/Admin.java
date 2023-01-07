@@ -1,8 +1,12 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Admin extends Person{
     String adminID;
@@ -104,6 +108,9 @@ public class Admin extends Person{
     public static void manageDoctor(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList){
         printManageDoctor();
+
+        Scanner s = new Scanner(System.in);
+
         int optionDoc = 0;
         optionDoc = s.nextInt();
 
@@ -261,7 +268,7 @@ public class Admin extends Person{
         } while (!valid);
         
         System.out.println("Name: "  + name);
-        System.out.println("Specialization " + Specialization);
+        System.out.println("Specialization " + specialization);
         System.out.println("Address: " + address);
         System.out.println("Gender: " + gender);
         System.out.println("Phone Number: " + phoneNumber);
