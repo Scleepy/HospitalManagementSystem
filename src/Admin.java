@@ -51,5 +51,34 @@ public class Admin extends Person{
             System.exit(0);
         }
     }
+    
+    public static void printManage(){
+        System.out.println("1. Manage Doctor");
+        System.out.println("2. Manage Nurse");
+        System.out.println("3. Manage Reception");
+        System.out.print(">> ");
+    }
 
+    public static void printManageDoctor(){
+        System.out.println("1. Add Doctor");
+        System.out.println("2. Remove Doctor");
+        System.out.println("3. Show Doctors");
+        System.out.print(">> ");
+    }
+
+    public static void printManageNurse(){
+        System.out.println("1. Add Nurse");
+        System.out.println("2. Remove Nurse");
+        System.out.println("3. Show Nurses");
+        System.out.print(">> ");
+    }
+
+    public static void printManageRec(){
+        System.out.println("1. Add Receptionist");
+        System.out.println("2. Remove Receptionist");
+        System.out.println("3. Show Receptionists");
+        System.out.print(">> ");
+    }
+    
+    
 }
