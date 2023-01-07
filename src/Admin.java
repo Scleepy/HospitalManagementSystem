@@ -80,5 +80,37 @@ public class Admin extends Person{
         System.out.print(">> ");
     }
     
-    
+    public static void AdminMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
+    ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList)
+    {
+        printManage();
+        Scanner s = new Scanner(System.in);
+        int option = 0;
+        option = s.nextInt();
+
+        while (option < 1 || option > 3){
+            printManage();
+            option = s.nextInt();
+        }
+
+        switch(option){
+            // Option 1 Manage Doctor
+            case 1:
+                printManageDoctor();
+                int optionDoc = 0;
+                optionDoc = s.nextInt();
+
+                while (optionDoc < 1 || optionDoc > 3){
+                    printManageDoctor();
+                    optionDoc = s.nextInt();
+                }
+
+                switch(optionDoc){
+                    // Option 1 Add Doctor
+                    case 1:
+
+                }
+
+        }
+    }
 }
