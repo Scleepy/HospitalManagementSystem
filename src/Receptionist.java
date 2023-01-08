@@ -25,6 +25,34 @@ public class Receptionist extends Person{
     public void setRecID(String recID) {
         this.recID = recID;
     }
+    
+    public static Receptionist getReceptionist(ArrayList<Receptionist> receptionistList, String recID){
+
+        int index = -1;
+
+        for(int i = 0; i < receptionistList.size(); i++){
+            if(receptionistList.get(i).getRecID().equals(recID)){
+                index = i;
+                break;
+            }
+        }
+
+        return receptionistList.get(index);
+    }
+
+    public static int searchReceptionist(ArrayList<Receptionist> receptionistList, String inputRecID){
+
+        int index = -1;
+
+        for(int i = 0; i < receptionistList.size(); i++){
+            if(receptionistList.get(i).getRecID().equals(inputRecID)){
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
 
     public static void loadReceptionist(ArrayList<Receptionist> receptionistList){
         try{
@@ -48,6 +76,65 @@ public class Receptionist extends Person{
             br.close();
 
         }catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.out.println("ReceptionistRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
+    }
+    
+    public static void updateReceptionistDatabase(ArrayList<Receptionist> receptionistList){
+
+        try {
+            BufferedWriter bw;
+        
+            try {
+                bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",false));
+            } catch (Exception e) {
+                bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",false));
+            }
+
+            bw.write("");
+
+            for(int i = 0; i < receptionistList.size(); i++){
+
+                String name = receptionistList.get(i).getName();
+                String address = receptionistList.get(i).getAddress();
+                String gender = receptionistList.get(i).getGender();
+                String phoneNumber = receptionistList.get(i).getPhoneNumber();
+                String email = receptionistList.get(i).getEmail();
+                String password = receptionistList.get(i).getPassword();
+
+                String recID = receptionistList.get(i).getRecID();
+
+                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s", name, address, gender, phoneNumber, email, password, recID);
+                
+                try {
+                    try {
+                        bw = new BufferedWriter(new FileWriter("./Database/ReceptionistRecords.csv",true));
+                    } catch (Exception e) {
+                        bw = new BufferedWriter(new FileWriter("src/Database/ReceptionistRecords.csv",true));
+                    }
+
+                    bw.write(writeString);
+                    bw.newLine();
+                    bw.close();
+    
+                } catch (FileNotFoundException e){
+                    e.printStackTrace();
+                    System.out.println("ReceptionistRecords.csv not found, closing application...");
+                    System.exit(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("IOException occurred, closing application...");
+                    System.exit(0);
+                }            
+            }
+
+        } catch (FileNotFoundException e){
             e.printStackTrace();
             System.out.println("ReceptionistRecords.csv not found, closing application...");
             System.exit(0);
