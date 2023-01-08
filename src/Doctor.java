@@ -195,3 +195,140 @@ class Doctor extends Person{
 
 
 }
+
+    public static void doctorMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList) throws InterruptedException {
+    	Scanner input = new Scanner(System.in);
+    	int choice;
+    
+	    do {
+	    	System.out.println("1. Show Patient's data");
+	    	System.out.println("2. Log out");
+	    	System.out.print(">> ");
+	    	
+	    	choice = input.nextInt();
+	    	input.nextLine();
+	    	
+	    	switch(choice) 
+	    	{    		
+	    		case 1:
+	    			if (patientList.size() == 0) {
+	    				System.out.println("There is no Patient");
+	    			}
+	    			else {
+	    				System.out.println("|PatientID|BloodType|Name                  |Gender|");
+		    			for (int i = 0 ; i < patientList.size() ; i++) {
+		    				System.out.printf("|%-9s|", patientList.get(i).getPatientID());
+		                    System.out.printf("%-9s|", patientList.get(i).getBloodType());
+		                    System.out.printf("%-22s|", patientList.get(i).getName());
+		                    System.out.printf("%-6s|", patientList.get(i).getGender());
+		                    System.out.println();
+		    			}
+		    		
+		    			System.out.println("Enter Patient ID");
+		    			System.out.print(">> ");
+		    			String choice2 = input.nextLine();
+		    			
+		    			int index = Patient.searchPatient(patientList, choice2);
+		    			
+		    			if(index != -1) {
+		    				System.out.print("Patient ID found");
+		    				
+		    				for(int i = 0 ; i < appointmentList.size() ; i++) {
+		    					if(appointmentList.get(i).getIsConsulted() != true) {
+									appointmentList.get(i).setIsConsulted(true);
+									
+									System.out.println("Checking the disease.....");
+				    				TimeUnit.SECONDS.sleep(3);
+				    				System.out.println("Disease Found!");
+				    				TimeUnit.SECONDS.sleep(1);
+				    				
+				    				Random rand = new Random();
+				    		    	String[] arrayDisease = {"Flu", "Influenza", "Sakit Tenggorokan", "Demam", "Cold"};
+				    		    	String disease = arrayDisease[rand.nextInt(arrayDisease.length)];
+				    		    	
+				    		    	System.out.println("Patient ID " + patientList.get(index).getPatientID() + "has " + disease);
+				    		    	
+				    		    	// Finding the doctor
+				    		    	
+				    		    	for(int j = 0 ; j < doctorList.size() ; j++) {
+				    		    		System.out.println("Finding the doctor...");
+					    				TimeUnit.SECONDS.sleep(3);
+					    				
+				    		    		if(doctorList.get(j).getPatientList().size() != 5) {
+				    		    			System.out.println("FOUND!");
+				    		    			
+				    		    			if(doctorList.get(j).getSpecialization().equals("Umum") && !doctorList.get(j).getPatientList().equals(choice2)) {
+				    		    				System.out.println("Patient " + choice2 + "'s doctor is " + doctorList.get(j).getDoctorID() + "(Umum)");
+					    		    			doctorList.get(j).getPatientList().add(Patient.getPatient(patientList, choice2));
+					    		    			updateDoctorDatabase(doctorList);
+					    		    		}
+				    		    			else if(!doctorList.get(j).getSpecialization().equals("Umum") && !doctorList.get(j).getPatientList().equals(choice2)) {
+				    		    				System.out.println("Patient " + choice2 + "'s doctor is " + doctorList.get(j).getDoctorID() + "(" + doctorList.get(j).getSpecialization() + ")");
+				    		    				doctorList.get(j).getPatientList().add(Patient.getPatient(patientList, choice2));
+					    		    			updateDoctorDatabase(doctorList);
+				    		    			}
+					    		    		else {
+					    		    			System.out.println("Doctor " + doctorList.get(j).getDoctorID() + "already have patient " + choice2);
+					    		    		}
+				    		    			
+				    		    			// Give medicine and prescription
+				    		    			for (int k = 0 ; k < appointmentList.size() ; k++) {
+				    		    				if(appointmentList.get(k).getPatient().equals(choice2)) {
+				    		    					if((disease.equals("Flu") || disease.equals("Sakit Tenggorokan")) && appointmentList.get(k).getPrescription().equals(null)) {
+				    		    						appointmentList.get(k).getPrescription().setPrescriptionID("PR002");
+				    		    						appointmentList.get(k).setGivenMedicine(true);
+				    		    						appointmentList.get(k).setIsDone(true);
+				    		    						System.out.println("Treatment is complete");
+						    		    			}
+						    		    			else if(disease.equals("Demam") && appointmentList.get(k).getPrescription().equals(null)) {
+						    		    				appointmentList.get(k).getPrescription().setPrescriptionID("PR003");
+						    		    				appointmentList.get(k).setGivenMedicine(true);
+						    		    				appointmentList.get(k).setIsDone(true);
+						    		    				System.out.println("Treatment is complete");
+						    		    			}
+						    		    			else if(disease.equals("Influenza") && appointmentList.get(k).getPrescription().equals(null)) {
+						    		    				appointmentList.get(k).getPrescription().setPrescriptionID("PR001");
+						    		    				appointmentList.get(k).setGivenMedicine(true);
+						    		    				appointmentList.get(k).setIsDone(true);
+						    		    				System.out.println("Treatment is complete");
+						    		    			}
+						    		    			else {
+						    		    				System.out.println("No medicine will be given");
+						    		    				appointmentList.get(k).setIsDone(true);
+						    		    				TimeUnit.SECONDS.sleep(3);
+						    		    				System.out.println("Treatment is complete");
+						    		    			}
+				    		    				}
+				    		    			}
+				    		    		}
+				    		    		else {
+				    		    			System.out.println("Doctor " + doctorList.get(j).getDoctorID() + "already have 5 patients");
+				    		    		}
+				    		    	}
+											
+				    			}
+		    					else {
+		    						System.out.println("Already Consulted");
+		    						TimeUnit.SECONDS.sleep(3);
+		    						
+		    						appointmentList.get(i).setIsDone(true);
+		    						System.out.println("Treatment is done");
+		    					}
+		    				}
+		    				
+		    				
+
+		    			}
+		    			else {
+		    				System.out.println("Patient ID not found!");
+		    			}
+	    			}
+	    			
+	    			break;
+	    	}
+	    	
+	    } while (choice != 2);
+	    System.out.println("Logged out");
+    }
+    
+}
