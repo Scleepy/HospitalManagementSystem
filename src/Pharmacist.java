@@ -114,8 +114,7 @@ public class Pharmacist extends Person{
 			}
 		
 		}
-	    
-		givenMedicine = True;      
+	    	appointmentList.get(i).setgivenMedicine(true);  
 	}
    
 }
