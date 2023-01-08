@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -57,6 +59,17 @@ public class Admin extends Person{
     }
     
     public static void printManage(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss");
+
+        String currentDateTime = dateTime.format(dateTimeFormat);
+
+        System.out.println("Admin Menu");
+        System.out.println(currentDateTime);
+
         System.out.println("1. Manage Doctor");
         System.out.println("2. Manage Reception");
         System.out.println("3. Logout");
@@ -64,6 +77,10 @@ public class Admin extends Person{
     }
 
     public static void printManageDoctor(){
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         System.out.println("1. Add Doctor");
         System.out.println("2. Remove Doctor");
         System.out.println("3. Update Doctor");
@@ -73,6 +90,9 @@ public class Admin extends Person{
     }
 
     public static void printManageRec(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         System.out.println("1. Add Receptionist");
         System.out.println("2. Remove Receptionist");
         System.out.println("3. Update Receptionist");
@@ -84,6 +104,7 @@ public class Admin extends Person{
     public static void AdminMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Receptionist> receptionistList)
     {
+
         printManage();
         Scanner s = new Scanner(System.in);
         int option = 0;
@@ -120,6 +141,9 @@ public class Admin extends Person{
     
     public static void manageDoctor(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Receptionist> receptionistList){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         printManageDoctor();
 
         Scanner s = new Scanner(System.in);
@@ -334,13 +358,13 @@ public class Admin extends Person{
         // doctor fee
         do{
             valid = true;
-            
+
             System.out.print("Input Doctor Fee: ");
-            try{
-                DocFee = s.nextInt();
-                valid = true;
-            } catch (Exception e){
-                System.out.println("Enter only integer value..." + e);
+            DocFee = s.nextInt();
+            s.nextLine();
+            
+            if(DocFee < 1000000) {
+                System.out.println("Doctor Fee must be above 1 000 000");
                 valid = false;
             }
             
@@ -885,6 +909,7 @@ public class Admin extends Person{
             System.out.printf("%-18s|", doctorList.get(i).getPassword());
             System.out.printf("%-30s|", doctorList.get(i).getEmail());
             System.out.printf("%-10d|", doctorList.get(i).getDoctorFee());
+            System.out.println();
         }
     
     }
@@ -1531,6 +1556,7 @@ public class Admin extends Person{
             System.out.printf("%-13s|", receptionistList.get(i).getPhoneNumber());
             System.out.printf("%-30s|", receptionistList.get(i).getEmail());
             System.out.printf("%-18s|", receptionistList.get(i).getPassword());
+            System.out.println();
         }
     
     }
