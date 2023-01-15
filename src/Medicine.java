@@ -54,6 +54,20 @@ public class Medicine {
         return medicineList.get(index);
     }
 
+    public static int searchMedicine(ArrayList<Medicine> medicineList, String medicineID){
+
+        int index = -1;
+
+        for(int i = 0; i < medicineList.size(); i++){
+            if(medicineList.get(i).getMedicineID().equals(medicineID)){
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
 	public static void loadMedicine(ArrayList<Medicine> medicineList){
         try{
 

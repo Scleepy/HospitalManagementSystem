@@ -186,8 +186,7 @@ public class Receptionist extends Person{
                 createPayment(patientList, doctorList, appointmentList, billingList, prescriptionList, diseaseList);
                 break;
             case 4:
-                System.out.println("Closing...");
-                System.exit(0);
+                HospitalManagement.logout();
                 break;
             default:
                 receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, diseaseList);
@@ -948,8 +947,7 @@ public class Receptionist extends Person{
         System.out.println("=======================================================================================================================================================");
             
         for(int i = 0; i < appointmentList.size(); i++){
-    
-            if((appointmentList.get(i).getIsDone() == isDone && checkPayment == false) || (checkPayment == true && appointmentList.get(i).getIsConsulted() == true && appointmentList.get(i).getGivenMedicine() == true && appointmentList.get(i).getIsDone() == false)){                    
+            if((appointmentList.get(i).getIsDone() == isDone && checkPayment == false && !appointmentList.get(i).getAppointmentID().equals("AP00X")) || (checkPayment == true && appointmentList.get(i).getIsConsulted() == true && appointmentList.get(i).getGivenMedicine() == true && appointmentList.get(i).getIsDone() == false && !appointmentList.get(i).getAppointmentID().equals("AP00X"))){                    
                 System.out.printf("|%-13s|", appointmentList.get(i).getAppointmentID());
                 System.out.printf("%-25s|", appointmentList.get(i).getPatient().getName());
 
@@ -976,17 +974,17 @@ public class Receptionist extends Person{
 
         for(int i = 0; i < doctorList.size(); i++){
 
-            int patientSize = doctorList.get(i).getPatientList().size();
+            int appointmentSize = doctorList.get(i).getAppointmentList().size();
 
-            if(doctorList.get(i).getPatientList().get(0).getPatientID().equals("PA00X")){
-                patientSize -= 1;
+            if(doctorList.get(i).getAppointmentList().get(0).getAppointmentID().equals("AP00X")){
+                appointmentSize -= 1;
             }
 
                 
             System.out.printf("|%-9s|", doctorList.get(i).getDoctorID());
             System.out.printf("%-21s|", doctorList.get(i).getName());
             System.out.printf("%-24s|", doctorList.get(i).getSpecialization());
-            System.out.printf("%d/%-12d|", patientSize, 5);
+            System.out.printf("%d/%-12d|", appointmentSize, 5);
             System.out.println();
         }
     }
@@ -1072,21 +1070,16 @@ public class Receptionist extends Person{
 
                 indexDoctor = Doctor.searchDoctor(doctorList, inputDoctorID);
 
-                if(indexDoctor == -1 || doctorList.get(indexDoctor).patientList.size() == 5){
+                if(indexDoctor == -1 || doctorList.get(indexDoctor).getAppointmentList().size() == 5){
                     valid = false;
                 } else {
 
-                    if(doctorList.get(indexDoctor).getPatientList().get(0).getPatientID().equals("PA00X")){
-                        doctorList.get(indexDoctor).patientList.remove(0);
+                    if(doctorList.get(indexDoctor).getAppointmentList().get(0).getAppointmentID().equals("AP00X")){
+                        doctorList.get(indexDoctor).getAppointmentList().remove(0);
                     }
-
-                    doctorList.get(indexDoctor).patientList.add(Patient.getPatient(patientList, inputPatientID));
                 }
 
             }while(!valid);
-
-            //UPDATE DOCTOR DATABASE
-            Doctor.updateDoctorDatabase(doctorList);
 
             //UPDATE APPOINTMENT ARRAYLIST
 
@@ -1110,6 +1103,10 @@ public class Receptionist extends Person{
 
             //UPDATE APPOINTMENT DATABASE
             Appointment.updateAppointmentDatabase(appointmentList);
+
+            //UPDATE DOCTOR DATABASE
+            doctorList.get(indexDoctor).getAppointmentList().add(Appointment.getAppointment(appointmentList, appointmentID));
+            Doctor.updateDoctorDatabase(doctorList);
                 
 
         } else {

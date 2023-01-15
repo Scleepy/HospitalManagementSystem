@@ -14,6 +14,7 @@ public class Disease {
         this.diseaseID = diseaseID;
         this.diseaseName = diseaseName;
         this.category = category;
+        this.dangerLevel = dangerLevel;
     }
 
     public String getDiseaseID() {
@@ -62,6 +63,20 @@ public class Disease {
         return diseaseList.get(index);
     }
 
+    public static int searchDisease(ArrayList<Disease> diseaseList, String diseaseID){
+
+        int index = -1;
+
+        for(int i = 0; i < diseaseList.size(); i++){
+            if(diseaseList.get(i).getDiseaseID().equals(diseaseID)){
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
     public static void loadDisease(ArrayList<Disease> diseaseList){
         try{
 
@@ -91,6 +106,25 @@ public class Disease {
             e.printStackTrace();
             System.out.println("IOException occurred, closing application...");
             System.exit(0);
+        }
+    }
+
+    public static void showDisease(ArrayList<Disease> diseaseList){
+
+        System.out.println("===================================APPOINTMENT LIST======================");
+        System.out.println("|DiseaseID|Disease Name             |Category            |Danger Level  |");
+        System.out.println("=========================================================================");
+
+        for(int i = 0; i < diseaseList.size(); i++){
+
+            if(!diseaseList.get(i).getDiseaseID().equals("DS00X")){
+                System.out.printf("|%-9s|", diseaseList.get(i).getDiseaseID());
+                System.out.printf("%-25s|", diseaseList.get(i).getDiseaseName());
+
+                System.out.printf("%-20s|", diseaseList.get(i).getCategory());
+                System.out.printf("%-14s|", diseaseList.get(i).getDangerLevel());
+                System.out.println();
+            }
         }
     }
 }

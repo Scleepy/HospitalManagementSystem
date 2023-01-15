@@ -25,7 +25,7 @@ public class HospitalManagement {
 
         //LOAD DOCTOR DATA
         ArrayList<Doctor> doctorList = new ArrayList<>();
-        Doctor.loadDoctors(patientList, doctorList);
+        Doctor.loadDoctors(doctorList);
 
         //LOAD PHARMACIST DATA
         ArrayList<Pharmacist> pharmacistList = new ArrayList<>();
@@ -42,6 +42,9 @@ public class HospitalManagement {
         //LOAD APPOINTMENT DATA
         ArrayList<Appointment> appointmentList = new ArrayList<>();
         Appointment.loadAppointment(patientList, doctorList, appointmentList, prescriptionList, diseaseList);
+
+        //LOAD DOCTOR APPOINTMENTS
+        Doctor.loadAppointmentListDoctor(doctorList, appointmentList);
 
         //LOAD BILLING DATA
         ArrayList<Billing> billingList = new ArrayList<>();
@@ -167,10 +170,11 @@ public class HospitalManagement {
             case 0: //doctor menu
                 for(int i = 0; i < doctorList.size(); i++) {
                     if(doctorList.get(i).getPassword().equals(pass) && doctorList.get(i).getDoctorID().equals(user)){
-                        System.out.println("Login Successfully");
+                        System.out.println("Login Successful");
                         scanner.nextLine();
                         valid = true;
                         //REDIRECT TO MENU
+                        Doctor.doctorMenu(doctorList.get(i).getDoctorID(), doctorList, diseaseList, medicineList, prescriptionList, appointmentList);
                     } 
                 }
 
@@ -184,7 +188,7 @@ public class HospitalManagement {
             case 1: //receptionist menu
                 for(int i = 0; i < receptionistList.size(); i++) {
                     if(receptionistList.get(i).getPassword().equals(pass) && receptionistList.get(i).getRecID().equals(user)){
-                        System.out.println("Login Successfully");
+                        System.out.println("Login Successful");
                         scanner.nextLine();
                         valid = true;
                         //REDIRECT TO MENU
@@ -202,7 +206,7 @@ public class HospitalManagement {
             case 2: //admin menu
                 for(int i = 0; i < adminList.size(); i++) {
                     if(adminList.get(i).getPassword().equals(pass) && adminList.get(i).getAdminID().equals(user)){
-                        System.out.println("Login Successfully");
+                        System.out.println("Login Successful");
                         scanner.nextLine();
                         valid = true;
                         //REDIRECT TO MENU
@@ -220,7 +224,7 @@ public class HospitalManagement {
             case 3: //pharmacist menu
                 for(int i = 0; i < pharmacistList.size(); i++) {
                     if(pharmacistList.get(i).getPassword().equals(pass) && pharmacistList.get(i).getPharID().equals(user)){
-                        System.out.println("Login Successfully");
+                        System.out.println("Login Successful");
                         scanner.nextLine();
                         valid = true;
                         //REDIRECT TO MENU
@@ -243,4 +247,25 @@ public class HospitalManagement {
         scanner.close();
     }
 
+    public static void logout(){
+
+        String message = "Closing...";
+
+        for(int i = 0; i < message.length(); i++){
+
+            try{
+                Thread.sleep(100);
+                System.out.print(message.charAt(i));
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            HospitalManagement.main(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
 }

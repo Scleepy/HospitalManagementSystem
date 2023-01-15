@@ -166,6 +166,20 @@ public class Appointment {
         return index;
     }
 
+    public static int searchAppointmentDoctor(ArrayList<Appointment> appointmentList, String inputAppointmentID){
+
+        int index = -1;
+
+        for(int i = 0; i < appointmentList.size(); i++){
+            if(appointmentList.get(i).getAppointmentID().equals(inputAppointmentID)){
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
 	public static void loadAppointment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
         try{
 

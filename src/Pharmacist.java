@@ -146,7 +146,7 @@ public class Pharmacist extends Person{
 
                 break;
             case 2:
-                System.exit(0);
+                HospitalManagement.logout();
                 break;
             default:
                 pharmacistMenu(appointmentList);

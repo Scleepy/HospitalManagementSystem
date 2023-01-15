@@ -125,8 +125,7 @@ public class Admin extends Person{
                 break;
 
             case 3:
-                System.out.println("Closing...");
-                System.exit(0);
+                HospitalManagement.logout();
                 break;
 
             default:
@@ -411,11 +410,11 @@ public class Admin extends Person{
             addDoctor(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
         } else {
 
-            ArrayList<Patient> doctorPatientList = new ArrayList<Patient>();
+            ArrayList<Appointment> doctorAppointmentList = new ArrayList<Appointment>();
 
-            doctorPatientList.add(Patient.getPatient(patientList, "PA00X"));
+            doctorAppointmentList.add(Appointment.getAppointment(appointmentList, "AP00X"));
 
-            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, password, doctorID, specialization, doctorPatientList, docFee));
+            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, password, doctorID, specialization, doctorAppointmentList, docFee));
 
             Doctor.updateDoctorDatabase(doctorList);
 
