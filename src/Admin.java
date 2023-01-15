@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -71,7 +69,7 @@ public class Admin extends Person{
         System.out.println(currentDateTime);
 
         System.out.println("1. Manage Doctor");
-        System.out.println("2. Manage Reception");
+        System.out.println("2. Manage Receptionist");
         System.out.println("3. Logout");
         System.out.print(">> ");
     }
@@ -101,7 +99,7 @@ public class Admin extends Person{
         System.out.print(">> ");
     }
     
-    public static void AdminMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
+    public static void adminMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Receptionist> receptionistList)
     {
 
@@ -113,7 +111,7 @@ public class Admin extends Person{
             option = s.nextInt();
             s.nextLine();
         } catch(Exception e){
-            AdminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
+            adminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
         }
 
         switch(option){
@@ -132,7 +130,7 @@ public class Admin extends Person{
                 break;
 
             default:
-                AdminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
+                adminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
                 break;
         }
 
@@ -203,7 +201,7 @@ public class Admin extends Person{
                 break;
 
             case 5:
-                AdminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
+                adminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
                 break;
 
             default:
@@ -218,7 +216,7 @@ public class Admin extends Person{
     public static void addDoctor(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Receptionist> receptionistList){
         String name ="", address = "", gender = "", phoneNumber = "", email = "", specialization = "", password = "";
-        int DocFee = 0;
+        int docFee = 0;
         // name, address, gender, phonenumber, email, specialization, doctorfee
         Boolean valid = true;
 
@@ -360,11 +358,11 @@ public class Admin extends Person{
             valid = true;
 
             System.out.print("Input Doctor Fee: ");
-            DocFee = s.nextInt();
+            docFee = s.nextInt();
             s.nextLine();
             
-            if(DocFee < 1000000) {
-                System.out.println("Doctor Fee must be above 1 000 000");
+            if(docFee < 50000) {
+                System.out.println("Doctor Fee must be above Rp.50000");
                 valid = false;
             }
             
@@ -378,7 +376,7 @@ public class Admin extends Person{
         System.out.println("Phone Number: " + phoneNumber);
         System.out.println("Password: " + password);
         System.out.println("Email: " + email);
-        System.out.println("Fee per Month: " + DocFee);
+        System.out.println("Fee per Month: " + docFee);
 
         System.out.print("Reenter details? [Y/N]: ");
 
@@ -413,34 +411,13 @@ public class Admin extends Person{
             addDoctor(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
         } else {
 
-            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, password, doctorID, specialization, patientList, DocFee));
+            ArrayList<Patient> doctorPatientList = new ArrayList<Patient>();
 
-            String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%d", doctorID, specialization, name, address, gender, phoneNumber, email, DocFee);
+            doctorPatientList.add(Patient.getPatient(patientList, "PA00X"));
 
-            try {
-                BufferedWriter bw;
+            doctorList.add(new Doctor(name, address, gender, phoneNumber, email, password, doctorID, specialization, doctorPatientList, docFee));
 
-                try {
-                    bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",true));
-                } catch (Exception e) {
-                    bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",true));
-                }
-                
-                bw.write(writeString);
-                bw.newLine();
-                bw.close();
-
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
-                System.out.println("DoctorRecords.csv not found, closing application...");
-                s.nextLine();
-                System.exit(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("IOException occurred, closing application...");
-                s.nextLine();
-                System.exit(0);
-            }
+            Doctor.updateDoctorDatabase(doctorList);
 
             System.out.println("Added doctor to database!");
             System.out.println("Press any key to continue...");
@@ -647,11 +624,14 @@ public class Admin extends Person{
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
 
-                System.out.println("|============================================DOCTOR DETAIL========================================================================|");
-                System.out.println("|DoctorID|Name                  |Specialization      |Address                  |Gender|Phone Number |Password          |Email                         |Doctor Fee|");                    
-                System.out.printf("|%-9s|", doctorList.get(index).getDoctorID());
+                System.out.println("|==============================================================================DOCTOR DETAIL========================================================================|");
+                System.out.println("|DoctorID|Doctor Name              |Specialization      |Address                  |Gender|Phone Number |Password          |Email                         |Doctor Fee|");    
+                System.out.println("|===================================================================================================================================================================|");
+
+                
+                System.out.printf("|%-8s|", doctorList.get(index).getDoctorID());
+                System.out.printf("%-25s|", doctorList.get(index).getName());
                 System.out.printf("%-20s|", doctorList.get(index).getSpecialization());
-                System.out.printf("%-22s|", doctorList.get(index).getName());
                 System.out.printf("%-25s|", doctorList.get(index).getAddress());
                 System.out.printf("%-6s|", doctorList.get(index).getGender());
                 System.out.printf("%-13s|", doctorList.get(index).getPhoneNumber());
@@ -659,6 +639,7 @@ public class Admin extends Person{
                 System.out.printf("%-30s|", doctorList.get(index).getEmail());
                 System.out.printf("%-10d|", doctorList.get(index).getDoctorFee());
                 System.out.println();
+                
 
                 System.out.println("Choose field to update");
                 System.out.println("1. Name");
@@ -681,7 +662,7 @@ public class Admin extends Person{
                 }
 
                 String name ="", address = "", gender = "", phoneNumber = "", email = "", specialization = "", password = "";
-                int DocFee = 0;
+                int docFee = 0;
                 valid = true;
 
                 switch(choice){
@@ -857,17 +838,21 @@ public class Admin extends Person{
                             
                             System.out.print("Input Doctor Fee: ");
                             try{
-                                DocFee = scanner.nextInt();
-                                valid = true;
+                                docFee = scanner.nextInt();
                             } catch (Exception e){
                                 System.out.println("Enter only integer value..." + e);
                                 valid = false;
                             }
-                            
+
+                            if(docFee < 50000) {
+                                System.out.println("Doctor Fee must be above Rp.50000");
+                                valid = false;
+                            }
+                        
                             
                         } while (!valid);
 
-                        doctorList.get(index).setDoctorFee(DocFee);
+                        doctorList.get(index).setDoctorFee(docFee);
                         Doctor.updateDoctorDatabase(doctorList);
                         deleteUpdateDoctorMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList, receptionistList);
 
@@ -896,13 +881,14 @@ public class Admin extends Person{
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
-        System.out.println("|============================================DOCTOR DETAIL========================================================================|");
-        System.out.println("|DoctorID|Name                  |Specialization      |Address                  |Gender|Phone Number |Password          |Email                         |Doctor Fee|");    
-        
+        System.out.println("|==============================================================================DOCTOR DETAIL========================================================================|");
+        System.out.println("|DoctorID|Doctor Name              |Specialization      |Address                  |Gender|Phone Number |Password          |Email                         |Doctor Fee|");    
+        System.out.println("|===================================================================================================================================================================|");
+
         for(int i = 0; i < doctorList.size(); i++){
-            System.out.printf("|%-9s|", doctorList.get(i).getDoctorID());
+            System.out.printf("|%-8s|", doctorList.get(i).getDoctorID());
+            System.out.printf("%-25s|", doctorList.get(i).getName());
             System.out.printf("%-20s|", doctorList.get(i).getSpecialization());
-            System.out.printf("%-22s|", doctorList.get(i).getName());
             System.out.printf("%-25s|", doctorList.get(i).getAddress());
             System.out.printf("%-6s|", doctorList.get(i).getGender());
             System.out.printf("%-13s|", doctorList.get(i).getPhoneNumber());
@@ -977,7 +963,7 @@ public class Admin extends Person{
                 break;
 
             case 5:
-                AdminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
+                adminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
                 break;
 
             default:
@@ -1151,32 +1137,7 @@ public class Admin extends Person{
 
             receptionistList.add(new Receptionist(name, address, gender, phoneNumber, email, password, recID));
 
-            String writeString = String.format("%s,%s,%s,%s,%s,%s,%s", recID, name, address, gender, phoneNumber, email, password);
-
-            try {
-                BufferedWriter bw;
-
-                try {
-                    bw = new BufferedWriter(new FileWriter("./Database/ReceptionistRecords.csv",true));
-                } catch (Exception e) {
-                    bw = new BufferedWriter(new FileWriter("src/Database/ReceptionistRecords.csv",true));
-                }
-                
-                bw.write(writeString);
-                bw.newLine();
-                bw.close();
-
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
-                System.out.println("ReceptionistRecords.csv not found, closing application...");
-                s.nextLine();
-                System.exit(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("IOException occurred, closing application...");
-                s.nextLine();
-                System.exit(0);
-            }
+            Receptionist.updateReceptionistDatabase(receptionistList);
 
             System.out.println("Added receptionist to database!");
             System.out.println("Press any key to continue...");
@@ -1392,6 +1353,7 @@ public class Admin extends Person{
 
                         receptionistList.get(index).setName(name);
                         Receptionist.updateReceptionistDatabase(receptionistList);
+
                         deleteUpdateRecMenu(patientList, doctorList, appointmentList, 0, billingList, prescriptionList, receptionistList);
 
                         break;

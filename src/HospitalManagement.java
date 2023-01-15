@@ -206,7 +206,7 @@ public class HospitalManagement {
                         scanner.nextLine();
                         valid = true;
                         //REDIRECT TO MENU
-                        Admin.AdminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
+                        Admin.adminMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, receptionistList);
                     }
                 }
 

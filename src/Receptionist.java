@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.DigestException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -93,9 +92,9 @@ public class Receptionist extends Person{
             BufferedWriter bw;
         
             try {
-                bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",false));
+                bw = new BufferedWriter(new FileWriter("./Database/ReceptionistRecords.csv",false));
             } catch (Exception e) {
-                bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",false));
+                bw = new BufferedWriter(new FileWriter("src/Database/ReceptionistRecords.csv",false));
             }
 
             bw.write("");
@@ -280,15 +279,18 @@ public class Receptionist extends Person{
         System.out.println("==========================================================================================================================");
 
         for(int i = 0; i < patientList.size(); i++){
-                
-            System.out.printf("|%-9s|", patientList.get(i).getPatientID());
-            System.out.printf("%-9s|", patientList.get(i).getBloodType());
-            System.out.printf("%-22s|", patientList.get(i).getName());
-            System.out.printf("%-25s|", patientList.get(i).getAddress());
-            System.out.printf("%-6s|", patientList.get(i).getGender());
-            System.out.printf("%-13s|", patientList.get(i).getPhoneNumber());
-            System.out.printf("%-30s|", patientList.get(i).getEmail());
-            System.out.println();
+            
+            if(!patientList.get(i).getPatientID().equals("PA00X")){
+                System.out.printf("|%-9s|", patientList.get(i).getPatientID());
+                System.out.printf("%-9s|", patientList.get(i).getBloodType());
+                System.out.printf("%-22s|", patientList.get(i).getName());
+                System.out.printf("%-25s|", patientList.get(i).getAddress());
+                System.out.printf("%-6s|", patientList.get(i).getGender());
+                System.out.printf("%-13s|", patientList.get(i).getPhoneNumber());
+                System.out.printf("%-30s|", patientList.get(i).getEmail());
+                System.out.println();
+            }
+            
         }
     }
 
@@ -431,7 +433,7 @@ public class Receptionist extends Person{
         String currentID = patientList.get(patientList.size() - 1).getPatientID().substring(2, 5);
         int currentIDNumber = Integer.parseInt(currentID);
 
-        if(patientList.size() < 10){
+        if(currentIDNumber + 1 < 10){
             patientID = String.format("PA00%d", currentIDNumber + 1);
         } else if (patientList.size() < 100){
             patientID = String.format("PA0%d", currentIDNumber + 1);
@@ -445,32 +447,7 @@ public class Receptionist extends Person{
 
             patientList.add(new Patient(name, address, gender, phoneNumber, email, patientID, bloodType));
 
-            String writeString = String.format("%s,%s,%s,%s,%s,%s,%s", patientID, bloodType, name, address, gender, phoneNumber, email);
-
-            try {
-                BufferedWriter bw;
-
-                try {
-                    bw = new BufferedWriter(new FileWriter("./Database/PatientRecords.csv",true));
-                } catch (Exception e) {
-                    bw = new BufferedWriter(new FileWriter("src/Database/PatientRecords.csv",true));
-                }
-                
-                bw.write(writeString);
-                bw.newLine();
-                bw.close();
-
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
-                System.out.println("PatientRecords.csv not found, closing application...");
-                scanner.nextLine();
-                System.exit(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("IOException occurred, closing application...");
-                scanner.nextLine();
-                System.exit(0);
-            }
+            Patient.updatePatientDatabase(patientList);
 
             System.out.println("Added patient to database!");
             System.out.println("Press any key to continue...");
@@ -998,11 +975,18 @@ public class Receptionist extends Person{
         System.out.println("=========================================================================");
 
         for(int i = 0; i < doctorList.size(); i++){
+
+            int patientSize = doctorList.get(i).getPatientList().size();
+
+            if(doctorList.get(i).getPatientList().get(0).getPatientID().equals("PA00X")){
+                patientSize -= 1;
+            }
+
                 
             System.out.printf("|%-9s|", doctorList.get(i).getDoctorID());
             System.out.printf("%-21s|", doctorList.get(i).getName());
             System.out.printf("%-24s|", doctorList.get(i).getSpecialization());
-            System.out.printf("%d/%-12d|", doctorList.get(i).getPatientList().size(), 5);
+            System.out.printf("%d/%-12d|", patientSize, 5);
             System.out.println();
         }
     }
@@ -1091,6 +1075,11 @@ public class Receptionist extends Person{
                 if(indexDoctor == -1 || doctorList.get(indexDoctor).patientList.size() == 5){
                     valid = false;
                 } else {
+
+                    if(doctorList.get(indexDoctor).getPatientList().get(0).getPatientID().equals("PA00X")){
+                        doctorList.get(indexDoctor).patientList.remove(0);
+                    }
+
                     doctorList.get(indexDoctor).patientList.add(Patient.getPatient(patientList, inputPatientID));
                 }
 
