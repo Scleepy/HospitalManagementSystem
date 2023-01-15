@@ -6,6 +6,10 @@ public class HospitalManagement {
     public HospitalManagement(){};
 
     public static void main(String[] args) throws Exception {
+
+        //LOAD DISEASE DATA
+        ArrayList<Disease> diseaseList = new ArrayList<>();
+        Disease.loadDisease(diseaseList);
         
         //LOAD PATIENT DATA
         ArrayList<Patient> patientList = new ArrayList<>();
@@ -37,19 +41,16 @@ public class HospitalManagement {
 
         //LOAD APPOINTMENT DATA
         ArrayList<Appointment> appointmentList = new ArrayList<>();
-        Appointment.loadAppointments(patientList, doctorList, appointmentList, prescriptionList);
+        Appointment.loadAppointment(patientList, doctorList, appointmentList, prescriptionList, diseaseList);
 
         //LOAD BILLING DATA
         ArrayList<Billing> billingList = new ArrayList<>();
         Billing.loadBilling(billingList, appointmentList);
         
-        //LOAD OTHER DATA HERE
-
-        //RECEPTIONIST MENU -> should be controlled in the login menu
-        mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+        mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
     }
 
-    public static void mainMenu(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList){
+    public static void mainMenu(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Disease> diseaseList){
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -70,19 +71,19 @@ public class HospitalManagement {
             menu = scanner.nextInt();
         } catch (Exception e) {
             System.out.println("Invalid Input");
-            mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+            mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
         }        
 
         switch (menu) {
             case 1:
-                roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+                roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 break;
             case 2:
                 System.out.println("Thank You!");
                 System.exit(0);
                 break;
             default:
-                mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+                mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 break;
         }
 
@@ -90,7 +91,7 @@ public class HospitalManagement {
         scanner.close();
     }
 
-    public static void roleMenu(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList){
+    public static void roleMenu(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Disease> diseaseList){
         
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -114,27 +115,27 @@ public class HospitalManagement {
             menu = scanner.nextInt();
         } catch (Exception e) {
             System.out.println("Invalid Input");
-            mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+            mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
         }        
 
         switch (menu) {
             case 1:
-                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, 0);
+                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList, 0);
                 break;
             case 2:
-                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, 1);
+                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList, 1);
                 break;
             case 3:
-                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, 2);
+                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList, 2);
                 break;
             case 4:
-                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, 3);
+                menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList, 3);
                 break;
             case 5:
                 System.out.println("Thank You!");
                 System.exit(0);
             default:
-                roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+                roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 break;
         }
 
@@ -143,7 +144,7 @@ public class HospitalManagement {
 
     }
 
-    public static void menuRedirect(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, int operation){
+    public static void menuRedirect(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Disease> diseaseList, int operation){
         
         Scanner scanner = new Scanner(System.in);
 
@@ -176,7 +177,7 @@ public class HospitalManagement {
                 if(valid == false){
                     System.out.println("User/Password Wrong");
                     scanner.nextLine();
-                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 }
 
                 break;
@@ -187,14 +188,14 @@ public class HospitalManagement {
                         scanner.nextLine();
                         valid = true;
                         //REDIRECT TO MENU
-                        Receptionist.receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList);
+                        Receptionist.receptionMenu(patientList, doctorList, appointmentList, billingList, prescriptionList, diseaseList);
                     } 
                 }
 
                 if(valid == false){
                     System.out.println("User/Password Wrong");
                     scanner.nextLine();
-                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 }
 
                 break;
@@ -212,7 +213,7 @@ public class HospitalManagement {
                 if(valid == false){
                     System.out.println("User/Password Wrong");
                     scanner.nextLine();
-                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 }
 
                 break;
@@ -223,13 +224,14 @@ public class HospitalManagement {
                         scanner.nextLine();
                         valid = true;
                         //REDIRECT TO MENU
+                        Pharmacist.pharmacistMenu(appointmentList);
                     } 
                 }
 
                 if(valid == false){
                     System.out.println("User/Password Wrong");
                     scanner.nextLine();
-                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList);
+                    roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 }
 
                 break;

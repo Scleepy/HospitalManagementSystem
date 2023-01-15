@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 class Doctor extends Person{
     String doctorID;
@@ -158,7 +161,9 @@ class Doctor extends Person{
                     }
                 }                
 
-                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", name, address, gender, phoneNumber, email, password, doctorID, specialization, doctorPatientListString);
+                String doctorFee = String.valueOf(doctorList.get(i).getDoctorFee());
+
+                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", name, address, gender, phoneNumber, email, password, doctorID, specialization, doctorPatientListString, doctorFee);
                 
                 try {
                     try {
@@ -194,7 +199,7 @@ class Doctor extends Person{
     }
 
 
-}
+
 
     public static void doctorMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList) throws InterruptedException {
     	Scanner input = new Scanner(System.in);

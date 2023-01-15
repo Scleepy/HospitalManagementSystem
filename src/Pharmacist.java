@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Pharmacist extends Person{
     String pharID;
@@ -66,55 +67,95 @@ public class Pharmacist extends Person{
         }
     }
     
-    public static void pharmacistMenu(ArrayList<Appointment> appoinmentList, boolean operation) {
-		
-		//SHOW PATIENT
-		System.out.println("Pharmacist Menu");
-		System.out.println("===============");
-		System.out.println("Patient List");
-		
-		if(isConsulted == true && givenMedicine == false && isDone == false) {
-	        System.out.println("|PatientID|PatientName|DoctorID|AppointmentID");
-	        for(int i=0; i<patientList.size(); i++){    
-	        	System.out.printf("|%s|", appoinmentList.get(i).getPatient().getpatientID());
-	            System.out.printf("%s|", appoinmentList.get(i).getPatient().getName());
-	            System.out.printf("%s|", appoinmentList.get(i).getDoctorID());
-	            System.out.printf("%s|", appoinmentList.get(i).getAppoinmentID());
-	            System.out.printf("%s|", appoinmentList.get(i).getPrescription().getprescriptionID());
-	        } 
-		}
-		
-		else {
-			System.out.println("No Data");
-		}
-		
-		//SELECT PATIENT
-		System.out.print("Enter the PatientID: ");
-		
-		int selection;
-		selection = scanner.nextLine();
-		scanner.nextLine();
-		
-		if (selection.length() < 5) {
-			System.out.println("Invalid selection");
-		}
-		
-		else {
-			for(int i=0; i<appointmentList.size(); i++) {
-				if(appointmentList.get(i).getPatient().getpatientID() == selection) {
-					System.out.println("Medicine List");
-					System.out.printf("Medicine ID: %s\n", appoinmentList.get(i).getMedicine().getmedicineID());
-					System.out.printf("Medicine Name: %s\n", appoinmentList.get(i).getMedicine().getmedicineName());
-					System.out.printf("Medicine Quantity: %d\n", appoinmentList.get(i).getMedicine().getmedicineQuantity());
-					System.out.printf("Medicine Description: %s\n", appoinmentList.get(i).getMedicine().getmedicineDescription());
-					System.out.printf("Medicine Intruction: %s\n", appoinmentList.get(i).getMedicine().getmedicineIntruction());
-					System.out.printf("Medicine Price: %d\n", appoinmentList.get(i).getMedicine().getmedicinePrice());
-				}
+    public static void pharmacistMenu(ArrayList<Appointment> appointmentList) {
 
-			}
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        Scanner scanner = new Scanner(System.in);
 		
-		}
-	    	appointmentList.get(i).setgivenMedicine(true);  
+		System.out.println("Pharmacist Menu");
+
+        Appointment.showAppointmentNotGivenMedicine(appointmentList);
+
+        int choice = 0;
+
+		System.out.println("1. Select Appointment ");
+        System.out.println("2. Logout");
+        System.out.print(">> ");
+
+		try {
+            choice = scanner.nextInt();
+            scanner.nextLine();
+        } catch (Exception e) {
+            pharmacistMenu(appointmentList);
+        }
+
+        switch(choice){
+            case 1:
+                System.out.print("Enter AppointmentID: ");
+                String inputAppointmentID = "";
+
+                inputAppointmentID = scanner.nextLine();
+                int indexAppointment = Appointment.searchAppointmentNotGivenMedicine(appointmentList, inputAppointmentID);
+
+                if(indexAppointment != -1){
+                    Prescription prescription = appointmentList.get(indexAppointment).getPrescription();
+                    ArrayList<Medicine> medicineList = prescription.getMedicineList();
+
+                    Medicine.showMedicineList(medicineList);
+
+                    choice = 0;
+
+                    System.out.println("1. Prepare Medicine ");
+                    System.out.println("2. Back");
+                    System.out.print(">> ");
+
+                    try {
+                        choice = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (Exception e) {
+                        pharmacistMenu(appointmentList);
+                    }
+
+                    switch (choice) {
+                        case 1:
+                        appointmentList.get(indexAppointment).setGivenMedicine(true);
+                        System.out.println("Medicine Prepared.");
+                        scanner.nextLine();
+
+                        //update to database
+                        Appointment.updateAppointmentDatabase(appointmentList);
+
+                            break;
+                        case 2:
+                        pharmacistMenu(appointmentList);
+                            break;
+                        default:
+                        pharmacistMenu(appointmentList);
+                            break;
+                    }
+
+                    pharmacistMenu(appointmentList);
+
+                } else {
+                    System.out.println("APPOINTMENT NOT FOUND");
+                    scanner.nextLine();
+                    pharmacistMenu(appointmentList);
+                }
+
+                break;
+            case 2:
+                System.exit(0);
+                break;
+            default:
+                pharmacistMenu(appointmentList);
+                break;
+        }
+        scanner.close();
+		
 	}
+
+    
    
 }

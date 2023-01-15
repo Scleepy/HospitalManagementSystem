@@ -86,4 +86,25 @@ public class Medicine {
             System.exit(0);
         }
     }
+
+    public static void showMedicineList(ArrayList<Medicine> medicineList){
+        System.out.println("=====================MEDICINE LIST=====================");
+        System.out.println("|MedicineID|Medicine Name            |Quantity|Price  |");
+        System.out.println("=======================================================");
+
+        for(int i = 0; i < medicineList.size(); i++) {
+            
+            System.out.printf("|%-10s|", medicineList.get(i).getMedicineID());
+            System.out.printf("%-25s|", medicineList.get(i).getMedicineName());
+            System.out.printf("%-8s|", medicineList.get(i).getMedicineQuantity());
+            System.out.printf("%-7s|", medicineList.get(i).getMedicinePrice());
+            System.out.println();
+            
+        }
+
+        if(medicineList.size() == 0){
+            System.out.println("No Data");
+        }
+
+    }
 }

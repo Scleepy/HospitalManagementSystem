@@ -401,7 +401,7 @@ public class Admin extends Person{
         String currentID = doctorList.get(doctorList.size() - 1).getDoctorID().substring(2, 5);
         int currentIDNumber = Integer.parseInt(currentID);
 
-        if(doctorList.size() < 10){
+        if(currentIDNumber + 1 < 10){
             doctorID = String.format("DC00%d", currentIDNumber + 1);
         } else if (doctorList.size() < 100){
             doctorID = String.format("DC0%d", currentIDNumber + 1);
@@ -1137,7 +1137,7 @@ public class Admin extends Person{
         String currentID = receptionistList.get(receptionistList.size() - 1).getRecID().substring(2, 5);
         int currentIDNumber = Integer.parseInt(currentID);
 
-        if(receptionistList.size() < 10){
+        if(currentIDNumber + 1 < 10){
             recID = String.format("RC00%d", currentIDNumber + 1);
         } else if (receptionistList.size() < 100){
             recID = String.format("RC0%d", currentIDNumber + 1);

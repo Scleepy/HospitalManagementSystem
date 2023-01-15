@@ -18,8 +18,10 @@ public class Appointment {
 	private Patient patient;
 	private Doctor doctor;
 	private Prescription prescription;
+    private Disease disease;
+    private String symptoms;
 
-	public Appointment(String appointmentID, LocalDateTime dateTime, Boolean emergency, Boolean isConsulted, Boolean givenMedicine, Boolean isDone, Patient patient, Doctor doctor, Prescription prescription) {
+	public Appointment(String appointmentID, LocalDateTime dateTime, Boolean emergency, Boolean isConsulted, Boolean givenMedicine, Boolean isDone, Patient patient, Doctor doctor, Prescription prescription, Disease disease, String symptoms) {
 		this.appointmentID = appointmentID;
 		this.dateTime = dateTime;
 		this.emergency = emergency;
@@ -29,6 +31,8 @@ public class Appointment {
 		this.patient = patient;
 		this.doctor = doctor;
 		this.prescription = prescription;
+        this.disease = disease;
+        this.symptoms = symptoms;
 	}
 
 	public String getAppointmentID() {
@@ -103,6 +107,23 @@ public class Appointment {
 		this.prescription = prescription;
 	}
 
+    public Disease getDisease() {
+        return this.disease;
+    }
+
+    public void setDisease(Disease disease) {
+        this.disease = disease;
+    }
+
+    public String getSymptoms() {
+        return this.symptoms;
+    }
+
+    public void setSymptoms(String symptoms) {
+        this.symptoms = symptoms;
+    }    
+
+
 	public static Appointment getAppointment(ArrayList<Appointment> appointmentList, String appointmentID){
 
         int index = -1;
@@ -131,7 +152,21 @@ public class Appointment {
         return index;
     }
 
-	public static void loadAppointments(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Prescription> prescriptionList){
+    public static int searchAppointmentNotGivenMedicine(ArrayList<Appointment> appointmentList, String inputAppointmentID){
+
+        int index = -1;
+
+        for(int i = 0; i < appointmentList.size(); i++){
+            if(appointmentList.get(i).getAppointmentID().equals(inputAppointmentID) && appointmentList.get(i).getIsConsulted() == true && appointmentList.get(i).getGivenMedicine() == false && appointmentList.get(i).getIsDone() == false){
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
+	public static void loadAppointment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
         try{
 
             BufferedReader br;
@@ -153,8 +188,10 @@ public class Appointment {
 
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
                 LocalDateTime dateTime = LocalDateTime.parse(detail[1], format);
+
+                Disease disease = Disease.getDisease(diseaseList, detail[9]);
                 
-                appointmentList.add(new Appointment(detail[0], dateTime, Boolean.parseBoolean(detail[2]), Boolean.parseBoolean(detail[3]), Boolean.parseBoolean(detail[4]), Boolean.parseBoolean(detail[5]), patient, doctor, prescription));
+                appointmentList.add(new Appointment(detail[0], dateTime, Boolean.parseBoolean(detail[2]), Boolean.parseBoolean(detail[3]), Boolean.parseBoolean(detail[4]), Boolean.parseBoolean(detail[5]), patient, doctor, prescription, disease, detail[10]));
             }
 
             br.close();
@@ -197,9 +234,11 @@ public class Appointment {
                 String patientID = appointmentList.get(i).getPatient().getPatientID();
                 String doctorID = appointmentList.get(i).getDoctor().getDoctorID();
                 String prescriptionID = appointmentList.get(i).getPrescription().getPrescriptionID();
+                String diseaseID = appointmentList.get(i).getDisease().getDiseaseID();
+                String symptoms = appointmentList.get(i).getSymptoms();
                 
 
-                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", appointmentID, formattedDate, emergency, isConsulted, givenMedicine, isDone, patientID, doctorID, prescriptionID);
+                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", appointmentID, formattedDate, emergency, isConsulted, givenMedicine, isDone, patientID, doctorID, prescriptionID, diseaseID, symptoms);
                 
                 try {
                     try {
@@ -233,5 +272,28 @@ public class Appointment {
             System.exit(0);
         }
     }
-    
+
+    public static void showAppointmentNotGivenMedicine(ArrayList<Appointment> appointmentList){
+        System.out.println("============================================================APPOINTMENT LIST=====================================");
+        System.out.println("|AppointmentID|Patient Name             |Doctor Name              |Consulted|PrescriptionID|Given Medicine|Done |");
+        System.out.println("=================================================================================================================");
+
+        for(int i = 0; i < appointmentList.size(); i++) {
+            if(appointmentList.get(i).getIsConsulted() == true && appointmentList.get(i).getGivenMedicine() == false && appointmentList.get(i).getIsDone() == false){
+                System.out.printf("|%-13s|", appointmentList.get(i).getAppointmentID());
+                System.out.printf("%-25s|", appointmentList.get(i).getPatient().getName());
+
+                System.out.printf("%-25s|", appointmentList.get(i).getDoctor().getName());
+                System.out.printf("%-9s|", appointmentList.get(i).getIsConsulted());
+                System.out.printf("%-14s|", appointmentList.get(i).getPrescription().getPrescriptionID());
+                System.out.printf("%-14s|", appointmentList.get(i).getGivenMedicine());
+                System.out.printf("%-5s|", appointmentList.get(i).getIsDone());
+                System.out.println();
+            }
+        }
+
+        if(appointmentList.size() == 0){
+            System.out.println("No Data");
+        }
+    }
 }
