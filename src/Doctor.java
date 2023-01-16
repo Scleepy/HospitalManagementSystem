@@ -236,15 +236,19 @@ class Doctor extends Person{
         System.out.println("=======================================================================================");
 
         for(int i = 0; i < doctorAppointmentList.size(); i++) {
-            
-            System.out.printf("|%-13s|", doctorAppointmentList.get(i).getAppointmentID());
-            System.out.printf("%-25s|", doctorAppointmentList.get(i).getPatient().getName());
 
-            System.out.printf("%-9s|", doctorAppointmentList.get(i).getIsConsulted());
-            System.out.printf("%-14s|", doctorAppointmentList.get(i).getPrescription().getPrescriptionID());
-            System.out.printf("%-14s|", doctorAppointmentList.get(i).getGivenMedicine());
-            System.out.printf("%-5s|", doctorAppointmentList.get(i).getIsDone());
-            System.out.println();
+            if(!doctorAppointmentList.get(i).getAppointmentID().equals("AP00X")){
+                System.out.printf("|%-13s|", doctorAppointmentList.get(i).getAppointmentID());
+                System.out.printf("%-25s|", doctorAppointmentList.get(i).getPatient().getName());
+
+                System.out.printf("%-9s|", doctorAppointmentList.get(i).getIsConsulted());
+                System.out.printf("%-14s|", doctorAppointmentList.get(i).getPrescription().getPrescriptionID());
+                System.out.printf("%-14s|", doctorAppointmentList.get(i).getGivenMedicine());
+                System.out.printf("%-5s|", doctorAppointmentList.get(i).getIsDone());
+                System.out.println();
+            }
+
+            
             
         }
 
@@ -341,6 +345,7 @@ class Doctor extends Person{
 
                 //UPDATE DOCTOR
                 doctorAppointmentList.remove(indexAppointment);
+                doctorAppointmentList.add(Appointment.getAppointment(appointmentList, "AP00X"));
                 Doctor.updateDoctorDatabase(doctorList);
 
                 //UPDATE PRESCRIPTION
