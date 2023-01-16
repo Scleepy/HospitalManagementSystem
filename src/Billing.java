@@ -58,7 +58,7 @@ public class Billing {
     public static void loadBilling(ArrayList<Billing> billingList, ArrayList<Appointment> appointmentList){
         try{
 
-            BufferedReader br;
+             BufferedReader br;
 
             try {
                 br = new BufferedReader(new FileReader("./Database/BillingRecords.csv"));
@@ -66,15 +66,13 @@ public class Billing {
                 br = new BufferedReader(new FileReader("src/Database/BillingRecords.csv"));
             }
             
-            String line;
+             String line;
 
             while((line = br.readLine()) != null){
                 String[] detail = line.split(",");
 
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
                 LocalDateTime dateTime = LocalDateTime.parse(detail[1], format);
-
-                System.out.println("");
                 
                 billingList.add(new Billing(detail[0], dateTime, Appointment.getAppointment(appointmentList, detail[2]), Integer.parseInt(detail[3])));
             }

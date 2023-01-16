@@ -49,7 +49,7 @@ public class HospitalManagement {
         //LOAD BILLING DATA
         ArrayList<Billing> billingList = new ArrayList<>();
         Billing.loadBilling(billingList, appointmentList);
-        
+
         mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
     }
 
