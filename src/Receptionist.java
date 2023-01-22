@@ -147,7 +147,7 @@ public class Receptionist extends Person{
 
     public static void receptionMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -198,7 +198,7 @@ public class Receptionist extends Person{
 
     public static void managePatients(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -270,7 +270,7 @@ public class Receptionist extends Person{
 
     public static void showPatients(ArrayList<Patient> patientList){
         
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         System.out.println("=============================================PATIENTS=====================================================================");
@@ -295,7 +295,7 @@ public class Receptionist extends Person{
 
 
     public static void registerPatient(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -502,7 +502,7 @@ public class Receptionist extends Person{
 
     public static void deleteUpdatePatientMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, int operation, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -645,7 +645,7 @@ public class Receptionist extends Person{
             } while(!valid);
 
             if(input.toLowerCase().equals("y")){
-                System.out.print("\033[H\033[2J");
+                System.out.print("\033[H\033[2J\n");
                 System.out.flush();
 
                 System.out.println("|============================================PATIENT DETAIL==============================================================|");
@@ -836,7 +836,7 @@ public class Receptionist extends Person{
 
     public static void manageAppointment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -878,7 +878,7 @@ public class Receptionist extends Person{
     }
 
     public static void showAppointmentsMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -937,7 +937,7 @@ public class Receptionist extends Person{
 
     public static void showAppointments(ArrayList<Appointment> appointmentList, boolean isDone, boolean checkPayment){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         DateTimeFormatter stringFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
@@ -993,7 +993,7 @@ public class Receptionist extends Person{
 
         Scanner scanner = new Scanner(System.in);
         
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         showPatients(patientList);
@@ -1121,7 +1121,7 @@ public class Receptionist extends Person{
     }
 
     public static void createPayment(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);

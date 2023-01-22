@@ -69,7 +69,7 @@ public class Pharmacist extends Person{
     
     public static void pharmacistMenu(ArrayList<Appointment> appointmentList) {
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);

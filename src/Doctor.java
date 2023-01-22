@@ -261,7 +261,7 @@ class Doctor extends Person{
 
         ArrayList<Appointment> doctorAppointmentList = getDoctor(doctorList, doctorID).getAppointmentList();
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -383,7 +383,7 @@ class Doctor extends Person{
 
         do{
             done = false;
-            System.out.print("\033[H\033[2J");
+            System.out.print("\033[H\033[2J\n");
             System.out.flush();
 
             Medicine.showMedicineList(medicineList);

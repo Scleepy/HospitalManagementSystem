@@ -57,7 +57,7 @@ public class Admin extends Person{
     }
     
     public static void printManage(){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         LocalDateTime dateTime = LocalDateTime.now();
@@ -76,7 +76,7 @@ public class Admin extends Person{
 
     public static void printManageDoctor(){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         System.out.println("1. Add Doctor");
@@ -88,7 +88,7 @@ public class Admin extends Person{
     }
 
     public static void printManageRec(){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         System.out.println("1. Add Receptionist");
@@ -138,7 +138,7 @@ public class Admin extends Person{
     
     public static void manageDoctor(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Receptionist> receptionistList){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         printManageDoctor();
@@ -474,7 +474,7 @@ public class Admin extends Person{
     ArrayList<Appointment> appointmentList, int operation, 
     ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Receptionist> receptionistList){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -620,7 +620,7 @@ public class Admin extends Person{
             } while(!valid);
 
             if(input.toLowerCase().equals("y")){
-                System.out.print("\033[H\033[2J");
+                System.out.print("\033[H\033[2J\n");
                 System.out.flush();
 
                 System.out.println("|==============================================================================DOCTOR DETAIL========================================================================|");
@@ -877,7 +877,7 @@ public class Admin extends Person{
 
 
     public static void showDoctors(ArrayList<Doctor> doctorList){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         System.out.println("|==============================================================================DOCTOR DETAIL========================================================================|");
@@ -1150,7 +1150,7 @@ public class Admin extends Person{
     public static void deleteUpdateRecMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, int operation, 
     ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Receptionist> receptionistList){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -1296,7 +1296,7 @@ public class Admin extends Person{
             } while(!valid);
 
             if(input.toLowerCase().equals("y")){
-                System.out.print("\033[H\033[2J");
+                System.out.print("\033[H\033[2J\n");
                 System.out.flush();
 
 
@@ -1503,7 +1503,7 @@ public class Admin extends Person{
 
 
     public static void showReceptionists(ArrayList<Receptionist> receptionistList){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         System.out.println("|============================================RECEPTIONIST DETAIL==================================================================|");

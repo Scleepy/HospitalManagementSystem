@@ -55,7 +55,7 @@ public class HospitalManagement {
 
     public static void mainMenu(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Disease> diseaseList){
 
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -96,7 +96,7 @@ public class HospitalManagement {
 
     public static void roleMenu(ArrayList<Patient> patientList, ArrayList<Receptionist> receptionistList, ArrayList<Admin> adminList, ArrayList<Doctor> doctorList, ArrayList<Pharmacist> pharmacistList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList, ArrayList<Billing> billingList, ArrayList<Disease> diseaseList){
         
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033[H\033[2J\n");
         System.out.flush();
 
         Scanner scanner = new Scanner(System.in);
@@ -110,7 +110,7 @@ public class HospitalManagement {
         System.out.println("| 2. Receptionist              |");
         System.out.println("| 3. Admin                     |");
         System.out.println("| 4. Pharmacist                |");
-        System.out.println("| 5. Exit                      |");
+        System.out.println("| 5. Back                      |");
         System.out.println("+==============================+");
         System.out.print(">> ");
 
@@ -135,8 +135,7 @@ public class HospitalManagement {
                 menuRedirect(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList, 3);
                 break;
             case 5:
-                System.out.println("Thank You!");
-                System.exit(0);
+                mainMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
             default:
                 roleMenu(patientList, receptionistList, adminList, doctorList, pharmacistList, medicineList, prescriptionList, appointmentList, billingList, diseaseList);
                 break;
