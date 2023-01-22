@@ -564,11 +564,64 @@ public class Admin extends Person{
 
             if(input.toLowerCase().equals("y")){
 
-                doctorList.remove(index);
+                ArrayList<Appointment> doctorAppointmentList = Doctor.getDoctor(doctorList, inputDoctorID).getAppointmentList();
 
-                Doctor.updateDoctorDatabase(doctorList);
+                boolean delete = true;
 
-                System.out.println("Doctor data deleted successfully!");
+                for(int i = 0; i < doctorAppointmentList.size(); i++){
+
+                    boolean isConsulted = doctorAppointmentList.get(i).getIsConsulted();
+                    boolean isDone = doctorAppointmentList.get(i).getIsDone();
+
+                    if(isConsulted == true && isDone == false){
+                        delete = false;
+                        break;
+                    }
+                }
+
+                if(delete){
+
+                    ArrayList<Appointment> appointmentDeleteList = new ArrayList<>();
+        
+                    for(int i = 1; i < appointmentList.size(); i++){
+        
+                        Appointment appointment = appointmentList.get(i);
+        
+                        if(appointment.getDoctor().getDoctorID().equals(inputDoctorID)){
+        
+                            boolean isDone = appointment.getIsDone();
+        
+                            if(isDone == true){
+                                appointmentDeleteList.add(appointment);
+        
+                            } else {
+                                appointment.setDoctor(Doctor.getDoctor(doctorList, "DC00X"));
+                            }
+                        }
+                    }
+        
+                    for(int i = 0; i < appointmentDeleteList.size(); i++){
+        
+                        for(int j = 0; j < billingList.size(); j++){
+                            if(billingList.get(j).getAppointment() == appointmentDeleteList.get(i)){
+                                billingList.remove(j);
+                            }
+                        }
+        
+                        appointmentList.remove(appointmentList.indexOf(appointmentDeleteList.get(i)));
+                    }
+
+                    doctorList.remove(index);
+
+                    Appointment.updateAppointmentDatabase(appointmentList);
+                    Doctor.updateDoctorDatabase(doctorList);
+                    Billing.updateBillingDatabase(billingList);
+
+                    System.out.println("Doctor data deleted successfully!");
+        
+                } else {
+                    System.out.println("UNABLE TO DELETE: DOCTOR DATA IS STILL BEING USED");
+                }
 
                 System.out.println("Press any key to continue...");
                 scanner.nextLine();
@@ -885,18 +938,20 @@ public class Admin extends Person{
         System.out.println("|===================================================================================================================================================================|");
 
         for(int i = 0; i < doctorList.size(); i++){
-            System.out.printf("|%-8s|", doctorList.get(i).getDoctorID());
-            System.out.printf("%-25s|", doctorList.get(i).getName());
-            System.out.printf("%-20s|", doctorList.get(i).getSpecialization());
-            System.out.printf("%-25s|", doctorList.get(i).getAddress());
-            System.out.printf("%-6s|", doctorList.get(i).getGender());
-            System.out.printf("%-13s|", doctorList.get(i).getPhoneNumber());
-            System.out.printf("%-18s|", doctorList.get(i).getPassword());
-            System.out.printf("%-30s|", doctorList.get(i).getEmail());
-            System.out.printf("%-10d|", doctorList.get(i).getDoctorFee());
-            System.out.println();
+
+            if(!doctorList.get(i).getDoctorID().equals("DC00X")){
+                System.out.printf("|%-8s|", doctorList.get(i).getDoctorID());
+                System.out.printf("%-25s|", doctorList.get(i).getName());
+                System.out.printf("%-20s|", doctorList.get(i).getSpecialization());
+                System.out.printf("%-25s|", doctorList.get(i).getAddress());
+                System.out.printf("%-6s|", doctorList.get(i).getGender());
+                System.out.printf("%-13s|", doctorList.get(i).getPhoneNumber());
+                System.out.printf("%-18s|", doctorList.get(i).getPassword());
+                System.out.printf("%-30s|", doctorList.get(i).getEmail());
+                System.out.printf("%-10d|", doctorList.get(i).getDoctorFee());
+                System.out.println();
+            }
         }
-    
     }
 
 

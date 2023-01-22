@@ -1015,18 +1015,19 @@ public class Receptionist extends Person{
 
         for(int i = 0; i < doctorList.size(); i++){
 
-            int appointmentSize = doctorList.get(i).getAppointmentList().size();
+            if(!doctorList.get(i).getDoctorID().equals("DC00X")){
+                int appointmentSize = doctorList.get(i).getAppointmentList().size();
 
-            if(doctorList.get(i).getAppointmentList().get(0).getAppointmentID().equals("AP00X")){
-                appointmentSize -= 1;
+                if(doctorList.get(i).getAppointmentList().get(0).getAppointmentID().equals("AP00X")){
+                    appointmentSize -= 1;
+                }
+                    
+                System.out.printf("|%-9s|", doctorList.get(i).getDoctorID());
+                System.out.printf("%-21s|", doctorList.get(i).getName());
+                System.out.printf("%-24s|", doctorList.get(i).getSpecialization());
+                System.out.printf("%d/%-12d|", appointmentSize, 5);
+                System.out.println();
             }
-
-                
-            System.out.printf("|%-9s|", doctorList.get(i).getDoctorID());
-            System.out.printf("%-21s|", doctorList.get(i).getName());
-            System.out.printf("%-24s|", doctorList.get(i).getSpecialization());
-            System.out.printf("%d/%-12d|", appointmentSize, 5);
-            System.out.println();
         }
     }
 
