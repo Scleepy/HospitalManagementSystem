@@ -326,11 +326,11 @@ class Doctor extends Person{
                 int currentIDNumber = Integer.parseInt(currentID);
 
                 if(currentIDNumber + 1 < 10){
-                    prescriptionID = String.format("PA00%d", currentIDNumber + 1);
+                    prescriptionID = String.format("PR00%d", currentIDNumber + 1);
                 } else if (prescriptionList.size() < 100){
-                    prescriptionID = String.format("PA0%d", currentIDNumber + 1);
+                    prescriptionID = String.format("PR0%d", currentIDNumber + 1);
                 } else {
-                    prescriptionID = String.format("PA%d", currentIDNumber + 1);
+                    prescriptionID = String.format("PR%d", currentIDNumber + 1);
                 }
 
                 Prescription prescription = new Prescription(prescriptionID, patientMedicineList);

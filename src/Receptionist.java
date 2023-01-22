@@ -589,9 +589,50 @@ public class Receptionist extends Person{
 
             if(input.toLowerCase().equals("y")){
 
-                patientList.remove(index);
+                ArrayList<Appointment> appointmentDeleteList = new ArrayList<>();
+        
+                for(int i = 0; i < appointmentList.size(); i++){
+                    if(appointmentList.get(i).getPatient().getPatientID().equals(inputPatientID) && !appointmentList.get(i).getAppointmentID().equals("AP00X")){
+                        appointmentDeleteList.add(appointmentList.get(i));
+                    }
+                }
 
+                for(Appointment value : appointmentDeleteList){
+
+                    //REMOVE PATIENT DATA FROM BILLING RECORD
+                    if(value.getIsDone() == true){
+                        for (int i = 0; i < billingList.size(); i++){
+                            if(billingList.get(i).getAppointment() == value){
+                                billingList.remove(i);
+                            }
+                        }
+                    }
+        
+                    Doctor doctor = value.getDoctor();
+                    
+                    //REMOVE PATIENT DATA FROM DOCTOR APPOINTMENT
+                    if(!doctor.getDoctorID().equals("DC00X")){
+                        for(int i = 0; i < doctor.getAppointmentList().size(); i++){
+        
+                            if(doctor.getAppointmentList().get(i) == value){                        
+                                doctor.getAppointmentList().remove(i);
+                            }
+                        }
+                    }
+                    
+                    
+                    if(doctor.getAppointmentList().size() == 0){
+                        doctor.getAppointmentList().add(Appointment.getAppointment(appointmentList, "AP00X"));
+                    }
+        
+                    appointmentList.remove(appointmentList.indexOf(value));
+                }
+
+                patientList.remove(index);
+                Appointment.updateAppointmentDatabase(appointmentList);
                 Patient.updatePatientDatabase(patientList);
+                Billing.updateBillingDatabase(billingList);
+                Doctor.updateDoctorDatabase(doctorList);
 
                 System.out.println("Patient data deleted successfully!");
 
