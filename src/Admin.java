@@ -375,7 +375,7 @@ public class Admin extends Person{
         System.out.println("Phone Number: " + phoneNumber);
         System.out.println("Password: " + password);
         System.out.println("Email: " + email);
-        System.out.println("Fee per Month: " + docFee);
+        System.out.println("Fee: " + docFee);
 
         System.out.print("Reenter details? [Y/N]: ");
 
@@ -648,7 +648,7 @@ public class Admin extends Person{
                 System.out.println("5. Phone Number");
                 System.out.println("6. Password");
                 System.out.println("7. Email");
-                System.out.println("8. Fee per month");
+                System.out.println("8. Fee");
                 System.out.print(">> ");
 
                 int choice = 0;

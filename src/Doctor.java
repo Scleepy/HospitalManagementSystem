@@ -300,7 +300,8 @@ class Doctor extends Person{
                 do{
                     System.out.print("Enter patient symptoms [WITHOUT , & length > 10]: ");
                     symptoms = scanner.nextLine();
-                }while(symptoms.length() <= 10);
+
+                }while(symptoms.length() <= 10 || symptoms.indexOf(',') != -1);
 
                 //DISEASE SELECTION
                 Disease.showDisease(diseaseList);

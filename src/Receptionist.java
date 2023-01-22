@@ -1229,7 +1229,7 @@ public class Receptionist extends Person{
                 System.out.printf("|%-10s|", medicineList.get(i).getMedicineID());
                 System.out.printf("%-23s|", medicineList.get(i).getMedicineName());
                 System.out.printf("%-12d|", medicineList.get(i).getMedicineQuantity());
-                System.out.printf("%-14d|", medicineList.get(i).getMedicinePrice());
+                System.out.printf("%-14d|\n", medicineList.get(i).getMedicinePrice());
             }
 
             System.out.println("\n================================================================\n");
