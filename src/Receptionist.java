@@ -1215,9 +1215,12 @@ public class Receptionist extends Person{
 
             //GENERATE BILL
             String billingID = "";
+            int currentIDNumber = 0; 
 
-            String currentID = billingList.get(billingList.size() - 1).getBillingID().substring(2, 5);
-            int currentIDNumber = Integer.parseInt(currentID);
+            if(!billingList.isEmpty()){
+                String currentID = billingList.get(billingList.size() - 1).getBillingID().substring(2, 5);
+                currentIDNumber = Integer.parseInt(currentID);
+            }
 
             if(currentIDNumber + 1 < 10){
                 billingID = String.format("BL00%d", currentIDNumber + 1);
@@ -1263,19 +1266,9 @@ public class Receptionist extends Person{
             System.out.printf("%-13s|\n", appointment.getAppointmentID());
             System.out.println("=======================================================================================================\n");
 
-            System.out.println("==========================Prescription Info=====================");
-            System.out.println("|MedicineID|Medicine Name          |Quantity    |Medicine Price|");
-            System.out.println("================================================================");
-            
-            for(int i = 0; i < medicineList.size(); i++){
-                System.out.printf("|%-10s|", medicineList.get(i).getMedicineID());
-                System.out.printf("%-23s|", medicineList.get(i).getMedicineName());
-                System.out.printf("%-12d|", medicineList.get(i).getMedicineQuantity());
-                System.out.printf("%-14d|\n", medicineList.get(i).getMedicinePrice());
-            }
+            Medicine.showMedicineList(medicineList);
 
-            System.out.println("\n================================================================\n");
-            System.out.printf("Doctor Fee: Rp.%d\n", doctorFee);
+            System.out.printf("\nDoctor Fee: Rp.%d\n", doctorFee);
             System.out.printf("Medicine Fee: Rp.%d\n", medicineFee);
             System.out.printf("Total Bill: Rp.%d\n", totalBill);
 

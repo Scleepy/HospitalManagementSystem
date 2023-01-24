@@ -564,18 +564,20 @@ public class Admin extends Person{
 
             if(input.toLowerCase().equals("y")){
 
-                ArrayList<Appointment> doctorAppointmentList = Doctor.getDoctor(doctorList, inputDoctorID).getAppointmentList();
+                Doctor doctor = Doctor.getDoctor(doctorList, inputDoctorID);
 
                 boolean delete = true;
 
-                for(int i = 0; i < doctorAppointmentList.size(); i++){
+                for(int i = 0; i < appointmentList.size(); i++){
 
-                    boolean isConsulted = doctorAppointmentList.get(i).getIsConsulted();
-                    boolean isDone = doctorAppointmentList.get(i).getIsDone();
-
-                    if(isConsulted == true && isDone == false){
-                        delete = false;
-                        break;
+                    if(appointmentList.get(i).getDoctor() == doctor){
+                        boolean isConsulted = appointmentList.get(i).getIsConsulted();
+                        boolean isDone = appointmentList.get(i).getIsDone();
+                    
+                        if(isConsulted == true && isDone == false){
+                            delete = false;
+                            break;
+                        }
                     }
                 }
 
@@ -588,20 +590,11 @@ public class Admin extends Person{
                         Appointment appointment = appointmentList.get(i);
         
                         if(appointment.getDoctor().getDoctorID().equals(inputDoctorID)){
-        
-                            boolean isDone = appointment.getIsDone();
-        
-                            if(isDone == true){
-                                appointmentDeleteList.add(appointment);
-        
-                            } else {
-                                appointment.setDoctor(Doctor.getDoctor(doctorList, "DC00X"));
-                            }
+                            appointmentDeleteList.add(appointment);
                         }
                     }
         
                     for(int i = 0; i < appointmentDeleteList.size(); i++){
-        
                         for(int j = 0; j < billingList.size(); j++){
                             if(billingList.get(j).getAppointment() == appointmentDeleteList.get(i)){
                                 billingList.remove(j);
@@ -1173,9 +1166,12 @@ public class Admin extends Person{
         } while(!valid);
 
         String recID = "";
+        int currentIDNumber = 0; 
 
-        String currentID = receptionistList.get(receptionistList.size() - 1).getRecID().substring(2, 5);
-        int currentIDNumber = Integer.parseInt(currentID);
+        if(!billingList.isEmpty()){
+            String currentID = receptionistList.get(receptionistList.size() - 1).getRecID().substring(2, 5);
+            currentIDNumber = Integer.parseInt(currentID);
+        }
 
         if(currentIDNumber + 1 < 10){
             recID = String.format("RC00%d", currentIDNumber + 1);

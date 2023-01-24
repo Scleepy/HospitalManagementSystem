@@ -346,7 +346,11 @@ class Doctor extends Person{
 
                 //UPDATE DOCTOR
                 doctorAppointmentList.remove(indexAppointment);
-                doctorAppointmentList.add(Appointment.getAppointment(appointmentList, "AP00X"));
+
+                if(doctorAppointmentList.isEmpty()){
+                    doctorAppointmentList.add(Appointment.getAppointment(appointmentList, "AP00X"));
+                }
+                
                 Doctor.updateDoctorDatabase(doctorList);
 
                 //UPDATE PRESCRIPTION
