@@ -1,4 +1,4 @@
-## ReadMe
+## Read Me
 
 ### Code Reengineering - LB01 - AoL Kelompok 6
 - Daniel Yohanes - 2501975261
