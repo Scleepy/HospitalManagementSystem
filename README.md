@@ -1,6 +1,11 @@
-## Getting Started
+## ReadMe
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+### Code Reengineering - LB01 - AoL Kelompok 6
+Daniel Yohanes - 2501975261
+Kenneth Filbert - 2501973142
+Jessen Surya Putra - 2501971351
+
+The system was developed and tested with JDK 19.
 
 ## Folder Structure
 
