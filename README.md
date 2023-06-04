@@ -1,9 +1,9 @@
 ## ReadMe
 
 ### Code Reengineering - LB01 - AoL Kelompok 6
-Daniel Yohanes - 2501975261
-Kenneth Filbert - 2501973142
-Jessen Surya Putra - 2501971351
+- Daniel Yohanes - 2501975261
+- Kenneth Filbert - 2501973142
+- Jessen Surya Putra - 2501971351
 
 The system was developed and tested with JDK 19.
 
