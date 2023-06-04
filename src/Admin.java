@@ -8,8 +8,28 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class Admin extends Person{
-    String adminID;
+public class Admin extends Person {
+
+    //Code Smell: Encapsulation Smell (Deficient Encapsulation)
+    //Solution: add private access modifier
+
+    //before
+    //String adminID;
+
+    //after
+    private String adminID;
+
+    //Code Smell: Hierarchy Smell (Unfactored Hierarchy)
+    //Solution: add new class that contains all the method that will be used
+    //and create a new object to use that class
+
+    //before
+    //empty
+    
+    //after
+    private static Utility utility = new Utility();
+
+    public Admin(){};
 
     public Admin(String name, String address, String gender, String phoneNumber, String email, String password, String adminID){
         super(name, address, gender, phoneNumber, email, password);
@@ -23,7 +43,7 @@ public class Admin extends Person{
     public void setAdminID(String adminID) {
         this.adminID = adminID;
     }
-
+    
     public static void loadAdmin(ArrayList<Admin> adminList){
         try{
 
@@ -221,16 +241,21 @@ public class Admin extends Person{
 
         Scanner s = new Scanner(System.in);
         
-        
         // doctor name
         do{
             valid = true;
 
             System.out.print("Enter doctor name: ");
             name = s.nextLine();
-            
 
-            if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+            //BEFORE
+            // if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+            //     System.out.println("Invalid name! Try again!");
+            //     valid = false;
+            // } 
+            
+            //AFTER
+            if((name.length() < 5) || utility.hasNumber(name) || utility.validSpace(name)){
                 System.out.println("Invalid name! Try again!");
                 valid = false;
             } 
@@ -245,7 +270,14 @@ public class Admin extends Person{
             System.out.print("Input doctor specialization: ");
             specialization = s.nextLine();
             
-            if(hasNumber(name)){
+            //BEFORE
+            // if(hasNumber(name)){
+            //     System.out.println("Invalid name! Try again!");
+            //     valid = false;
+            // }
+            
+            //AFTER
+            if(utility.hasNumber(name)){
                 System.out.println("Invalid name! Try again!");
                 valid = false;
             }
@@ -301,7 +333,14 @@ public class Admin extends Person{
                 }
             }
 
-            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+            //BEFORE
+            // if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+            //     System.out.println("Invalid number! Try again!");
+            //     valid = false;
+            // } 
+            
+            //AFTER
+            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || utility.hasLetter(phoneNumber)){
                 System.out.println("Invalid number! Try again!");
                 valid = false;
             } 
@@ -427,48 +466,49 @@ public class Admin extends Person{
         s.close();
     }
     
-    public static Boolean hasNumber(String str){
+    //before
+    // public static Boolean hasNumber(String str){
         
-        Boolean numberExist = false;
+    //     Boolean numberExist = false;
 
-        for(int i = 0; i < str.length(); i++){
-            if(Character.isDigit(str.charAt(i))){
-                numberExist = true;
-                break;
-            }
-        }
+    //     for(int i = 0; i < str.length(); i++){
+    //         if(Character.isDigit(str.charAt(i))){
+    //             numberExist = true;
+    //             break;
+    //         }
+    //     }
 
-        return numberExist;
-    }
+    //     return numberExist;
+    // }
 
-    public static Boolean validSpace(String str){
+    // public static Boolean validSpace(String str){
         
-        int count = 0;
+    //     int count = 0;
 
-        for(int i = 0; i < str.length(); i++){
-            if(str.charAt(i) == ' ') count++;
-        }
+    //     for(int i = 0; i < str.length(); i++){
+    //         if(str.charAt(i) == ' ') count++;
+    //     }
 
-        if(count < 1){
-            return true;
-        } else {
-            return false;
-        }
-    }
+    //     if(count < 1){
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
-    public static Boolean hasLetter(String str){
+    // public static Boolean hasLetter(String str){
         
-        Boolean letterExist = false;
+    //     Boolean letterExist = false;
 
-        for(int i = 0; i < str.length(); i++){
-            if(Character.isLetter(str.charAt(i))){
-                letterExist = true;
-                break;
-            }
-        }
+    //     for(int i = 0; i < str.length(); i++){
+    //         if(Character.isLetter(str.charAt(i))){
+    //             letterExist = true;
+    //             break;
+    //         }
+    //     }
 
-        return letterExist;
-    }
+    //     return letterExist;
+    // }
 
     public static void deleteUpdateDoctorMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, 
     ArrayList<Appointment> appointmentList, int operation, 
@@ -718,8 +758,15 @@ public class Admin extends Person{
                 
                             System.out.print("Enter doctor name: ");
                             name = scanner.nextLine();
+
+                            //BEFORE
+                            // if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+                            //     System.out.println("Invalid name! Try again!");
+                            //     valid = false;
+                            // } 
                             
-                            if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+                            //AFTER
+                            if((name.length() < 5) || utility.hasNumber(name) || utility.validSpace(name)){
                                 System.out.println("Invalid name! Try again!");
                                 valid = false;
                             } 
@@ -739,8 +786,15 @@ public class Admin extends Person{
                             
                             System.out.print("Input doctor specialization: ");
                             specialization = scanner.nextLine();
+
+                            //BEFORE
+                            // if(hasNumber(name)){
+                            //     System.out.println("Invalid name! Try again!");
+                            //     valid = false;
+                            // }
                             
-                            if(hasNumber(name)){
+                            //AFTER
+                            if(utility.hasNumber(name)){
                                 System.out.println("Invalid name! Try again!");
                                 valid = false;
                             }
@@ -810,8 +864,15 @@ public class Admin extends Person{
                                     break;
                                 }
                             }
-                
-                            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+
+                            //BEFORE
+                            // if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+                            //     System.out.println("Invalid number! Try again!");
+                            //     valid = false;
+                            // } 
+                                
+                            //AFTER
+                            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || utility.hasLetter(phoneNumber)){
                                 System.out.println("Invalid number! Try again!");
                                 valid = false;
                             } 
@@ -1037,8 +1098,14 @@ public class Admin extends Person{
             System.out.print("Enter receptionist name: ");
             name = s.nextLine();
             
+            //BEFORE
+            // if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+            //     System.out.println("Invalid name! Try again!");
+            //     valid = false;
+            // } 
 
-            if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+            //AFTER
+            if((name.length() < 5) || utility.hasNumber(name) || utility.validSpace(name)){
                 System.out.println("Invalid name! Try again!");
                 valid = false;
             } 
@@ -1093,7 +1160,14 @@ public class Admin extends Person{
                 }
             }
 
-            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+            //BEFORE
+            // if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+            //     System.out.println("Invalid number! Try again!");
+            //     valid = false;
+            // } 
+
+            //AFTER
+            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || utility.hasLetter(phoneNumber)){
                 System.out.println("Invalid number! Try again!");
                 valid = false;
             } 
@@ -1394,7 +1468,14 @@ public class Admin extends Person{
                             System.out.print("Enter receptionist name: ");
                             name = scanner.nextLine();
                             
-                            if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+                            //BEFORE
+                            // if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+                            //     System.out.println("Invalid name! Try again!");
+                            //     valid = false;
+                            // } 
+                            
+                            //AFTER
+                            if((name.length() < 5) || utility.hasNumber(name) || utility.validSpace(name)){
                                 System.out.println("Invalid name! Try again!");
                                 valid = false;
                             } 
@@ -1467,8 +1548,15 @@ public class Admin extends Person{
                                     break;
                                 }
                             }
-                
-                            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+
+                            //BEFORE
+                            // if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+                            //     System.out.println("Invalid number! Try again!");
+                            //     valid = false;
+                            // } 
+                                
+                            //AFTER
+                            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || utility.hasLetter(phoneNumber)){
                                 System.out.println("Invalid number! Try again!");
                                 valid = false;
                             } 

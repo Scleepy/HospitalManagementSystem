@@ -11,7 +11,18 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Receptionist extends Person{
-    String recID;
+
+    //Code Smell: Encapsulation Smell (Deficient Encapsulation)
+    //Solution: Menambahkan private access modifier
+    
+    //before
+    //String recID;
+
+    //after
+    private String recID;
+
+    
+    private static Utility utility = new Utility();
 
     public Receptionist(String name, String address, String gender, String phoneNumber, String email, String password, String recID){
         super(name, address, gender, phoneNumber, email, password);
@@ -309,8 +320,14 @@ public class Receptionist extends Person{
             System.out.print("Enter patient name: ");
             name = scanner.nextLine();
             
+            //BEFORE
+            // if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+            //     System.out.println("Invalid name! Try again!");
+            //     valid = false;
+            // } 
 
-            if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+            //AFTER
+            if((name.length() < 5) || utility.hasNumber(name) || utility.validSpace(name)){
                 System.out.println("Invalid name! Try again!");
                 valid = false;
             } 
@@ -374,7 +391,14 @@ public class Receptionist extends Person{
                 }
             }
 
-            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+            //BEFORE
+            // if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+            //     System.out.println("Invalid number! Try again!");
+            //     valid = false;
+            // } 
+
+            //AFTER
+            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || utility.hasLetter(phoneNumber)){
                 System.out.println("Invalid number! Try again!");
                 valid = false;
             } 
@@ -457,48 +481,48 @@ public class Receptionist extends Person{
         scanner.close();
     }
 
-    public static Boolean hasNumber(String str){
+    // public static Boolean hasNumber(String str){
         
-        Boolean numberExist = false;
+    //     Boolean numberExist = false;
 
-        for(int i = 0; i < str.length(); i++){
-            if(Character.isDigit(str.charAt(i))){
-                numberExist = true;
-                break;
-            }
-        }
+    //     for(int i = 0; i < str.length(); i++){
+    //         if(Character.isDigit(str.charAt(i))){
+    //             numberExist = true;
+    //             break;
+    //         }
+    //     }
 
-        return numberExist;
-    }
+    //     return numberExist;
+    // }
 
-    public static Boolean validSpace(String str){
+    // public static Boolean validSpace(String str){
         
-        int count = 0;
+    //     int count = 0;
 
-        for(int i = 0; i < str.length(); i++){
-            if(str.charAt(i) == ' ') count++;
-        }
+    //     for(int i = 0; i < str.length(); i++){
+    //         if(str.charAt(i) == ' ') count++;
+    //     }
 
-        if(count < 1){
-            return true;
-        } else {
-            return false;
-        }
-    }
+    //     if(count < 1){
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
-    public static Boolean hasLetter(String str){
+    // public static Boolean hasLetter(String str){
         
-        Boolean letterExist = false;
+    //     Boolean letterExist = false;
 
-        for(int i = 0; i < str.length(); i++){
-            if(Character.isLetter(str.charAt(i))){
-                letterExist = true;
-                break;
-            }
-        }
+    //     for(int i = 0; i < str.length(); i++){
+    //         if(Character.isLetter(str.charAt(i))){
+    //             letterExist = true;
+    //             break;
+    //         }
+    //     }
 
-        return letterExist;
-    }
+    //     return letterExist;
+    // }
 
     public static void deleteUpdatePatientMenu(ArrayList<Patient> patientList, ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList, int operation, ArrayList<Billing> billingList, ArrayList<Prescription> prescriptionList, ArrayList<Disease> diseaseList){
 
@@ -746,8 +770,15 @@ public class Receptionist extends Person{
                 
                             System.out.print("Enter patient name: ");
                             name = scanner.nextLine();
+
+                            //BEFORE
+                            // if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+                            //     System.out.println("Invalid name! Try again!");
+                            //     valid = false;
+                            // } 
                             
-                            if((name.length() < 5) || hasNumber(name) || validSpace(name)){
+                            //AFTER
+                            if((name.length() < 5) || utility.hasNumber(name) || utility.validSpace(name)){
                                 System.out.println("Invalid name! Try again!");
                                 valid = false;
                             } 
@@ -814,8 +845,15 @@ public class Receptionist extends Person{
                                     break;
                                 }
                             }
-                
-                            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+
+                            //BEFORE
+                            // if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || hasLetter(phoneNumber)){
+                            //     System.out.println("Invalid number! Try again!");
+                            //     valid = false;
+                            // } 
+
+                            //AFTER
+                            if(phoneNumber.length() < 10 || phoneNumber.length() > 13 || utility.hasLetter(phoneNumber)){
                                 System.out.println("Invalid number! Try again!");
                                 valid = false;
                             } 

@@ -5,10 +5,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Disease {
-    String diseaseID;
-    String diseaseName;
-    String category;
-    String dangerLevel;
+
+    //Code Smell: Encapsulation Smell (Deficient Encapsulation)
+    //Solution: Menambahkan private access modifier
+
+    //before
+    // String diseaseID;
+    // String diseaseName;
+    // String category;
+    // String dangerLevel;
+
+    //after
+    private String diseaseID;
+    private String diseaseName;
+    private String category;
+    private String dangerLevel;
 
     public Disease(String diseaseID, String diseaseName, String category, String dangerLevel){
         this.diseaseID = diseaseID;

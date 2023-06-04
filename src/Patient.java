@@ -7,8 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 class Patient extends Person{
-    String patientID;
-    String bloodType;
+
+    //Code Smell: Encapsulation Smell (Deficient Encapsulation)
+    //Solution: Menambahkan private access modifier
+
+    //before
+    // String patientID;
+    // String bloodType;
+
+    //after
+    private String patientID;
+    private String bloodType;
 
     public Patient(){};
 

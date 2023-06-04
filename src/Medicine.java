@@ -4,10 +4,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 public class Medicine {
-    public String medicineID, medicineName, medicineDescription, medicineInstruction;
-	public int medicineQuantity, medicinePrice;
+
+    //Code Smell: Encapsulation Smell (Deficient Encapsulation)
+    //Solution: mengganti private access modifier
+    
+    //before
+    // public String medicineID, medicineName, medicineDescription, medicineInstruction;
+	// public int medicineQuantity, medicinePrice;
+
+    //after
+    private String medicineID, medicineName, medicineDescription, medicineInstruction;
+	private int medicineQuantity, medicinePrice;
 	
-	Medicine(String medicineID, String medicineName, int medicineQuantity, String medicineDescription, String medicineInstruction, int medicinePrice) {
+	public Medicine(String medicineID, String medicineName, int medicineQuantity, String medicineDescription, String medicineInstruction, int medicinePrice) {
 		this.medicineID = medicineID;
 		this.medicineName = medicineName;
 		this.medicineQuantity = medicineQuantity;
@@ -15,30 +24,59 @@ public class Medicine {
 		this.medicineInstruction = medicineInstruction;
 		this.medicinePrice = medicinePrice;
 	}
-	
-	public String getMedicineID() {
+
+    //Code Smell: Abstraction Smell (Incomplete Abstraction)
+    //Solution: add setter for all variables
+
+    //before
+    public String getMedicineID() {
 		return medicineID;
 	}
-	
-	public String getMedicineName() {
+
+    public String getMedicineName() {
 		return medicineName;
 	}
-	
-	public int getMedicineQuantity() {
+
+    public int getMedicineQuantity() {
 		return medicineQuantity;
 	}
-	
-	public String getMedicineDescription() {
+
+    public String getMedicineDescription() {
 		return medicineDescription;
 	}
-	
-	public String getMedicineInstruction() {
+
+    public String getMedicineInstruction() {
 		return medicineInstruction;
 	}
-	
-	public int getMedicinePrice() {
+
+    public int getMedicinePrice() {
 		return medicinePrice;
 	}
+    
+    //after
+    public void setMedicineID(String medicineID){
+        this.medicineID = medicineID;
+    }    
+    
+    public void setMedicineName(String medicineName){
+        this.medicineName = medicineName;
+    }
+        
+    public void setMedicineQuantity(int medicineQuantity){
+        this.medicineQuantity = medicineQuantity;
+    }
+	
+    public void setMedicineDescription(String medicineDescription){
+        this.medicineDescription = medicineDescription;
+    }
+
+    public void setMedicineInstruction(String medicineInstruction){
+        this.medicineInstruction = medicineInstruction;
+    }
+
+    public void setMedicinePrice(int medicinePrice){
+        this.medicinePrice = medicinePrice;
+    }
 
 	public static Medicine getMedicine(ArrayList<Medicine> medicineList, String medicineID){
 

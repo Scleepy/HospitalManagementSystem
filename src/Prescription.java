@@ -8,7 +8,15 @@ import java.util.ArrayList;
 
 public class Prescription {
 	private String prescriptionID;
-	ArrayList <Medicine> medicineList = new ArrayList <>();
+
+    //Code Smell: Encapsulation Smell (Deficient Encapsulation)
+    //Solution: Menambahkan private access modifier
+    
+    //before
+    //ArrayList <Medicine> medicineList = new ArrayList <>();
+    
+    //after
+	private ArrayList <Medicine> medicineList = new ArrayList <>();
 	
 	public Prescription(String prescriptionID, ArrayList<Medicine> medicineList) {
 		this.prescriptionID = prescriptionID;
@@ -23,12 +31,37 @@ public class Prescription {
 		this.prescriptionID = prescriptionID;
 	}
 
-	public ArrayList<Medicine> getMedicineList() {
-		return medicineList;
-	}
+    //Code Smell: Encapsulation Smell (Leaky Encapsulation)
+    //Solution: Mengganti shallow copy menjadi defensive copy
 
-	public void setMedicineList(ArrayList<Medicine> medicineList) {
-		this.medicineList = medicineList;
+    //before
+    // public ArrayList<Medicine> getMedicineList() {
+	// 	return medicineList;
+	// }
+
+    // public void setMedicineList(ArrayList<Medicine> medicineList) {
+	// 	this.medicineList = medicineList;
+	// }
+
+    //after (DEFENSIVE COPY)
+	public ArrayList<Medicine> getMedicineList() {
+        return new ArrayList<>(medicineList);
+	}
+    
+    //DEEP COPY
+    // public ArrayList<Medicine> getMedicineList() {
+    //     ArrayList<Medicine> deepCopyMedicineList = new ArrayList<>();
+
+    //     for (Medicine medicine : this.medicineList) {
+    //         Medicine copiedMedicine = new Medicine(medicine.getMedicineID(), medicine.getMedicineName(), medicine.getMedicineQuantity(), medicine.getMedicineDescription(), medicine.getMedicineInstruction(), medicine.getMedicinePrice());
+    //         deepCopyMedicineList.add(copiedMedicine);
+    //     }
+        
+    //     return deepCopyMedicineList;
+    // }
+
+    public void setMedicineList(ArrayList<Medicine> medicineList) {
+		this.medicineList = new ArrayList<>(medicineList);
 	}
 
 	public static Prescription getPrescription(ArrayList<Prescription> prescriptionList, String prescriptionID){

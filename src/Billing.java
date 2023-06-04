@@ -66,7 +66,7 @@ public class Billing {
                 br = new BufferedReader(new FileReader("src/Database/BillingRecords.csv"));
             }
             
-             String line;
+            String line;
 
             while((line = br.readLine()) != null){
                 String[] detail = line.split(",");

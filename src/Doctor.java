@@ -7,15 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class Doctor extends Person{
+class Doctor extends Person {
     private String doctorID;
     private String specialization;
     private ArrayList<Appointment> appointmentList = new ArrayList<>();
     private Integer doctorFee;
 
-    public Doctor(){};
+    public Doctor() {
+    };
 
-    public Doctor(String name, String address, String gender, String phoneNumber, String email, String password, String doctorID, String specialization, ArrayList<Appointment> appointmentList, Integer doctorFee){
+    public Doctor(String name, String address, String gender, String phoneNumber, String email, String password,
+            String doctorID, String specialization, ArrayList<Appointment> appointmentList, Integer doctorFee) {
         super(name, address, gender, phoneNumber, email, password);
         this.doctorID = doctorID;
         this.specialization = specialization;
@@ -39,13 +41,40 @@ class Doctor extends Person{
         this.specialization = specialization;
     }
 
-    public ArrayList<Appointment> getAppointmentList() {
-        return this.appointmentList;
+    //Code Smell: Encapsulation Smell (Leaky Encapsulation)
+    //Solution: Mengganti shallow copy menjadi defensive copy
+
+    // after (DEFENSIVE COPY)
+    public void setAppointmentList(ArrayList<Appointment> appointmentList) {
+        this.appointmentList = new ArrayList<>(appointmentList);
     }
 
-    public void setAppointmentList(ArrayList<Appointment> appointmentList) {
-        this.appointmentList = appointmentList;
+    public ArrayList<Appointment> getAppointmentList(){
+        return new ArrayList<Appointment>(appointmentList);
     }
+
+    // DEEP COPY
+    // public ArrayList<Appointment> getAppointmentList() {
+    //     ArrayList<Appointment> deepCopyAppointmentList = new ArrayList<>();
+
+    //     for (Appointment appointment : this.appointmentList) {
+    //         Appointment copiedAppointment = new Appointment(appointment.getAppointmentID(), appointment.getDateTime(), appointment.getEmergency(), appointment.getIsConsulted(), appointment.getGivenMedicine(), appointment.getIsDone(), appointment.getPatient(), appointment.getDoctor(), appointment.getPrescription(), appointment.getDisease(), appointment.getSymptoms());
+    //         deepCopyAppointmentList.add(copiedAppointment);
+    //     }
+        
+    //     return deepCopyAppointmentList;
+    // }
+
+    // before
+    // public ArrayList<Appointment> getAppointmentList() {
+    //     System.out.println(this.appointmentList.size());
+    //     return this.appointmentList;
+    // }
+
+    // public void setAppointmentList(ArrayList<Appointment> appointmentList) {
+    // this.appointmentList = appointmentList;
+    // }
+ 
 
     public Integer getDoctorFee() {
         return doctorFee;
@@ -54,13 +83,13 @@ class Doctor extends Person{
     public void setDoctorFee(Integer doctorFee) {
         this.doctorFee = doctorFee;
     }
-    
-    public static Doctor getDoctor(ArrayList<Doctor> doctorList, String doctorID){
+
+    public static Doctor getDoctor(ArrayList<Doctor> doctorList, String doctorID) {
 
         int index = -1;
 
-        for(int i = 0; i < doctorList.size(); i++){
-            if(doctorList.get(i).getDoctorID().equals(doctorID)){
+        for (int i = 0; i < doctorList.size(); i++) {
+            if (doctorList.get(i).getDoctorID().equals(doctorID)) {
                 index = i;
                 break;
             }
@@ -69,12 +98,12 @@ class Doctor extends Person{
         return doctorList.get(index);
     }
 
-    public static int searchDoctor(ArrayList<Doctor> doctorList, String inputDoctorID){
+    public static int searchDoctor(ArrayList<Doctor> doctorList, String inputDoctorID) {
 
         int index = -1;
 
-        for(int i = 0; i < doctorList.size(); i++){
-            if(doctorList.get(i).getDoctorID().equals(inputDoctorID)){
+        for (int i = 0; i < doctorList.size(); i++) {
+            if (doctorList.get(i).getDoctorID().equals(inputDoctorID)) {
                 index = i;
                 break;
             }
@@ -83,8 +112,8 @@ class Doctor extends Person{
         return index;
     }
 
-    public static void loadDoctors(ArrayList<Doctor> doctorList){
-        try{
+    public static void loadDoctors(ArrayList<Doctor> doctorList) {
+        try {
 
             BufferedReader br;
 
@@ -93,20 +122,21 @@ class Doctor extends Person{
             } catch (Exception e) {
                 br = new BufferedReader(new FileReader("src/Database/DoctorRecords.csv"));
             }
-            
+
             String line;
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] detail = line.split(",");
 
                 ArrayList<Appointment> doctorAppointmentList = new ArrayList<Appointment>();
 
-                doctorList.add(new Doctor(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6], detail[7], doctorAppointmentList, Integer.parseInt(detail[9])));
+                doctorList.add(new Doctor(detail[0], detail[1], detail[2], detail[3], detail[4], detail[5], detail[6],
+                        detail[7], doctorAppointmentList, Integer.parseInt(detail[9])));
             }
 
             br.close();
 
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("DoctorRecords.csv not found, closing application...");
             System.exit(0);
@@ -116,21 +146,22 @@ class Doctor extends Person{
             System.exit(0);
         }
     }
+    
 
-    public static void updateDoctorDatabase(ArrayList<Doctor> doctorList){
+    public static void updateDoctorDatabase(ArrayList<Doctor> doctorList) {
 
         try {
             BufferedWriter bw;
-        
+
             try {
-                bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",false));
+                bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv", false));
             } catch (Exception e) {
-                bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",false));
+                bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv", false));
             }
 
             bw.write("");
 
-            for(int i = 0; i < doctorList.size(); i++){
+            for (int i = 0; i < doctorList.size(); i++) {
 
                 String name = doctorList.get(i).getName();
                 String address = doctorList.get(i).getAddress();
@@ -144,31 +175,32 @@ class Doctor extends Person{
 
                 ArrayList<Appointment> doctorAppointmentList = doctorList.get(i).getAppointmentList();
                 String doctorAppointmentString = "";
-                
-                for(int j = 0; j < doctorAppointmentList.size(); j++){
+
+                for (int j = 0; j < doctorAppointmentList.size(); j++) {
                     doctorAppointmentString = doctorAppointmentString + doctorAppointmentList.get(j).getAppointmentID();
 
-                    if(j < doctorAppointmentList.size() - 1){
+                    if (j < doctorAppointmentList.size() - 1) {
                         doctorAppointmentString = doctorAppointmentString + "#";
                     }
-                }                
+                }
 
                 String doctorFee = String.valueOf(doctorList.get(i).getDoctorFee());
 
-                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", name, address, gender, phoneNumber, email, password, doctorID, specialization, doctorAppointmentString, doctorFee);
-                
+                String writeString = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", name, address, gender, phoneNumber,
+                        email, password, doctorID, specialization, doctorAppointmentString, doctorFee);
+
                 try {
                     try {
-                        bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv",true));
+                        bw = new BufferedWriter(new FileWriter("./Database/DoctorRecords.csv", true));
                     } catch (Exception e) {
-                        bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv",true));
+                        bw = new BufferedWriter(new FileWriter("src/Database/DoctorRecords.csv", true));
                     }
 
                     bw.write(writeString);
                     bw.newLine();
                     bw.close();
-    
-                } catch (FileNotFoundException e){
+
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     System.out.println("DoctorRecords.csv not found, closing application...");
                     System.exit(0);
@@ -176,49 +208,10 @@ class Doctor extends Person{
                     e.printStackTrace();
                     System.out.println("IOException occurred, closing application...");
                     System.exit(0);
-                }            
-            }
-
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.println("DoctorRecords.csv not found, closing application...");
-            System.exit(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("IOException occurred, closing application...");
-            System.exit(0);
-        }
-    }  
-
-    public static void loadAppointmentListDoctor(ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList){
-
-        try{
-
-            BufferedReader br;
-
-            try {
-                br = new BufferedReader(new FileReader("./Database/DoctorRecords.csv"));
-            } catch (Exception e) {
-                br = new BufferedReader(new FileReader("src/Database/DoctorRecords.csv"));
-            }
-            
-            String line;
-
-            while((line = br.readLine()) != null){
-                String[] detail = line.split(",");
-
-                Doctor doctor = Doctor.getDoctor(doctorList, detail[6]);
-                
-                String[] appointmentArr = detail[8].split("#");
-
-                for(String appointmentID : appointmentArr){   
-                    doctor.getAppointmentList().add(Appointment.getAppointment(appointmentList, appointmentID));
                 }
             }
 
-            br.close();
-
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("DoctorRecords.csv not found, closing application...");
             System.exit(0);
@@ -229,15 +222,61 @@ class Doctor extends Person{
         }
     }
 
-    public static void showDoctorAppointments(ArrayList<Appointment> doctorAppointmentList){
+    public static void loadAppointmentListDoctor(ArrayList<Doctor> doctorList, ArrayList<Appointment> appointmentList) {
+
+        try {
+
+            BufferedReader br;
+
+            try {
+                br = new BufferedReader(new FileReader("./Database/DoctorRecords.csv"));
+            } catch (Exception e) {
+                br = new BufferedReader(new FileReader("src/Database/DoctorRecords.csv"));
+            }
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] detail = line.split(",");
+                Doctor doctor = Doctor.getDoctor(doctorList, detail[6]);
+                String[] appointmentArr = detail[8].split("#");
+                
+                //BEFORE
+                // for(String appointmentID : appointmentArr){  
+                //     doctor.getAppointmentList().add(Appointment.getAppointment(appointmentList, appointmentID));
+                // }
+                
+                //AFTER
+                ArrayList<Appointment> doctorAppointments = new ArrayList<Appointment>();
+                for (String appointmentID : appointmentArr) {
+                    doctorAppointments.add(Appointment.getAppointment(appointmentList, appointmentID));
+                }
+                doctor.setAppointmentList(doctorAppointments);
+                
+            }
+
+            br.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("DoctorRecords.csv not found, closing application...");
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException occurred, closing application...");
+            System.exit(0);
+        }
+    }
+
+    public static void showDoctorAppointments(ArrayList<Appointment> doctorAppointmentList) {
 
         System.out.println("===================================APPOINTMENT LIST====================================");
         System.out.println("|AppointmentID|Patient Name             |Consulted|PrescriptionID|Given Medicine|Done |");
         System.out.println("=======================================================================================");
 
-        for(int i = 0; i < doctorAppointmentList.size(); i++) {
+        for (int i = 0; i < doctorAppointmentList.size(); i++) {
 
-            if(!doctorAppointmentList.get(i).getAppointmentID().equals("AP00X")){
+            if (!doctorAppointmentList.get(i).getAppointmentID().equals("AP00X")) {
                 System.out.printf("|%-13s|", doctorAppointmentList.get(i).getAppointmentID());
                 System.out.printf("%-25s|", doctorAppointmentList.get(i).getPatient().getName());
 
@@ -248,16 +287,16 @@ class Doctor extends Person{
                 System.out.println();
             }
 
-            
-            
         }
 
-        if(doctorAppointmentList.size() == 0){
+        if (doctorAppointmentList.size() == 0) {
             System.out.println("No Data");
         }
     }
 
-    public static void doctorMenu(String doctorID, ArrayList<Doctor> doctorList, ArrayList<Disease> diseaseList, ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList, ArrayList<Appointment> appointmentList){
+    public static void doctorMenu(String doctorID, ArrayList<Doctor> doctorList, ArrayList<Disease> diseaseList,
+            ArrayList<Medicine> medicineList, ArrayList<Prescription> prescriptionList,
+            ArrayList<Appointment> appointmentList) {
 
         ArrayList<Appointment> doctorAppointmentList = getDoctor(doctorList, doctorID).getAppointmentList();
 
@@ -281,104 +320,106 @@ class Doctor extends Person{
             doctorMenu(doctorID, doctorList, diseaseList, medicineList, prescriptionList, appointmentList);
         }
 
-        switch (choice) { 
+        switch (choice) {
             case 1:
 
-            String inputAppointmentID = "";
-        
-            System.out.print("Enter appointmentID: ");
-            inputAppointmentID = scanner.nextLine();
+                String inputAppointmentID = "";
 
-            int indexAppointment = Appointment.searchAppointmentDoctor(doctorAppointmentList, inputAppointmentID);
+                System.out.print("Enter appointmentID: ");
+                inputAppointmentID = scanner.nextLine();
 
-            if(indexAppointment != -1){
+                int indexAppointment = Appointment.searchAppointmentDoctor(doctorAppointmentList, inputAppointmentID);
 
-                String symptoms = "";
-                String diseaseID = "";
-                ArrayList<Medicine> patientMedicineList = new ArrayList<>();
-                
-                do{
-                    System.out.print("Enter patient symptoms [WITHOUT , & length > 10]: ");
-                    symptoms = scanner.nextLine();
+                if (indexAppointment != -1) {
 
-                }while(symptoms.length() <= 10 || symptoms.indexOf(',') != -1);
+                    String symptoms = "";
+                    String diseaseID = "";
+                    ArrayList<Medicine> patientMedicineList = new ArrayList<>();
 
-                //DISEASE SELECTION
-                Disease.showDisease(diseaseList);
+                    do {
+                        System.out.print("Enter patient symptoms [WITHOUT , & length > 10]: ");
+                        symptoms = scanner.nextLine();
 
-                int indexDisease = -1;
+                    } while (symptoms.length() <= 10 || symptoms.indexOf(',') != -1);
 
-                do{
-                    System.out.print("Select disease from database: ");
-                    diseaseID = scanner.nextLine();
+                    // DISEASE SELECTION
+                    Disease.showDisease(diseaseList);
 
-                    indexDisease = Disease.searchDisease(diseaseList, diseaseID);
-                }while(indexDisease == -1);
+                    int indexDisease = -1;
 
+                    do {
+                        System.out.print("Select disease from database: ");
+                        diseaseID = scanner.nextLine();
 
-                //MEDICINE SELECTION
-                doctorMedicineSelection(medicineList, patientMedicineList);
+                        indexDisease = Disease.searchDisease(diseaseList, diseaseID);
+                    } while (indexDisease == -1);
 
-                //CREATE PRESCRIPTION
-                String prescriptionID = "";
+                    // MEDICINE SELECTION
+                    doctorMedicineSelection(medicineList, patientMedicineList);
 
-                String currentID = prescriptionList.get(prescriptionList.size() - 1).getPrescriptionID().substring(2, 5);
-                int currentIDNumber = Integer.parseInt(currentID);
+                    // CREATE PRESCRIPTION
+                    String prescriptionID = "";
 
-                if(currentIDNumber + 1 < 10){
-                    prescriptionID = String.format("PR00%d", currentIDNumber + 1);
-                } else if (prescriptionList.size() < 100){
-                    prescriptionID = String.format("PR0%d", currentIDNumber + 1);
+                    String currentID = prescriptionList.get(prescriptionList.size() - 1).getPrescriptionID()
+                            .substring(2, 5);
+                    int currentIDNumber = Integer.parseInt(currentID);
+
+                    if (currentIDNumber + 1 < 10) {
+                        prescriptionID = String.format("PR00%d", currentIDNumber + 1);
+                    } else if (prescriptionList.size() < 100) {
+                        prescriptionID = String.format("PR0%d", currentIDNumber + 1);
+                    } else {
+                        prescriptionID = String.format("PR%d", currentIDNumber + 1);
+                    }
+
+                    Prescription prescription = new Prescription(prescriptionID, patientMedicineList);
+                    prescriptionList.add(prescription);
+
+                    // UPDATE APPOINTMENT
+                    Appointment currentAppointment = Appointment.getAppointment(doctorAppointmentList,
+                            inputAppointmentID);
+                    currentAppointment.setDisease(Disease.getDisease(diseaseList, diseaseID));
+                    currentAppointment.setSymptoms(symptoms);
+                    currentAppointment.setPrescription(prescription);
+                    currentAppointment.setIsConsulted(true);
+                    Appointment.updateAppointmentDatabase(appointmentList);
+
+                    // UPDATE DOCTOR
+                    doctorAppointmentList.remove(indexAppointment);
+
+                    if (doctorAppointmentList.isEmpty()) {
+                        doctorAppointmentList.add(Appointment.getAppointment(appointmentList, "AP00X"));
+                    }
+
+                    Doctor.updateDoctorDatabase(doctorList);
+
+                    // UPDATE PRESCRIPTION
+                    Prescription.updatePrescriptionDatabase(prescriptionList);
+
+                    System.out.println("Patient consulted.");
+                    scanner.nextLine();
+
                 } else {
-                    prescriptionID = String.format("PR%d", currentIDNumber + 1);
+                    System.out.println("APPOINTMENT NOT FOUND!");
+                    scanner.nextLine();
                 }
-
-                Prescription prescription = new Prescription(prescriptionID, patientMedicineList);
-                prescriptionList.add(prescription);
-
-                //UPDATE APPOINTMENT
-                Appointment currentAppointment = Appointment.getAppointment(doctorAppointmentList, inputAppointmentID);
-                currentAppointment.setDisease(Disease.getDisease(diseaseList, diseaseID));
-                currentAppointment.setSymptoms(symptoms);
-                currentAppointment.setPrescription(prescription);
-                currentAppointment.setIsConsulted(true);
-                Appointment.updateAppointmentDatabase(appointmentList);
-
-                //UPDATE DOCTOR
-                doctorAppointmentList.remove(indexAppointment);
-
-                if(doctorAppointmentList.isEmpty()){
-                    doctorAppointmentList.add(Appointment.getAppointment(appointmentList, "AP00X"));
-                }
-                
-                Doctor.updateDoctorDatabase(doctorList);
-
-                //UPDATE PRESCRIPTION
-                Prescription.updatePrescriptionDatabase(prescriptionList);
-
-                System.out.println("Patient consulted.");
-                scanner.nextLine();
-                
-            } else {
-                System.out.println("APPOINTMENT NOT FOUND!");
-                scanner.nextLine();
-            }
 
                 break;
             case 2:
-            HospitalManagement.logout();
+                HospitalManagement.logout();
                 break;
-            default: 
-            doctorMenu(doctorID, doctorList, diseaseList, medicineList, prescriptionList, appointmentList);
+            default:
+                doctorMenu(doctorID, doctorList, diseaseList, medicineList, prescriptionList, appointmentList);
                 break;
         }
         doctorMenu(doctorID, doctorList, diseaseList, medicineList, prescriptionList, appointmentList);
 
         scanner.close();
-        
+
     }
 
-    public static void doctorMedicineSelection(ArrayList<Medicine> medicineList, ArrayList<Medicine> patientMedicineList){
+    public static void doctorMedicineSelection(ArrayList<Medicine> medicineList,
+            ArrayList<Medicine> patientMedicineList) {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -386,15 +427,15 @@ class Doctor extends Person{
 
         int choice;
 
-        do{
+        do {
             done = false;
             System.out.print("\033[H\033[2J\n");
             System.out.flush();
 
             Medicine.showMedicineList(medicineList);
             System.out.print("Current Prescription: ");
-        
-            for(int i = 0; i < patientMedicineList.size(); i++){
+
+            for (int i = 0; i < patientMedicineList.size(); i++) {
                 System.out.print(patientMedicineList.get(i).getMedicineID() + " ");
             }
             System.out.println("\n1. Manage Prescription");
@@ -403,7 +444,7 @@ class Doctor extends Person{
 
             choice = 0;
 
-            while(choice == 0){
+            while (choice == 0) {
                 try {
                     choice = scanner.nextInt();
                     scanner.nextLine();
@@ -413,46 +454,46 @@ class Doctor extends Person{
                 }
             }
 
-            switch(choice){
+            switch (choice) {
 
                 case 1:
 
-                String medicineID = "";
+                    String medicineID = "";
 
-                System.out.print("Enter medicineID: ");
-                medicineID = scanner.nextLine();
+                    System.out.print("Enter medicineID: ");
+                    medicineID = scanner.nextLine();
 
-                int indexMedicine = Medicine.searchMedicine(medicineList, medicineID);
+                    int indexMedicine = Medicine.searchMedicine(medicineList, medicineID);
 
-                if(indexMedicine != -1){
+                    if (indexMedicine != -1) {
 
-                    if(!patientMedicineList.contains(medicineList.get(indexMedicine))){
-                        patientMedicineList.add(medicineList.get(indexMedicine));
+                        if (!patientMedicineList.contains(medicineList.get(indexMedicine))) {
+                            patientMedicineList.add(medicineList.get(indexMedicine));
+                        } else {
+                            System.out.println("Medicine already added");
+                            scanner.nextLine();
+                        }
+
                     } else {
-                        System.out.println("Medicine already added");
+                        System.out.println("Medicine does not exist");
                         scanner.nextLine();
                     }
-                    
-                } else {
-                    System.out.println("Medicine does not exist");
-                    scanner.nextLine();
-                }
                     break;
                 case 2:
 
-                if(patientMedicineList.size() != 0){
-                    done = true;
-                } else {
-                    System.out.println("Medicine list must not be empty");
-                    scanner.nextLine();
-                }
-                
+                    if (patientMedicineList.size() != 0) {
+                        done = true;
+                    } else {
+                        System.out.println("Medicine list must not be empty");
+                        scanner.nextLine();
+                    }
+
                     break;
                 default:
-                doctorMedicineSelection(medicineList, patientMedicineList);
+                    doctorMedicineSelection(medicineList, patientMedicineList);
                     break;
             }
 
-        }while(done == false);
+        } while (done == false);
     }
 }

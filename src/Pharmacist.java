@@ -6,7 +6,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Pharmacist extends Person{
-    String pharID;
+    //Code Smell: Encapsulation Smell (Deficient Encapsulation)
+    //Solution: Menambahkan private access modifier
+    
+    //before
+    //String pharID;
+    
+    //after
+    private String pharID;
 
     public Pharmacist(String name, String address, String gender, String phoneNumber, String email, String password, String pharID){
         super(name, address, gender, phoneNumber, email, password);
