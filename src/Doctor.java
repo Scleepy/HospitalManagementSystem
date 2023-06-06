@@ -385,11 +385,19 @@ class Doctor extends Person {
                     Appointment.updateAppointmentDatabase(appointmentList);
 
                     // UPDATE DOCTOR
+
+                    //before
+                    //doctorAppointmentList.remove(indexAppointment);
+                    
+                    //after
+                    Doctor doctor = Doctor.getDoctor(doctorList, doctorID);
                     doctorAppointmentList.remove(indexAppointment);
 
                     if (doctorAppointmentList.isEmpty()) {
                         doctorAppointmentList.add(Appointment.getAppointment(appointmentList, "AP00X"));
                     }
+
+                    doctor.setAppointmentList(doctorAppointmentList);
 
                     Doctor.updateDoctorDatabase(doctorList);
 

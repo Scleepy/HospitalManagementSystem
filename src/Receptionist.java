@@ -638,8 +638,14 @@ public class Receptionist extends Person{
                     if(!doctor.getDoctorID().equals("DC00X")){
                         for(int i = 0; i < doctor.getAppointmentList().size(); i++){
         
-                            if(doctor.getAppointmentList().get(i) == value){                        
-                                doctor.getAppointmentList().remove(i);
+                            if(doctor.getAppointmentList().get(i) == value){
+                                //before
+                                //doctor.getAppointmentList().remove(i);
+
+                                //after
+                                ArrayList<Appointment> newAppointmentList = doctor.getAppointmentList();
+                                newAppointmentList.remove(i);
+                                doctor.setAppointmentList(newAppointmentList);
                             }
                         }
                     }
@@ -1181,11 +1187,20 @@ public class Receptionist extends Person{
                 
             appointmentList.add(new Appointment(appointmentID, LocalDateTime.parse(dateTimeInput, format), emergency, false, false, false, patientList.get(indexPatient), doctorList.get(indexDoctor), prescription, disease, "Empty"));
 
+
+
             //UPDATE APPOINTMENT DATABASE
             Appointment.updateAppointmentDatabase(appointmentList);
 
             //UPDATE DOCTOR DATABASE
+            //before
             doctorList.get(indexDoctor).getAppointmentList().add(Appointment.getAppointment(appointmentList, appointmentID));
+            
+            //after
+            ArrayList<Appointment> newAppointmentList = doctorList.get(indexDoctor).getAppointmentList();
+            newAppointmentList.add(Appointment.getAppointment(appointmentList, appointmentID));
+            doctorList.get(indexDoctor).setAppointmentList(newAppointmentList);
+            
             Doctor.updateDoctorDatabase(doctorList);
                 
 
